@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 4189737684654628846}
   - component: {fileID: 4189737684654628847}
   - component: {fileID: 4189737684654628840}
-  - component: {fileID: 280064400}
   - component: {fileID: 4530782481956234671}
   - component: {fileID: 4189737684376841830}
+  - component: {fileID: 9199258589121064121}
   m_Layer: 0
   m_Name: Bat_Full_0
-  m_TagString: enemy
+  m_TagString: Bat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,46 +108,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!60 &280064400
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4189737684654628841}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 4}
-    newSize: {x: 4, y: 4}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.46727753, y: 0.28498077}
-      - {x: 0.19342041, y: 0.43292618}
-      - {x: -0.018539429, y: 0.3825531}
-      - {x: -0.3893242, y: 0.27523804}
-      - {x: -0.38463974, y: 0.10562897}
-      - {x: -0.49666786, y: 0.071941376}
-      - {x: -0.6632614, y: -0.061332703}
-      - {x: -0.6102333, y: -0.1994896}
-      - {x: -0.346035, y: -0.34841156}
-      - {x: -0.3125, y: -0.5}
-      - {x: -0.23958015, y: -0.45970535}
-      - {x: 0.3530197, y: -0.45603943}
-      - {x: 0.4331684, y: -0.1967125}
-      - {x: 0.6021786, y: -0.09485245}
-      - {x: 0.63132477, y: 0.29829025}
 --- !u!114 &4530782481956234671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,3 +146,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!70 &9199258589121064121
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189737684654628841}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.018589815, y: -0.018590217}
+  m_Size: {x: 1.3605821, y: 0.96405166}
+  m_Direction: 1

@@ -13,17 +13,23 @@ public class enemyMoveJump : EnemyParentScript
     [SerializeField] private float jumpInterval = 1f;
     private float nextJumpTime = 0f;
 
-    private int healthOfslime = 60;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         rig = GetComponent<Rigidbody2D>();
+        health = 40f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (healthOfslime <= 0) return;
+        if (health <= 0)
+        {
+            EnemyDeath();
+            return;
+        }
         EnemyMove();
     }
 
@@ -57,10 +63,9 @@ public class enemyMoveJump : EnemyParentScript
     {
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
-            PushBack(collision.gameObject);
-            HealthDepleteEnemy(ref healthOfslime);
-            if (healthOfslime <= 0)
-                EnemyDeath();
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
+
         }
 
     }

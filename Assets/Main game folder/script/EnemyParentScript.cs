@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class EnemyParentScript : MonoBehaviour
 {
+    protected GameObject player;
+    protected float health;
+    protected bool enemyDead;
     // Start is called before the first frame update
     void Start()
     {
+
     }
 
     // Update is called once per frame
@@ -16,20 +20,20 @@ public class EnemyParentScript : MonoBehaviour
         
     }
 
-    protected void HealthDepleteEnemy(ref int healthOfSpecificEnemy)
+    protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy)
     {
-        healthOfSpecificEnemy -= 10;
+        healthofEnemy -= attackPower;
     }
 
-    protected void PushBack(GameObject player)
+    protected void PushBack()
     {
         if (player.transform.position.x < transform.position.x)
-            transform.position = transform.position - new Vector3(5, 0, 0);
+            transform.position = transform.position + new Vector3(5, 0, 0);
         else 
-            transform.position = transform.position - new Vector3(-5, 0, 0);
+            transform.position = transform.position + new Vector3(-5, 0, 0);
     }
 
-    protected void flip(GameObject player)
+    protected void flip()
     {
         if (player.transform.position.x < transform.position.x)
         {

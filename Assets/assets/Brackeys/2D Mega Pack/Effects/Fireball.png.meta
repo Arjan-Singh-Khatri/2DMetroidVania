@@ -127,18 +127,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 17
-        height: 23
-      alignment: 9
-      pivot: {x: 0.50000006, y: 0.6740047}
+        y: 17
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 28a2a405f008c8a458476730f81a6cb6
-      internalID: 21300000
+      spriteID: 64604fcb0c091824aac5fd5593514544
+      internalID: 1861847445
       vertices: []
       indices: 
       edges: []
@@ -147,19 +147,19 @@ TextureImporter:
       name: Fireball_1
       rect:
         serializedVersion: 2
-        x: 17
-        y: 0
-        width: 16
-        height: 23
-      alignment: 9
-      pivot: {x: 0.46722603, y: 0.5875592}
+        x: 0
+        y: 1
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10d12030ba669cc43944488bc140e6f6
-      internalID: 21300002
+      spriteID: 97bb4627cc790324d82dfb718b16e466
+      internalID: -478147392
       vertices: []
       indices: 
       edges: []
@@ -175,8 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Fireball_0: 21300000
-      Fireball_1: 21300002
+      Fireball_0: 1861847445
+      Fireball_1: -478147392
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

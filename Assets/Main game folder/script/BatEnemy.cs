@@ -24,30 +24,41 @@ public class BatEnemy : EnemyParentScript
     private float dashtime = 4f;
     public bool return_tostart = false;
     private float last_dash_time =0f;
+     
 
-    private int healthOfBat = 35;
-    private GameObject player;
 
+
+    private void Awake()
+    {
+        health = 35;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         start_postion = transform.position;
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (healthOfBat <= 0) return; 
+        if (enemyDead) return;
+        if (health <= 0)
+        {
+            anim.SetTrigger("death");
+            enemyDead = true;
+            return;
+        }
+        
         move();
-        flip(player);
+        flip();
         distance = Vector2.Distance(transform.position, player.transform.position);
         if (distance <= 4)
         {
-            attack();
+            Attack();
             rig.velocity = Vector2.zero;
         }
     }
@@ -68,7 +79,7 @@ public class BatEnemy : EnemyParentScript
 
 
 
-    private void attack()
+    private void Attack()
     {
         if (Time.time - last_dash_time >= dashtime)
         {
@@ -79,7 +90,7 @@ public class BatEnemy : EnemyParentScript
         chase = true;
 
     }
-    public void dash_attack()
+    public void DashAttack()
     {
         //rig.AddForce(dash_force, ForceMode2D.Impulse);
         // use rig.velocity = ____ and then rig.velocity = vector2.zero
@@ -98,10 +109,8 @@ public class BatEnemy : EnemyParentScript
     {
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
-            PushBack(collision.gameObject);
-            HealthDepleteEnemy(ref healthOfBat);
-            if (healthOfBat < 0)
-                anim.SetTrigger("death");
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
         }
 
     }

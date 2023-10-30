@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7961517852778689982}
   m_Layer: 0
   m_Name: SlimeBasic_00000
-  m_TagString: enemy
+  m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,8 +123,8 @@ MonoBehaviour:
   enemyWayPoints:
   - {fileID: 0}
   - {fileID: 0}
-  speed: 2
-  jumpSpeed: 5
+  speed: 3
+  jumpSpeed: 3.7
   jumpInterval: 2
 --- !u!70 &7961517852778689980
 CapsuleCollider2D:

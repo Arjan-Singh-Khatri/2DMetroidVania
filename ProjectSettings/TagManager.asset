@@ -16,6 +16,11 @@ TagManager:
   - portal
   - EnemyHitBox
   - PlayerAttackHitBox
+  - TwoHead
+  - TwoHeadAttack2
+  - FireBall
+  - Slime
+  - Bat
   layers:
   - Default
   - TransparentFX
