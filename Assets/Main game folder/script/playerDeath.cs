@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class playerDeath : MonoBehaviour
 {
+    [SerializeField] Collider2D playerColider;
     private Animator anim;
     private Rigidbody2D rig;
-    private Collider2D col;
-    private int Health = 100 ;
+    private int health = 100;
 
 
     // Start is called before the first frame update
@@ -16,9 +16,10 @@ public class playerDeath : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();   
+        
     }
 
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("trap"))
@@ -39,12 +40,27 @@ public class playerDeath : MonoBehaviour
         anim.SetTrigger("death"); 
     }
 
-    
+
     private void Restartlevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-   
+    private void IsHurt(int damage)
+    {
+        TakeDamage(damage);
+        // Trigger An Animation 
+        // Collider is turned off for a time 
+
+    }
+
+    private void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
     
 }

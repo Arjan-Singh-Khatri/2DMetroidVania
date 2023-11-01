@@ -27,7 +27,7 @@ public class EnemyParentScript : MonoBehaviour
 
     protected void PushBack()
     {
-        if (player.transform.position.x < transform.position.x)
+        if (player.transform.position.x <= transform.position.x)
             transform.position = transform.position + new Vector3(5, 0, 0);
         else 
             transform.position = transform.position + new Vector3(-5, 0, 0);

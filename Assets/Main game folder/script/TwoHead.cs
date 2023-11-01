@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -26,8 +27,9 @@ public class TwoHead : EnemyParentScript
     private bool isHurt = false;
     private float fireBallSpawnTimer = 2f;
     private float fireAttackTimer = 10f;
-    private bool chase = true;
+    private bool chase = false;
 
+    
     private void Awake()
     {
         health = 60;
@@ -45,8 +47,10 @@ public class TwoHead : EnemyParentScript
         if (enemyDead) return;
         if (health <= 0)
         {
+           
             animator.SetTrigger("Death");
             enemyDead = true;
+            Events.instance.bridgeIsVisible();
             return;
         }
         flip();
@@ -65,6 +69,7 @@ public class TwoHead : EnemyParentScript
         Instantiate(fireBall,fireBallFirePosition.position,transform.rotation);
     }
 
+    
     private void AttackTwo()
     {
         chase = false;
@@ -90,8 +95,8 @@ public class TwoHead : EnemyParentScript
 
     private void RunAttack()
     {
-        Debug.Log("Should be Running !");
-        if(transform.position.x > endPointXOne || transform.position.x < endPointXTwo)
+
+        if(transform.position.x >= endPointXOne+1 || transform.position.x <= endPointXTwo-1)
         {
             Vector2 targetPosition = new Vector2(player.transform.position.x, transform.position.y);
             Vector2 newPosition = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
