@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4189737684654628847}
   - component: {fileID: 4189737684654628840}
   - component: {fileID: 4530782481956234671}
-  - component: {fileID: 4189737684376841830}
   - component: {fileID: 9199258589121064121}
+  - component: {fileID: 1334894317}
   m_Layer: 0
   m_Name: Bat_Full_0
   m_TagString: Bat
@@ -125,7 +125,23 @@ MonoBehaviour:
   dash_force: 15
   dashtime: 2
   return_tostart: 0
---- !u!50 &4189737684376841830
+--- !u!70 &9199258589121064121
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189737684654628841}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.018589815, y: -0.018590217}
+  m_Size: {x: 1.3605821, y: 0.96405166}
+  m_Direction: 1
+--- !u!50 &1334894317
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -146,19 +162,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &9199258589121064121
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4189737684654628841}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.018589815, y: -0.018590217}
-  m_Size: {x: 1.3605821, y: 0.96405166}
-  m_Direction: 1

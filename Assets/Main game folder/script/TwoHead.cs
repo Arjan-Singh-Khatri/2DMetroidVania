@@ -29,7 +29,7 @@ public class TwoHead : EnemyParentScript
     private float fireAttackTimer = 10f;
     private bool chase = false;
 
-    
+
     private void Awake()
     {
         health = 60;
@@ -50,7 +50,7 @@ public class TwoHead : EnemyParentScript
            
             animator.SetTrigger("Death");
             enemyDead = true;
-            Events.instance.bridgeIsVisible();
+            Events.instance.OnDeathTwoHeadBridgeActive();
             return;
         }
         flip();

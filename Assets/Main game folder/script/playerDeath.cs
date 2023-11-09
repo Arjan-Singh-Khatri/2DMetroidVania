@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using Cinemachine;
 
 public class playerDeath : MonoBehaviour
 {
-    [SerializeField] Collider2D playerColider;
     private Animator anim;
     private Rigidbody2D rig;
-    private int health = 100;
+    private float health = 100;
 
 
     // Start is called before the first frame update
@@ -19,20 +19,6 @@ public class playerDeath : MonoBehaviour
         
     }
 
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("trap"))
-        {
-            Die();
-        }
-
-        
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-    }
     public void Die()
     {
      
@@ -49,12 +35,10 @@ public class playerDeath : MonoBehaviour
     private void IsHurt(int damage)
     {
         TakeDamage(damage);
-        // Trigger An Animation 
-        // Collider is turned off for a time 
-
+        anim.SetTrigger("hurt");
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0)
@@ -62,5 +46,23 @@ public class playerDeath : MonoBehaviour
             Die();
         }
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("trap"))
+        {
+            Die();
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Slime"))
+            TakeDamage(DamageHolder.instance.slimeDamage);
+        if (collision.gameObject.CompareTag("TwoHead"))
+            TakeDamage(DamageHolder.instance.twoHeadDamage);
+        if(collision.gameObject.CompareTag("Bat"))
+            TakeDamage(DamageHolder.instance.batDamage);
+        if (collision.gameObject.CompareTag("TwoHeadAttackTwo"))
+            TakeDamage(DamageHolder.instance.twoHeadAttackTwoDamage);
+    }
 }

@@ -7,9 +7,9 @@ public class DamageHolder : MonoBehaviour
     public static DamageHolder instance;
     public float playerDamage = 7f;
     public float fireBallDamage = 15f;
-    public float TwoHeadDamage = 30f;
-    public float TwoHeadAttack2 = 40f;
-    public float BatDamage = 20f;
+    public float twoHeadDamage = 30f;
+    public float twoHeadAttackTwoDamage = 40f;
+    public float batDamage = 20f;
     public float slimeDamage = 15f;
 
     private void Start()
