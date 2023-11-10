@@ -36,6 +36,7 @@ public class playerDeath : MonoBehaviour
     {
         TakeDamage(damage);
         anim.SetTrigger("hurt");
+        //Down Time for Getting Hurt Again i.e Collider is OFF for a second or two
     }
 
     private void TakeDamage(float damage)
@@ -62,7 +63,9 @@ public class playerDeath : MonoBehaviour
             TakeDamage(DamageHolder.instance.twoHeadDamage);
         if(collision.gameObject.CompareTag("Bat"))
             TakeDamage(DamageHolder.instance.batDamage);
-        if (collision.gameObject.CompareTag("TwoHeadAttackTwo"))
+        if (collision.gameObject.CompareTag("TwoHeadAttack2"))
             TakeDamage(DamageHolder.instance.twoHeadAttackTwoDamage);
+        if (collision.gameObject.CompareTag("Crab"))
+            TakeDamage(DamageHolder.instance.crab);
     }
 }

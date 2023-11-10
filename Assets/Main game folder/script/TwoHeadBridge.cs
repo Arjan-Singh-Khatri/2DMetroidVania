@@ -11,8 +11,9 @@ public class TwoHeadBridge : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Events.instance.OnDeathTwoHeadBridgeActive += BridgeActive;
         animator = GetComponent<Animator>();
+        Events.instance.OnDeathTwoHeadBridgeActive += BridgeActive;
+
     }
 
     private void BridgeActive()

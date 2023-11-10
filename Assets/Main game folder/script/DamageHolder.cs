@@ -11,6 +11,7 @@ public class DamageHolder : MonoBehaviour
     public float twoHeadAttackTwoDamage = 40f;
     public float batDamage = 20f;
     public float slimeDamage = 15f;
+    public float crab = 20f;
 
     private void Start()
     {
