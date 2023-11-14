@@ -5,11 +5,11 @@ using UnityEngine;
 public class enemyMoveJump : EnemyParentScript
 {
     private Rigidbody2D rig;
-    [SerializeField]
-    private Transform[] enemyWayPoints;
+    private float startPoint;
+    private Vector2[] endPonints = new Vector2[2];
     [SerializeField] float speed = 5;
     private int wayPointIndex = 0;
-    [SerializeField] private float jumpSpeed = 3;
+    [SerializeField] private float jumpSpeed = 4.5f;
     [SerializeField] private float jumpInterval = 1f;
     private float nextJumpTime = 0f;
 
@@ -17,9 +17,13 @@ public class enemyMoveJump : EnemyParentScript
     // Start is called before the first frame update
     void Start()
     {
+        startPoint = transform.position.x;
+        endPonints[0] = new Vector3(startPoint-5, transform.position.y);
+        endPonints[1] = new Vector3(startPoint + 5, transform.position.y);
         player = GameObject.FindGameObjectWithTag("Player");
         rig = GetComponent<Rigidbody2D>();
         health = 40f;
+        wayPointIndex = Random.Range(0, 2);
     }
 
     // Update is called once per frame
@@ -35,15 +39,15 @@ public class enemyMoveJump : EnemyParentScript
 
     void EnemyMove()
     {
-        if (Vector2.Distance(transform.position, enemyWayPoints[wayPointIndex].position) > .5)
+        if (Vector2.Distance(transform.position, endPonints[wayPointIndex]) > .5)
         {
-            transform.position = Vector2.MoveTowards(transform.position, enemyWayPoints[wayPointIndex].position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, endPonints[wayPointIndex], speed * Time.deltaTime);
             Hop();
         }
         else
         {
             wayPointIndex++;
-            if (wayPointIndex >= enemyWayPoints.Length)
+            if (wayPointIndex >= endPonints.Length)
             {
                 wayPointIndex = 0;
             }

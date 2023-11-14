@@ -5,29 +5,26 @@ using UnityEngine;
 
 public class ChaseBorder : MonoBehaviour
 {
-    public BatEnemy[] enemy_Array;
+    private  BatEnemy childBatEnemy;
+
+    private void Start()
+    {
+        childBatEnemy = GetComponentInChildren<BatEnemy>();
+    }
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") )
         {
-            foreach (BatEnemy Enemy in enemy_Array)
-            {
-
-                Enemy.chase = true;
-                Enemy.return_tostart = false;
-
-            }
+            childBatEnemy.chase = true;
+            childBatEnemy.return_tostart = false;
         }
         if (collision.CompareTag("enemy") && collision.CompareTag("Player"))
         {
-            foreach (BatEnemy Enemy in enemy_Array)
-            {
-
-                Enemy.chase = true;
-                Enemy.return_tostart = false;
-
-            }
+            childBatEnemy.chase = true;
+            childBatEnemy.return_tostart = true;
         }
     }
 
@@ -35,20 +32,14 @@ public class ChaseBorder : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            foreach(BatEnemy Enemy in enemy_Array)
-            {
-                    Enemy.return_tostart = true ;
-                    Enemy.chase = false;
-            }
+            childBatEnemy.return_tostart = true ;
+            childBatEnemy.chase = false;
         }
         if (collision.CompareTag("enemy"))
         {
-            foreach (BatEnemy Enemy in enemy_Array)
-            {
-                Enemy.return_tostart = true;
-                Enemy.chase = false;
-            }
+            
+            childBatEnemy.return_tostart = true;
+            childBatEnemy.chase = false;}
         }
     }
 
-}

@@ -7,6 +7,7 @@
  */
 
 using System.Collections;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -104,10 +105,7 @@ public class PlayerMovement : MonoBehaviour
 			if (clip.name == "attack")
 			{
 				attackTime = clip.length;
-				Debug.Log(attackTime);
-			}
-				
-			
+			}	
 		}
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
@@ -200,7 +198,6 @@ public class PlayerMovement : MonoBehaviour
 				IsWallJumping = false;
 				_isJumpCut = false;
 				_isJumpFalling = false;
-				Debug.Log("start");
 				Jump();
 
 			
@@ -299,7 +296,8 @@ public class PlayerMovement : MonoBehaviour
 		#region Animation
 		AnimationHandler();
         #endregion
-        #region
+
+        #region Attack
         if (Input.GetKeyDown(KeyCode.Z) && canAttack)
         {
             canAttack = false;
@@ -631,41 +629,60 @@ public class PlayerMovement : MonoBehaviour
 	}
 	#endregion
 
-	#region animation 
-
 	private void AnimationHandler()
 	{
+		// Horizontal Movement 
+        if (_moveInput.x != 0)
+        {
+            anim.SetBool("walk", true);
+            CheckDirectionToFace(_moveInput.x > 0);
+        }
+        else
+        {
+            anim.SetBool("walk", false);
+        }
 
-		if (IsJumping)
+		// Vertical Movement And Dashes 
+
+        if (IsJumping)
 		{
 			anim.SetBool("jump", true);
 			anim.SetFloat("yspeed", 0.1f);
 		}
-		else if (_isJumpFalling)
+
+		//if (IsDashing)
+		//{
+		//	anim.SetBool("jump", true);
+		//	anim.SetFloat("yspeed", 0.1f);
+		
+		//}
+		//else
+		//{
+		//	Debug.Log("Ground Dashing ");
+		//}
+
+		if (IsSliding)
 		{
-			anim.SetBool("jump", true);
-			anim.SetFloat("yspeed", -0.1f);
+			anim.SetBool("Slide", true);
+		}else
+		{
+			anim.SetBool("Slide", false);
 		}
-		else
+
+		// Falling Movement
+        if (RB.gravityScale >2.6 && !CanJump())
+        {
+            anim.SetBool("jump", true);
+            anim.SetFloat("yspeed", -0.1f);
+        }
+        if (CanJump())
 		{
 			anim.SetBool("jump", false);
 		}
-		if (_moveInput.x != 0)
-		{
-			anim.SetBool("walk", true);
-			CheckDirectionToFace(_moveInput.x > 0);
-		}
-		else
-		{
-			anim.SetBool("walk", false);
-		}
-
-
 	}
-    #endregion
 
-    #region attack
-	IEnumerator AttackManager()
+        #region attack
+    private IEnumerator AttackManager()
 	{
 		anim.SetTrigger("attack");
 		playerAttackHitbox.SetActive(true);

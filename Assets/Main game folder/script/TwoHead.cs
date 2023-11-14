@@ -18,7 +18,6 @@ public class TwoHead : EnemyParentScript
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private GameObject attackTwoHitBox;
     private Animator animator;
-    [SerializeField]private float Health = 100f;
     private readonly float endPointXOne = 25.2f;
     private readonly float endPointXTwo = 64.84f;
 

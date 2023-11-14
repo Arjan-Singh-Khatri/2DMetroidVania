@@ -39,7 +39,7 @@ public class playerDeath : MonoBehaviour
         //Down Time for Getting Hurt Again i.e Collider is OFF for a second or two
     }
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0)
@@ -67,5 +67,13 @@ public class playerDeath : MonoBehaviour
             TakeDamage(DamageHolder.instance.twoHeadAttackTwoDamage);
         if (collision.gameObject.CompareTag("Crab"))
             TakeDamage(DamageHolder.instance.crab);
+        if (collision.gameObject.CompareTag("CrabAttack"))
+            TakeDamage(DamageHolder.instance.crabAttack);
+        if (collision.gameObject.CompareTag("SpikedSlime"))
+            TakeDamage(DamageHolder.instance.slimeDamage);
+        if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
+            TakeDamage(DamageHolder.instance.spikedSlimeAttack);
+        if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
+            TakeDamage(DamageHolder.instance.spikdSlimeSpikes);
     }
 }

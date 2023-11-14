@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -7,17 +8,22 @@ using UnityEngine.UIElements;
 
 public class enemyMoveBetween : EnemyParentScript
 {
-    [SerializeField]
-    private Transform [] enemyWayPoints;
+    
     [SerializeField] float speed = 5;
     private int wayPointIndex = 0;
+    private float startPoint;
+    private Vector2[] endPonints = new Vector2[2];
 
 
     // Start is called before the first frame update
     void Start()
     {
+        startPoint = transform.position.x;
+        endPonints[0] = new Vector3(startPoint - 5, transform.position.y);
+        endPonints[1] = new Vector3(startPoint + 5, transform.position.y);
         player = GameObject.FindGameObjectWithTag("Player");
         health = 40f;
+        wayPointIndex = Random.Range(0, 2);
     }
 
     // Update is called once per frame
@@ -33,13 +39,15 @@ public class enemyMoveBetween : EnemyParentScript
 
     void EnemyMove()
     {
-        if(Vector2.Distance(transform.position, enemyWayPoints[wayPointIndex].position) > .5)
+        if (Vector2.Distance(transform.position, endPonints[wayPointIndex]) > .5)
         {
-            transform.position = Vector2.MoveTowards(transform.position, enemyWayPoints[wayPointIndex].position,speed*Time.deltaTime);
-        }else
+            transform.position = Vector2.MoveTowards(transform.position, endPonints[wayPointIndex], speed * Time.deltaTime);
+            
+        }
+        else
         {
             wayPointIndex++;
-            if (wayPointIndex >= enemyWayPoints.Length) 
+            if (wayPointIndex >= endPonints.Length)
             {
                 wayPointIndex = 0;
             }

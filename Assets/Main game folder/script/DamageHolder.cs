@@ -11,11 +11,16 @@ public class DamageHolder : MonoBehaviour
     public float twoHeadAttackTwoDamage = 40f;
     public float batDamage = 20f;
     public float slimeDamage = 15f;
-    public float crab = 20f;
+    public float crab = 10f;
+    public float crabAttack = 20f;
+    public float spikedSlime = 10f;
+    public float spikedSlimeAttack = 15f;
+    public float spikdSlimeSpikes = 20f;
 
     private void Start()
     {
         instance = this;    
         DontDestroyOnLoad(gameObject);
+        
     }
 }

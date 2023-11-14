@@ -1,22 +1,19 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 
-public class Crab : EnemyParentScript
+public class SpikedSlime : EnemyParentScript
 {
-
-    
     private Vector2 followPosition;
     private Animator animator;
-    [SerializeField] GameObject crabCollider;
-    [SerializeField]private float speed = 1f;
+    [SerializeField] GameObject slimeCollider;
+    [SerializeField] private float speed = 1f;
     private float attackDownTime = 0;
     private bool isAttacking = false;
     private float startPoint;
 
+    [SerializeField] GameObject spikes;
+    [SerializeField] Transform spikesPosition;
 
     void Start()
     {
@@ -24,22 +21,22 @@ public class Crab : EnemyParentScript
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         startPoint = transform.position.x;
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         if (health <= 0) return;
 
         FollowPlayer();
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) <=2f && attackDownTime >= 1.4f )
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) <= 2f && attackDownTime >= 2f)
         {
             AttackPlayer();
         }
-        
-        if (attackDownTime < 1.4f) { attackDownTime += Time.deltaTime; }
+
+        if (attackDownTime < 2f) { attackDownTime += Time.deltaTime; }
 
     }
 
@@ -69,36 +66,35 @@ public class Crab : EnemyParentScript
         animator.SetBool("Run", false);
         attackDownTime = 0f;
         isAttacking = true;
-        crabCollider.SetActive(true);
+        slimeCollider.SetActive(true);
         ChosseAttack();
     }
 
 
     private void ChosseAttack()
     {
-        
-        int random = Random.Range(1, 5);
-        switch (random) {
+
+        int random = Random.Range(1, 3);
+        switch (random)
+        {
             case 1:
                 animator.SetTrigger("Ability");
                 break;
             case 2:
                 animator.SetTrigger("Attack");
                 break;
-            case 3:
-                animator.SetTrigger("Attack2");
-                break;
-            case 4:
-                animator.SetTrigger("Attack3");
-                break;
         }
-        
+
     }
 
+    private void TriggerAbility()
+    {
+        Instantiate(spikes,spikesPosition.position,transform.rotation);
+    }
 
     private void AttackEnd()
     {
-        crabCollider.SetActive(false);
+        slimeCollider.SetActive(false);
         isAttacking = false;
     }
 
@@ -113,8 +109,6 @@ public class Crab : EnemyParentScript
             {
                 animator.SetTrigger("death");
             }
-
-           
         }
     }
 }
