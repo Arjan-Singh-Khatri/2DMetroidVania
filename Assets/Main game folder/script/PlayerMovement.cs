@@ -10,7 +10,7 @@ using System.Collections;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour , IDataPersistance
 {
 	//Scriptable object which holds all the player's movement parameters. If you don't want to use it
 	//just paste in all the parameters, though you will need to manuly change all references in this script
@@ -110,8 +110,8 @@ public class PlayerMovement : MonoBehaviour
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
 	}
-
-	private void Update()
+  
+    private void Update()
 	{
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
@@ -307,6 +307,16 @@ public class PlayerMovement : MonoBehaviour
 		
 
         #endregion
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        this.transform.position = gameData._position;
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData._position = this.transform.position;
     }
 
     private void FixedUpdate()

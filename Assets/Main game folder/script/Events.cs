@@ -11,6 +11,8 @@ public class Events : MonoBehaviour
     public Action OnDeathTwoHeadBridgeActive;
     private void Start()
     {
+        if (instance != null)
+            Destroy(instance);
         instance = this;
         DontDestroyOnLoad(gameObject);
     }

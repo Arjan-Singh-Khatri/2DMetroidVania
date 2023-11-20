@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using Cinemachine;
+using Unity.VisualScripting;
 
-public class playerDeath : MonoBehaviour
+public class playerDeath : MonoBehaviour, IDataPersistance
 {
     private Animator anim;
     private Rigidbody2D rig;
-    private float health = 100;
+    private float health = 47;
+    private float damageTakenCoolDown = 0f;
+    private bool canTakeDamage = true;
 
 
     // Start is called before the first frame update
@@ -16,33 +19,55 @@ public class playerDeath : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
-        
+    }
+    public void SaveData(ref GameData gameData)
+    {
+        gameData._health = this.health;
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        this.health = gameData._health;
+    }
+
+    private void Update()
+    {
+        if (health < 1) return;
+        if (!canTakeDamage)
+        {
+            damageTakenCoolDown += Time.deltaTime;
+            if (damageTakenCoolDown > 1.3f)
+            {
+                damageTakenCoolDown = 0f;
+                canTakeDamage = true;
+            }
+        }
     }
 
     public void Die()
     {
-     
         rig.bodyType = RigidbodyType2D.Static;
         anim.SetTrigger("death"); 
     }
 
-
+    
     private void Restartlevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void IsHurt(int damage)
+    private void IsHurt(float damage)
     {
+        if (!canTakeDamage) return;
+        canTakeDamage = false;
         TakeDamage(damage);
         anim.SetTrigger("hurt");
-        //Down Time for Getting Hurt Again i.e Collider is OFF for a second or two
     }
 
     public void TakeDamage(float damage)
     {
         health -= damage;
-        if (health <= 0)
+        if (health <1)
         {
             Die();
         }
@@ -55,25 +80,28 @@ public class playerDeath : MonoBehaviour
             Die();
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Slime"))
-            TakeDamage(DamageHolder.instance.slimeDamage);
+            IsHurt(DamageHolder.instance.slimeDamage);
         if (collision.gameObject.CompareTag("TwoHead"))
-            TakeDamage(DamageHolder.instance.twoHeadDamage);
-        if(collision.gameObject.CompareTag("Bat"))
-            TakeDamage(DamageHolder.instance.batDamage);
+            IsHurt(DamageHolder.instance.twoHeadDamage);
+        if (collision.gameObject.CompareTag("Bat"))
+            IsHurt(DamageHolder.instance.batDamage);
         if (collision.gameObject.CompareTag("TwoHeadAttack2"))
-            TakeDamage(DamageHolder.instance.twoHeadAttackTwoDamage);
+            IsHurt(DamageHolder.instance.twoHeadAttackTwoDamage);
+        if (collision.gameObject.CompareTag("FireBall"))
+            IsHurt(DamageHolder.instance.fireBallDamage);
         if (collision.gameObject.CompareTag("Crab"))
-            TakeDamage(DamageHolder.instance.crab);
+            IsHurt(DamageHolder.instance.crab);
         if (collision.gameObject.CompareTag("CrabAttack"))
-            TakeDamage(DamageHolder.instance.crabAttack);
+            IsHurt(DamageHolder.instance.crabAttack);
         if (collision.gameObject.CompareTag("SpikedSlime"))
-            TakeDamage(DamageHolder.instance.slimeDamage);
+            IsHurt(DamageHolder.instance.slimeDamage);
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
-            TakeDamage(DamageHolder.instance.spikedSlimeAttack);
+            IsHurt(DamageHolder.instance.spikedSlimeAttack);
         if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
-            TakeDamage(DamageHolder.instance.spikdSlimeSpikes);
+            IsHurt(DamageHolder.instance.spikdSlimeSpikes);
     }
 }

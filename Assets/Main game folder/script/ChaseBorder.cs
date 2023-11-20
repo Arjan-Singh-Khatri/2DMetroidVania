@@ -3,16 +3,42 @@ using System.Collections.Generic;
 using System.Security;
 using UnityEngine;
 
-public class ChaseBorder : MonoBehaviour
+public class ChaseBorder : EnemyParentScript , IDataPersistance
 {
-    private  BatEnemy childBatEnemy;
+    private BatEnemy childBatEnemy;
+    private bool _killed;
+    
 
     private void Start()
     {
         childBatEnemy = GetComponentInChildren<BatEnemy>();
     }
 
+    public void SaveData(ref GameData gameData)
+    {
+        if (gameData.enemyKilled.ContainsKey(this.enemyID))
+        {
+            gameData.enemyKilled.Remove(this.enemyID);
+        }
+        gameData.enemyKilled.Add(this.enemyID, _killed);
+    }
 
+    public void LoadData(GameData gameData)
+    {
+        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
+        if (_killed)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if(childBatEnemy.killed) { _killed = true; }
+    }
+
+ 
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,6 +46,7 @@ public class ChaseBorder : MonoBehaviour
         {
             childBatEnemy.chase = true;
             childBatEnemy.return_tostart = false;
+            
         }
         if (collision.CompareTag("enemy") && collision.CompareTag("Player"))
         {

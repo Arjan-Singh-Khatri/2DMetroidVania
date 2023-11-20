@@ -5,7 +5,7 @@ using UnityEngine;
 public class DamageHolder : MonoBehaviour
 {
     public static DamageHolder instance;
-    public float playerDamage = 7f;
+    public float playerDamage = 15f;
     public float fireBallDamage = 15f;
     public float twoHeadDamage = 30f;
     public float twoHeadAttackTwoDamage = 40f;
@@ -19,6 +19,10 @@ public class DamageHolder : MonoBehaviour
 
     private void Start()
     {
+        if(instance != null)
+        {
+            Destroy(instance);  
+        }
         instance = this;    
         DontDestroyOnLoad(gameObject);
         

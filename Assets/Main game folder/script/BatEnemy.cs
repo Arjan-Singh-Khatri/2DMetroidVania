@@ -1,13 +1,11 @@
-
 using UnityEngine;
-
-
 
 public class BatEnemy : EnemyParentScript
 {
+
+    // TO DO -- CHANGE THE LOGIC HALKA CAUSE THE ENEMY KEEPS BREAKING
     private Animator anim;
-    [SerializeField]
-    private float speed = 5f;
+    [SerializeField]private float speed = 5f;
     public bool chase = false;
     private Vector2 start_postion;
     private float distance;
@@ -18,13 +16,11 @@ public class BatEnemy : EnemyParentScript
     private float dashtime = 4f;
     public bool return_tostart = false;
     private float last_dash_time =0f;
-     
-
-
+    public bool killed;
 
     private void Awake()
     {
-        health = 35;
+        health = 1;
     }
     // Start is called before the first frame update
     void Start()
@@ -42,6 +38,7 @@ public class BatEnemy : EnemyParentScript
         if (enemyDead) return;
         if (health <= 0)
         {
+            killed = true;
             anim.SetTrigger("death");
             enemyDead = true;
             return;
@@ -106,7 +103,5 @@ public class BatEnemy : EnemyParentScript
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
         }
-
     }
-
 }

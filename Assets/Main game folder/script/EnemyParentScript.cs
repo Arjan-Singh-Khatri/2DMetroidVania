@@ -8,6 +8,13 @@ public class EnemyParentScript : MonoBehaviour
     protected GameObject player;
     protected float health;
     protected bool enemyDead;
+    [SerializeField] protected string enemyID;
+
+    [ContextMenu("GUID ID GENERATE")]
+    private void GenerateGUID()
+    {
+        enemyID = System.Guid.NewGuid().ToString();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +30,7 @@ public class EnemyParentScript : MonoBehaviour
     protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy)
     {
         healthofEnemy -= attackPower;
+        
     }
 
     protected void PushBack()

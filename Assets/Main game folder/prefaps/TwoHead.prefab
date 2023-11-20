@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1916068150284098289}
   m_Layer: 0
   m_Name: TwoHead
-  m_TagString: Untagged
+  m_TagString: TwoHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,7 +78,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.057394743, y: -0.028697133}
@@ -130,7 +130,6 @@ MonoBehaviour:
   fireBallFirePosition: {fileID: 8215192525845330903}
   moveSpeed: 5
   attackTwoHitBox: {fileID: 6986358203738072478}
-  Health: 100
 --- !u!212 &1916068150284098289
 SpriteRenderer:
   m_ObjectHideFlags: 0
