@@ -8,11 +8,12 @@ public class ChaseBorder : EnemyParentScript , IDataPersistance
     private BatEnemy childBatEnemy;
     private bool _killed;
     
-
     private void Start()
     {
         childBatEnemy = GetComponentInChildren<BatEnemy>();
     }
+
+    #region Save And Load
 
     public void SaveData(ref GameData gameData)
     {
@@ -31,6 +32,8 @@ public class ChaseBorder : EnemyParentScript , IDataPersistance
             gameObject.SetActive(false);
         }
     }
+
+    #endregion
 
     private void Update()
     {
@@ -66,7 +69,8 @@ public class ChaseBorder : EnemyParentScript , IDataPersistance
         {
             
             childBatEnemy.return_tostart = true;
-            childBatEnemy.chase = false;}
+            childBatEnemy.chase = false;
         }
     }
+}
 

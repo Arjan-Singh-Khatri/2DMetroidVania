@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class SpikedSlime : EnemyParentScript
 {
-    private Vector2 followPosition;
-    private Animator animator;
+    [SerializeField] GameObject spikes;
+    [SerializeField] Transform spikesPosition;
     [SerializeField] GameObject slimeCollider;
     [SerializeField] private float speed = 1f;
+    private Vector2 followPosition;
+    private Animator animator;
     private float attackDownTime = 0;
     private bool isAttacking = false;
     private float startPoint;
+    private bool _killed;
 
-    [SerializeField] GameObject spikes;
-    [SerializeField] Transform spikesPosition;
+
 
     void Start()
     {
@@ -23,6 +25,27 @@ public class SpikedSlime : EnemyParentScript
         startPoint = transform.position.x;
 
     }
+
+
+    #region Save And Load
+    public void SaveData(ref GameData gameData)
+    {
+        if (gameData.enemyKilled.ContainsKey(this.enemyID))
+        {
+            gameData.enemyKilled.Remove(this.enemyID);
+        }
+        gameData.enemyKilled.Add(this.enemyID, _killed);
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
+        if (_killed)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -107,6 +130,7 @@ public class SpikedSlime : EnemyParentScript
             HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
             if (health <= 0)
             {
+                _killed = true;
                 animator.SetTrigger("death");
             }
         }

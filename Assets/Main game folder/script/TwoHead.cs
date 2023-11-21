@@ -18,8 +18,7 @@ public class TwoHead : EnemyParentScript
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private GameObject attackTwoHitBox;
     private Animator animator;
-    private readonly float endPointXOne = 25.2f;
-    private readonly float endPointXTwo = 64.84f;
+
 
 
     [Header("Variables")]
@@ -27,7 +26,9 @@ public class TwoHead : EnemyParentScript
     private float fireBallSpawnTimer = 2f;
     private float fireAttackTimer = 10f;
     private bool chase = false;
-
+    private readonly float endPointXOne = 25.2f;
+    private readonly float endPointXTwo = 64.84f;
+    private bool _killed;
 
     private void Awake()
     {
@@ -41,12 +42,32 @@ public class TwoHead : EnemyParentScript
 
     }
 
+    #region Save And Load
+    public void SaveData(ref GameData gameData)
+    {
+        if (gameData.enemyKilled.ContainsKey(this.enemyID))
+        {
+            gameData.enemyKilled.Remove(this.enemyID);
+        }
+        gameData.enemyKilled.Add(this.enemyID, _killed);
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
+        if (_killed)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+    #endregion
+
     private void Update()
     {
         if (enemyDead) return;
         if (health <= 0)
         {
-           
+            _killed = true;
             animator.SetTrigger("Death");
             enemyDead = true;
             Events.instance.OnDeathTwoHeadBridgeActive();

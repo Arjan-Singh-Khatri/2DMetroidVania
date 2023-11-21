@@ -26,6 +26,8 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
         health = 40f;
         wayPointIndex = Random.Range(0, 2);
     }
+
+    #region Save And Load
     public void SaveData(ref GameData gameData)
     {
         if (gameData.enemyKilled.ContainsKey(this.enemyID))
@@ -43,6 +45,8 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
             gameObject.SetActive(false);
         }
     }
+    #endregion
+
     // Update is called once per frame
     void Update()
     {

@@ -13,7 +13,8 @@ public class SerializeDictionaryForJson<Tkey,Tvalue> : Dictionary<Tkey,Tvalue>, 
     // Save The Dicitonary to list
     public void OnBeforeSerialize()
     {
-        key.Clear(); value.Clear();
+        key.Clear(); 
+        value.Clear();
         foreach(KeyValuePair<Tkey,Tvalue> pair in this)
         {
             key.Add(pair.Key);
