@@ -16,15 +16,11 @@ public class DamageHolder : MonoBehaviour
     public float spikedSlime = 10f;
     public float spikedSlimeAttack = 15f;
     public float spikdSlimeSpikes = 20f;
+    public float stromHead = 0;
+    public float strom = 0;
 
     private void Start()
     {
-        if(instance != null)
-        {
-            Destroy(instance);  
-        }
-        instance = this;    
-        DontDestroyOnLoad(gameObject);
-        
+        instance = this;  
     }
 }

@@ -83,25 +83,31 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Slime"))
-            IsHurt(DamageHolder.instance.slimeDamage);
-        if (collision.gameObject.CompareTag("TwoHead"))
-            IsHurt(DamageHolder.instance.twoHeadDamage);
-        if (collision.gameObject.CompareTag("Bat"))
-            IsHurt(DamageHolder.instance.batDamage);
+        //Enemy Attack Colliders
+        if (collision.gameObject.CompareTag("Strom"))
+            Debug.Log("");
         if (collision.gameObject.CompareTag("TwoHeadAttack2"))
             IsHurt(DamageHolder.instance.twoHeadAttackTwoDamage);
         if (collision.gameObject.CompareTag("FireBall"))
             IsHurt(DamageHolder.instance.fireBallDamage);
-        if (collision.gameObject.CompareTag("Crab"))
-            IsHurt(DamageHolder.instance.crab);
         if (collision.gameObject.CompareTag("CrabAttack"))
             IsHurt(DamageHolder.instance.crabAttack);
-        if (collision.gameObject.CompareTag("SpikedSlime"))
-            IsHurt(DamageHolder.instance.slimeDamage);
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
             IsHurt(DamageHolder.instance.spikedSlimeAttack);
         if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
             IsHurt(DamageHolder.instance.spikdSlimeSpikes);
+
+
+        // Enemies 
+        if (collision.gameObject.CompareTag("Slime"))
+            IsHurt(DamageHolder.instance.slimeDamage);
+        if (collision.gameObject.CompareTag("TwoHead"))
+            IsHurt(DamageHolder.instance.twoHeadDamage);
+        if (collision.gameObject.CompareTag("Crab"))
+            IsHurt(DamageHolder.instance.crab);
+        if (collision.gameObject.CompareTag("Bat"))
+            IsHurt(DamageHolder.instance.batDamage);
+        if (collision.gameObject.CompareTag("SpikedSlime"))
+            IsHurt(DamageHolder.instance.slimeDamage);
     }
 }
