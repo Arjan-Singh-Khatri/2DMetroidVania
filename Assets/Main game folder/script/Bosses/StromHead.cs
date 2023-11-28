@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,12 +10,16 @@ public class StromHead : EnemyParentScript
     [SerializeField] private Transform[] teleportPoints;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform[] firingLocations;
+    [SerializeField] private ParticleSystem projectileAttackParticle;
     private Animator animator;
     private bool _killed;
     private bool telePort = false;
     private float telePortTimer = 0f;
     private int telePortCount = 0;
     private float damageTaken = 0 ;
+    private float sleepTimer = 0;
+    private bool isAttacking = false;
+    private float _count;
 
     // Start is called before the first frame update
     void Start()
@@ -30,14 +35,33 @@ public class StromHead : EnemyParentScript
     void Update(){
 
         if (_killed) return;
+        if(damageTaken >=20) 
+        {
+            Frenzy();
+        }
+        if (isAttacking!){
+            animator.SetBool("Sleep", true);
+            sleepTimer -= Time.deltaTime;
+            if(sleepTimer < 0) {
+                sleepTimer = 5f;
+                ChooseAttack();
+                animator.SetBool("Sleep", false);
+            }
+        }
+    }
 
-        
-        
+    private void ChooseAttack(){
+        // Choose Either Frenzy Or Projectile Attack
+        int randomNumberForChoice = Random.Range(0, 11);
+        if (randomNumberForChoice >= 4) {
+            ProjectileAttack();
+        } else
+            Frenzy();
     }
 
     private void Frenzy()
     {
-        // maybe an animation
+        isAttacking = true;
         if (telePort)
         {
             telePortTimer -= Time.deltaTime;
@@ -49,7 +73,6 @@ public class StromHead : EnemyParentScript
                 {
                     telePort = false;
                     telePortTimer = 0f;
-                    // Animation off
                 }
                 Teleport();
                 StartCoroutine(StromAttack());
@@ -59,17 +82,38 @@ public class StromHead : EnemyParentScript
     }
     private void ProjectileAttack()
     {
+        InvokeInstantiateFunction();  
+    }
 
-        // Maybe Use Event To Trigger The follow mechanic in projectile?
-        
+    private void InvokeInstantiateFunction()
+    {
+        projectileAttackParticle.Play();
+        for(int i = 0; i < 3; i++)
+        {
+            _count++;
+            Invoke(nameof(ProjectileInstantiate), i * 3);
+        } 
     }
 
     private void ProjectileInstantiate()
     {
+        
+        bool follow;
+        int randomNum = Random.Range(0, 2);
+        if(randomNum ==0) follow = true;
+        else follow = false;
         for(int i =0; i < firingLocations.Length; i++)
         {
             Instantiate(projectilePrefab, firingLocations[i]);
         }
+        if(follow) { Events.instance.followPlayer(); }
+        if (_count == 3)
+        {
+            _count = 0;
+            isAttacking = false;
+            projectileAttackParticle.Stop();
+        }
+            
     }
 
     private void Teleport(){
@@ -78,20 +122,18 @@ public class StromHead : EnemyParentScript
     }
 
     private IEnumerator StromAttack(){
-
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.3f);
         stromAttackCollider.enabled = true;
         animator.SetTrigger("Strom");
-        // Trigger Event -- StromAttackStart();
+        //Events.instance.StromAttackStart();
 
        
     } 
     private void StromAttackEnd() {
 
         stromAttackCollider.enabled = false;
-        // Sleep Animation 
-        // CountDownUntil Second Attack -- If Damage is Enough then the bool which start Countdown should be false
-        // Trigger Event -- StromAttackEnd();
+        isAttacking = false;
+        //Events.instance.StromAttackEnd();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -104,7 +146,7 @@ public class StromHead : EnemyParentScript
 
     private void OnTriggerEnter2D(Collider2D collision){
         if (collision.gameObject.CompareTag("PlayerAttackHitBox")){
-
+            animator.SetTrigger("hit");
             HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref this.health);
             damageTaken += DamageHolder.instance.playerDamage;
             if(health >= 0) {
