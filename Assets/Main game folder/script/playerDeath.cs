@@ -79,13 +79,17 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         {
             Die();
         }
+        if (collision.gameObject.CompareTag("StromHead"))
+        {
+            IsHurt(DamageHolder.instance.stromHead);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
-            Debug.Log("");
+            IsHurt(DamageHolder.instance.strom);
         if (collision.gameObject.CompareTag("TwoHeadAttack2"))
             IsHurt(DamageHolder.instance.twoHeadAttackTwoDamage);
         if (collision.gameObject.CompareTag("FireBall"))

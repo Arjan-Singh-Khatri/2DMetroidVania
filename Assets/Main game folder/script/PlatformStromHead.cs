@@ -9,7 +9,7 @@ public class PlatformStromHead : MonoBehaviour
 
     private void Start()
     {
-        Events.instance.StromAttackStart += AttackEnd;
+        Events.instance.StromAttackStart += AttackStart;
         Events.instance.StromAttackEnd += AttackEnd;
     }
 

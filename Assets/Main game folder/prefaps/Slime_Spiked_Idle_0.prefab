@@ -89,14 +89,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396489494}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.70487595, w: 0.7093307}
   m_LocalPosition: {x: 0.8, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6293434812557141976}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.639}
 --- !u!1 &6293434812557141979
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52af91f13cf80642a6cf81ea330f7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: 
+  enemyID: a1a5130d-9134-4dcf-8423-619d5c293c72
   spikes: {fileID: 8504852350299765516, guid: 19b84c22e44d2c84b9abb146e262c7e7, type: 3}
   spikesPosition: {fileID: 1396489495}
   slimeCollider: {fileID: 351306763}

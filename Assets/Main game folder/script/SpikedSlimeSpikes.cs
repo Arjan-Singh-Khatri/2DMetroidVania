@@ -5,8 +5,8 @@ using UnityEngine;
 public class SpikedSlimeSpikes : EnemyParentScript
 {
 
-    [SerializeField] private float _speed = 3f;
-    private float _lifeTime = 1.7f;
+    [SerializeField] private float _speed = 20f;
+    private float _lifeTime = 2f;
     private Vector3 direction = new();
     // Start is called before the first frame update
     private void Awake()
@@ -15,9 +15,12 @@ public class SpikedSlimeSpikes : EnemyParentScript
     }
     void Start()
     {
+        
         transform.parent = null;
-        direction.x = (player.transform.position - transform.position).x;
-        direction.y = transform.position.y;
+        transform.rotation = new Quaternion(0, 0, -0.707926929f, 0.706285775f);
+        direction.x = (player.transform.position.x - transform.position.x);
+        direction.y = 0;
+        
     }
 
     // Update is called once per frame

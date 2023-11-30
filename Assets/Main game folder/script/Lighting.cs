@@ -7,18 +7,14 @@ using UnityEngine.UIElements;
 public class Lighting : EnemyParentScript
 {
 
-    private float lifeSpanTimer = 3.5f;
-    private float _speed = 5f;
-    private bool followPlayer = false;
-    private float offset;
-    private Vector3 _position;  
+    private float lifeSpanTimer = 4.5f;
+    private float _speed = 10f;
+    public bool followPlayer = false;
     // Start is called before the first frame update
     void Start()
     {
         transform.parent = null;
         player = GameObject.FindGameObjectWithTag("Player");
-        offset = Random.Range(2, 4) + Random.Range(1,10)/10;
-        _position = new Vector3(transform.position.x + offset, transform.position.y + offset);
 
         Events.instance.followPlayer += FollowPlayerTrigger;
     }
@@ -39,20 +35,24 @@ public class Lighting : EnemyParentScript
 
     private void FollowPlayer()
     {
-        transform.position = Vector3.MoveTowards(_position, player.transform.position,_speed);
+        int offset = Random.Range(1, 4) + Random.Range(0, 10) / 10;
+        transform.position = Vector3.MoveTowards(transform.position, 
+            player.transform.position,(_speed + offset) *  Time.deltaTime);
     }
 
     private void Move()
     {
-        if (followPlayer)
-            FollowPlayer();
-        else 
-            transform.position += _speed * Time.deltaTime *Vector3.right;
+        FollowPlayer();
     }
 
-    private void FollowPlayerTrigger()
+    public void FollowPlayerTrigger()
     {
         followPlayer = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player")) Destroy(gameObject);
     }
 
     private void OnDestroy()

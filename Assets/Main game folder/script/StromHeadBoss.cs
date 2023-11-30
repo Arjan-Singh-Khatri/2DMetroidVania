@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class StromHeadBoss : MonoBehaviour
 {
+    [SerializeField] GameObject StromHead;
     private void Active()
     {
-        gameObject.SetActive(true);
+        StromHead.SetActive(true);
     }
 
 

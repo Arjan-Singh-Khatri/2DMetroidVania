@@ -54,7 +54,9 @@ public class SpikedSlime : EnemyParentScript
         if (health <= 0) return;
 
         FollowPlayer();
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) <= 2f && attackDownTime >= 2f)
+        if (Mathf.Abs(transform.position.x- player.transform.position.x) <= 3f 
+            && (player.transform.position.y-transform.position.y) < 5 && (player.transform.position.y - transform.position.y >-1) 
+            && attackDownTime >= 2f)
         {
             AttackPlayer();
         }

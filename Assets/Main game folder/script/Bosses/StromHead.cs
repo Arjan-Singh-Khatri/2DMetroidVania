@@ -6,20 +6,24 @@ using UnityEngine;
 
 public class StromHead : EnemyParentScript
 {
+    [Header("Serilizable")]
     [SerializeField] private Collider2D stromAttackCollider;
     [SerializeField] private Transform[] teleportPoints;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform[] firingLocations;
     [SerializeField] private ParticleSystem projectileAttackParticle;
+
+    [Header("Variables")]
     private Animator animator;
-    private bool _killed;
-    private bool telePort = false;
+    private bool _killed = false;
     private float telePortTimer = 0f;
-    private int telePortCount = 0;
+    private float telePortCount = 0f;
     private float damageTaken = 0 ;
-    private float sleepTimer = 0;
+    private float sleepTimer = 10f;
     private bool isAttacking = false;
-    private float _count;
+    private float _count =0;
+    private bool _frenzy = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -33,60 +37,69 @@ public class StromHead : EnemyParentScript
 
     // Update is called once per frame
     void Update(){
-
+        return;
         if (_killed) return;
-        if(damageTaken >=20) 
-        {
-            Frenzy();
+        
+        if (_frenzy) StartFrenzy();
+
+        if(damageTaken >20){
+            damageTaken = 0;
+            StartFrenzy();
         }
-        if (isAttacking!){
-            animator.SetBool("Sleep", true);
+        SleepState();
+    }
+
+    private void SleepState()
+    {
+        if (!isAttacking)
+        {
             sleepTimer -= Time.deltaTime;
             if(sleepTimer < 0) {
-                sleepTimer = 5f;
-                ChooseAttack();
+                sleepTimer = 10f;
                 animator.SetBool("Sleep", false);
+                ChooseAttack(); 
             }
         }
     }
-
     private void ChooseAttack(){
+        isAttacking = true;
         // Choose Either Frenzy Or Projectile Attack
-        int randomNumberForChoice = Random.Range(0, 11);
-        if (randomNumberForChoice >= 4) {
-            ProjectileAttack();
-        } else
-            Frenzy();
+
+        int randomNumberForChoice = Random.Range(0,11);
+        if (randomNumberForChoice >= 4){
+            LightingStrikeAttack();
+        }
+        else{
+            StartFrenzy();
+        }
+
     }
 
-    private void Frenzy()
+    private void StartFrenzy()
     {
-        isAttacking = true;
-        if (telePort)
+        _frenzy = true;
+        telePortTimer-= Time.deltaTime;
+        if(telePortTimer < 0)
         {
-            telePortTimer -= Time.deltaTime;
-            if (telePortTimer <= 0)
+            telePortTimer = 3f;
+            telePortCount++;
+            Teleport();
+            if (telePortCount >= 5)
             {
-                telePortTimer = 2.5f;
-                telePortCount++;
-                if (telePortCount >= 5)
-                {
-                    telePort = false;
-                    telePortTimer = 0f;
-                }
-                Teleport();
                 StartCoroutine(StromAttack());
+                _frenzy = false;
+                telePortTimer = 0f;
             }
-
         }
     }
-    private void ProjectileAttack()
+    [ContextMenu("Lighting")]
+    private void LightingStrikeAttack()
     {
-        InvokeInstantiateFunction();  
+        // To Call InstantiateFunction which instantiate the projectiles i.e lighting
+        CallProjectileInstantiation();  
     }
 
-    private void InvokeInstantiateFunction()
-    {
+    private void CallProjectileInstantiation(){
         projectileAttackParticle.Play();
         for(int i = 0; i < 3; i++)
         {
@@ -97,23 +110,19 @@ public class StromHead : EnemyParentScript
 
     private void ProjectileInstantiate()
     {
-        
-        bool follow;
-        int randomNum = Random.Range(0, 2);
-        if(randomNum ==0) follow = true;
-        else follow = false;
+        // the actual instantiation
         for(int i =0; i < firingLocations.Length; i++)
         {
-            Instantiate(projectilePrefab, firingLocations[i]);
+            GameObject instantiatedObject = Instantiate(projectilePrefab, firingLocations[i]);
         }
-        if(follow) { Events.instance.followPlayer(); }
+        
+        // For how many rounds of lighting strikes to happen
         if (_count == 3)
         {
             _count = 0;
             isAttacking = false;
             projectileAttackParticle.Stop();
         }
-            
     }
 
     private void Teleport(){
@@ -122,18 +131,20 @@ public class StromHead : EnemyParentScript
     }
 
     private IEnumerator StromAttack(){
-        yield return new WaitForSeconds(1.3f);
+
+        yield return new WaitForSeconds(.7f);
+        projectileAttackParticle.Play();
         stromAttackCollider.enabled = true;
         animator.SetTrigger("Strom");
-        //Events.instance.StromAttackStart();
+        Events.instance.StromAttackStart();
 
-       
     } 
     private void StromAttackEnd() {
-
+        projectileAttackParticle.Stop();
         stromAttackCollider.enabled = false;
+        Events.instance.StromAttackEnd();
         isAttacking = false;
-        //Events.instance.StromAttackEnd();
+        animator.SetBool("Sleep", true);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -149,7 +160,7 @@ public class StromHead : EnemyParentScript
             animator.SetTrigger("hit");
             HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref this.health);
             damageTaken += DamageHolder.instance.playerDamage;
-            if(health >= 0) {
+            if(health <= 0) {
                 _killed = true;
                 animator.SetTrigger("death");
             }
