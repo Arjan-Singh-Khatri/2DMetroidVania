@@ -8,6 +8,7 @@ public class EnemyParentScript : MonoBehaviour
     protected GameObject player;
     protected float health;
     protected bool enemyDead;
+    protected float direction;
     [SerializeField] protected string enemyID;
 
     [ContextMenu("GUID ID GENERATE")]
@@ -15,17 +16,8 @@ public class EnemyParentScript : MonoBehaviour
     {
         enemyID = System.Guid.NewGuid().ToString();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
+    
 
     protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy)
     {
@@ -46,10 +38,12 @@ public class EnemyParentScript : MonoBehaviour
         if (player.transform.position.x < transform.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
+            direction = -1;
         }
         else
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
+            direction = 1;  
         }
 
     }

@@ -21,6 +21,13 @@ TagManager:
   - FireBall
   - Slime
   - Bat
+  - Crab
+  - CrabAttack
+  - SpikedSlime
+  - SpikedSlimeAttack
+  - SpikedSlimeSpikes
+  - Strom
+  - StromHead
   layers:
   - Default
   - TransparentFX

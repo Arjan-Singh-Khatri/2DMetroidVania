@@ -15,6 +15,7 @@ public class StromHead : EnemyParentScript
 
     [Header("Variables")]
     private Animator animator;
+    
     private bool _killed = false;
     private float telePortTimer = 0f;
     private float telePortCount = 0f;
@@ -31,19 +32,19 @@ public class StromHead : EnemyParentScript
         player = GameObject.FindGameObjectWithTag("Player");
         health = 100;
         animator = GetComponent<Animator>();
+       
     }
     #region Save And Load
     #endregion
 
     // Update is called once per frame
     void Update(){
-        return;
         if (_killed) return;
         
         if (_frenzy) StartFrenzy();
 
         if(damageTaken >20){
-            damageTaken = 0;
+            damageTaken = 0; //ihgf
             StartFrenzy();
         }
         SleepState();

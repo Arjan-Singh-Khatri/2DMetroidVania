@@ -62,6 +62,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         canTakeDamage = false;
         TakeDamage(damage);
         anim.SetTrigger("hurt");
+        
     }
 
     public void TakeDamage(float damage)
@@ -75,6 +76,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (collision.gameObject.CompareTag("trap"))
         {
             Die();
