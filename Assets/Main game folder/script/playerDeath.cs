@@ -12,6 +12,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     private float health = 47;
     private float damageTakenCoolDown = 0f;
     private bool canTakeDamage = true;
+    // turn collider off when canTakeDamage is off and turn it on when it is off
 
 
     // Start is called before the first frame update
