@@ -7,42 +7,44 @@ using UnityEngine;
 
 public class Vagabond : EnemyParentScript
 {
-    [SerializeField] const float TIRED_TIME = 2.7f;
+    private const float TIRED_TIME = 2.7f;
     // MAKE AN ENTRY ANIMATION WHERE HE LIKE WAKES UP THEN TRANSITION THAT TO THE IDEL STATE 
     private Animator animator;
     private Rigidbody2D rigbody;
-    
-    [SerializeField] private float circleCastRadius = 3.8f;
-    [SerializeField] private float blockDistance = 4f;
-    [SerializeField] private float heavyAttackChargeTime = 0;
-    [SerializeField] private float normalAttackChargeTime = 0;
+    private RaycastHit2D hit;
+
+    [Header("SERIALIZABLE FIELDS")]
     [SerializeField] private GameObject normalAttackHitbox;
     [SerializeField] private GameObject heavyAttackHitbox;
     [SerializeField] private GameObject normalAttackHitbox2;
+    [SerializeField] private float circleCastRadius = 3.8f;
+    [SerializeField] private float blockDistance = 4f;
+    
 
+    [SerializeField] private float checkPlayerInRangeTimer;
+    [SerializeField] private float chasingPlayerTimer;
 
-    private RaycastHit2D hit;
 
     [Header("Variables for enemy AI")]
     private bool chase = true;
-
     private bool attackDowntime;
     private bool isInBlockRange;
-    [SerializeField]private float checkPlayerInRangeTimer;
-    [SerializeField]private float chasingPlayerTimer;
     private float chaseMaxSpeed = 8f;
     private float chaseMinSpeed = 5f;
     private float distanceBetween;
-
-    [Header("Attack Choose")]
-    int normalAttackChoosenCount;
-    int boarderNumberForChoice = 8;
-    private bool isCharingAttack;
-    private bool isHeavyAttacking;
-    private bool isAttacking;
+    private bool isDieing;
     private bool isBlocking;
     private bool isTired;
     private float isTiredTimer;
+
+    [Header("Attack Choose")]
+    int normalAttackChoosenCount;
+    int boarderForAttackChoice = 8;
+    private bool isCharingAttack;
+    private bool isHeavyAttacking;
+    private bool isAttacking;
+  
+
 
     [Header("For Testing")]
     [SerializeField] string animationTesting;
@@ -56,18 +58,22 @@ public class Vagabond : EnemyParentScript
 
     // Update is called once per frame
     void Update(){
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    Debug.Log("PRESSES KEY");
-        //    animator.SetTrigger(animationTesting);
-        //}
-        //return;
+        if (isDieing)
+            return;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("PRESSES KEY");
+            animator.SetTrigger(animationTesting);
+        }
+        TiredChecks();
+        return;
         hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
         if(distanceBetween <= blockDistance)
             isInBlockRange = true;
         
-        EnemyAI();  
+        EnemyAI();
+
     }
     #region AI
     void EnemyAI(){
@@ -115,14 +121,14 @@ public class Vagabond : EnemyParentScript
     #region Attack
     void ChooseAttack(){
         int randomNumber = Random.Range(0, 10);
-        if(randomNumber<boarderNumberForChoice) {
+        if(randomNumber<boarderForAttackChoice) {
             ChargingAttack(nameof(NormalAttack));
-            normalAttackChargeTime =+ 1;
-            if (normalAttackChargeTime > 4)
-                boarderNumberForChoice++;
+            normalAttackChoosenCount = + 1;
+            if (normalAttackChoosenCount > 4)
+                boarderForAttackChoice++;
         }else{
             ChargingAttack(nameof(HeavyAttack));
-            boarderNumberForChoice = 7;
+            boarderForAttackChoice = 7;
         }
     }
 
@@ -172,6 +178,7 @@ public class Vagabond : EnemyParentScript
         heavyAttackHitbox.SetActive(false);
         isHeavyAttacking= false;
         isTired = true;
+        isTiredTimer = TIRED_TIME;
         animator.SetBool("Tired", true);
     }
     void TiredStateEnd()
@@ -182,7 +189,7 @@ public class Vagabond : EnemyParentScript
     }
     #endregion
 
-    #region Block and Dash
+    #region Block , Dash and Tired
     void BlockAttack(){
         // Animation and make it so that it takes no damage 
         // And then transition from block to either attack or dash back 
@@ -191,15 +198,46 @@ public class Vagabond : EnemyParentScript
 
     }
     void DashAwayFromPlayer(){
+        Debug.Log("Dashing awawy");
         //chase = true;
         // USING ANOTHER RAYCAST IF THERE IS ANY WALL IN ANOTHER DIRECTION THEN DASH WHERE
         // IF NOT WALL IN ANY DIRECTION THEN JUST DASH BACK FROM PLAYER
+    }
+
+    void TiredChecks()
+    {
+        if (isTired)
+        {
+            isTiredTimer -= Time.deltaTime;
+            if (isTiredTimer <= 0f)
+            {
+                isTiredTimer = TIRED_TIME;
+                TiredStateEnd();
+            }
+        }
+    }
+    #endregion
+
+    #region DEATH
+
+    [ContextMenu("DIE")]
+    void Die()
+    {
+        isDieing = true;
+        animator.SetTrigger("Death");
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        rigbody.bodyType = RigidbodyType2D.Static;
+    }
+
+    void Destroy()
+    {
+        Destroy(gameObject);    
     }
     #endregion
 
     private void OnDrawGizmos(){
         
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, circleCastRadius);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawWireSphere(transform.position, circleCastRadius);
     }
 }
