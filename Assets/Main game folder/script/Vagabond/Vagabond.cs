@@ -18,7 +18,7 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private GameObject heavyAttackHitbox;
     [SerializeField] private GameObject normalAttackHitbox2;
     [SerializeField] private float circleCastRadius = 3.8f;
-    [SerializeField] private float blockDistance = 4f;
+    //[SerializeField] private float blockDistance = 4f;
     
 
     [SerializeField] private float checkPlayerInRangeTimer;
@@ -28,9 +28,9 @@ public class Vagabond : EnemyParentScript
     [Header("Variables for enemy AI")]
     private bool chase = true;
     private bool attackDowntime;
-    private bool isInBlockRange;
-    private float chaseMaxSpeed = 8f;
-    private float chaseMinSpeed = 5f;
+    //private bool isInBlockRange;
+    private float chaseMaxSpeed = 6f;
+    private float chaseMinSpeed = 3f;
     private float distanceBetween;
     private bool isDieing;
     private bool isBlocking;
@@ -60,50 +60,46 @@ public class Vagabond : EnemyParentScript
     void Update(){
         if (isDieing)
             return;
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Debug.Log("PRESSES KEY");
-            animator.SetTrigger(animationTesting);
-        }
-        TiredChecks();
-        return;
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    Debug.Log("PRESSES KEY");
+        //    animator.SetTrigger(animationTesting);
+        //}
+        
+        
         hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
-        if(distanceBetween <= blockDistance)
-            isInBlockRange = true;
-        
+
+        TiredChecks();
         EnemyAI();
 
     }
     #region AI
     void EnemyAI(){
-        if(isTired){
-            isTiredTimer += Time.deltaTime;
-            if (isTiredTimer >=TIRED_TIME)
-            {
-                TiredStateEnd();
-            }
-        }
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired) return;
         flip();
+        if (hit.collider.name == player.name)
+        {
+            //if running away then no attack nor block
+            //if not running away then either attack or block and if the damage multiplier is getting high of the player than more probability of blocks
+        }
         if (chase)
         {
             Chase();   
         }
-        if (hit.collider.name == player.name)
-        {
-            chase = false;
-            if (isInBlockRange)
-            {
-                BlockAttack();
-            }
-            ChooseAttack();
-        }
+        
     }
 
+   
+
     void Chase(){
-        //transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseMaxSpeed*Time.deltaTime);
-        // ANIMATION AND LOOP THE ANIMATION
+        
+        // HOW DO I WANT THE AI TO BE ?
+        // I WANT IT TO DASH IF THE DASH WILL GET TO CLOSE ENOUGH TO THE PLAYER THAT THE PLAYER IS IN ATTACK RANGE WITH SOME PROBABILITY AND NO MATTER EXECUTE THE NORMAL ATTACK
+        // IF THE HEALTH IS BELOW A THRESHOLD THEN A LITTLE LESS DASHES AND A BIT MORE BLOCKS
+        // THE MORE TIME GOES ON WITHOUT ANY ATTACK OR BLOCKS FROM EITHER PLAYER OR ENEMEY  - INCREASE THE PROBABILITY OF THE DASHES 
+        // CHASE ANIMATION TOGGLE
+
         Vector2 position = transform.position;
         Vector2 playerPosition = player.transform.position;
 
@@ -194,11 +190,15 @@ public class Vagabond : EnemyParentScript
         // Animation and make it so that it takes no damage 
         // And then transition from block to either attack or dash back 
     }
-    void Dash(float dashDirection){
 
+    void Dash(float dashDirection,bool attack){
+        // I NEED TO PUT A FEW BOUNDARIES JUST INCASE IT DOESNT DASH AWAY FROM THE PLATFORM
+        
     }
+
     void DashAwayFromPlayer(){
         Debug.Log("Dashing awawy");
+        chase = true;
         //chase = true;
         // USING ANOTHER RAYCAST IF THERE IS ANY WALL IN ANOTHER DIRECTION THEN DASH WHERE
         // IF NOT WALL IN ANY DIRECTION THEN JUST DASH BACK FROM PLAYER
