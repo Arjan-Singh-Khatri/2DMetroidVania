@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Vagabond : EnemyParentScript
 {
@@ -18,6 +19,7 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private GameObject heavyAttackHitbox;
     [SerializeField] private GameObject normalAttackHitbox2;
     [SerializeField] private float circleCastRadius = 3.8f;
+    [SerializeField] private float _dashSpeed = 5f;
     //[SerializeField] private float blockDistance = 4f;
     
 
@@ -29,13 +31,14 @@ public class Vagabond : EnemyParentScript
     private bool chase = true;
     private bool attackDowntime;
     //private bool isInBlockRange;
-    private float chaseMaxSpeed = 6f;
-    private float chaseMinSpeed = 3f;
+    private float chaseMaxSpeed = 4f;
+    private float chaseMinSpeed = 1f;
     private float distanceBetween;
     private bool isDieing;
     private bool isBlocking;
     private bool isTired;
     private float isTiredTimer;
+    private bool isDashing;
 
     [Header("Attack Choose")]
     int normalAttackChoosenCount;
@@ -60,11 +63,6 @@ public class Vagabond : EnemyParentScript
     void Update(){
         if (isDieing)
             return;
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    Debug.Log("PRESSES KEY");
-        //    animator.SetTrigger(animationTesting);
-        //}
         
         
         hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
@@ -72,6 +70,12 @@ public class Vagabond : EnemyParentScript
 
         TiredChecks();
         EnemyAI();
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            StartCoroutine(Dash());
+        }
+
 
     }
     #region AI
@@ -86,6 +90,9 @@ public class Vagabond : EnemyParentScript
         if (chase)
         {
             Chase();   
+        }else if(!chase && isDashing)
+        {
+            StartCoroutine(Dash());
         }
         
     }
@@ -93,23 +100,18 @@ public class Vagabond : EnemyParentScript
    
 
     void Chase(){
-        
+
         // HOW DO I WANT THE AI TO BE ?
         // I WANT IT TO DASH IF THE DASH WILL GET TO CLOSE ENOUGH TO THE PLAYER THAT THE PLAYER IS IN ATTACK RANGE WITH SOME PROBABILITY AND NO MATTER EXECUTE THE NORMAL ATTACK
         // IF THE HEALTH IS BELOW A THRESHOLD THEN A LITTLE LESS DASHES AND A BIT MORE BLOCKS
         // THE MORE TIME GOES ON WITHOUT ANY ATTACK OR BLOCKS FROM EITHER PLAYER OR ENEMEY  - INCREASE THE PROBABILITY OF THE DASHES 
-        // CHASE ANIMATION TOGGLE
 
-        Vector2 position = transform.position;
-        Vector2 playerPosition = player.transform.position;
 
-        float lerpSpeed = distanceBetween / 36;
-        float chaseSpeed = Mathf.Lerp(chaseMinSpeed, chaseMaxSpeed, lerpSpeed) * Time.deltaTime;
-        Vector2 newPos = new(0, transform.position.y)
-        {
-            x = Mathf.MoveTowards(position.x, playerPosition.x, chaseSpeed)
-        };
-        transform.position = newPos;
+        float lerpSpeed = distanceBetween / 35;
+        float chaseSpeed = Mathf.Lerp(chaseMinSpeed, chaseMaxSpeed, lerpSpeed) ;
+        Vector2 chaseVector = new(chaseSpeed * direction , 0f);
+
+        rigbody.AddForce(chaseVector , ForceMode2D.Force);
 
     }
     #endregion
@@ -186,15 +188,25 @@ public class Vagabond : EnemyParentScript
     #endregion
 
     #region Block , Dash and Tired
-    void BlockAttack(){
+    IEnumerator Dash()
+    {
+        isDashing = true;
+        Debug.Log("DASH");
+        Vector2 dashVector = new(direction * _dashSpeed, 0);
+        //rigbody.velocity = dashVector * _dashSpeed; 
+        rigbody.AddForce(dashVector, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(.5f);
+        isDashing = false;
+        //animator.SetBool("Dash", true);
+    }
+
+
+    void BlockAttack(){ 
         // Animation and make it so that it takes no damage 
         // And then transition from block to either attack or dash back 
     }
 
-    void Dash(float dashDirection,bool attack){
-        // I NEED TO PUT A FEW BOUNDARIES JUST INCASE IT DOESNT DASH AWAY FROM THE PLATFORM
-        
-    }
 
     void DashAwayFromPlayer(){
         Debug.Log("Dashing awawy");

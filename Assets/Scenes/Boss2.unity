@@ -4064,7 +4064,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -119.351204, y: 5.841446, z: -2.6073685}
+  m_LocalPosition: {x: -119.30869, y: 5.840225, z: -2.6073685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4877,7 +4877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274485895}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.35334, y: -63.423336, z: -16.273811}
+  m_LocalPosition: {x: -11.310844, y: -63.423336, z: -16.273811}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4974,7 +4974,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1.25
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -5101,13 +5101,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: 
-  circleCastRadius: 3.4
-  blockDistance: 4
-  heavyAttackChargeTime: 0
-  normalAttackChargeTime: 0
   normalAttackHitbox: {fileID: 227302045}
   heavyAttackHitbox: {fileID: 919919092}
   normalAttackHitbox2: {fileID: 1680547893}
+  circleCastRadius: 3.4
+  _dashSpeed: 15
   checkPlayerInRangeTimer: 0
   chasingPlayerTimer: 0
   animationTesting: ChargeAttack
@@ -10483,7 +10481,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038032705}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.88, y: -28.31, z: 1.019524}
+  m_LocalPosition: {x: -17.83, y: -28.26, z: 1.019524}
   m_LocalScale: {x: 2.8860757, y: 3.2429028, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
