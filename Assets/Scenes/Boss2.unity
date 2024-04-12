@@ -4040,7 +4040,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.5
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4064,7 +4064,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -119.30869, y: 5.840225, z: -2.6073685}
+  m_LocalPosition: {x: -103.49806, y: 11.780106, z: -15.218002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4451,7 +4451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1116352529
 Transform:
   m_ObjectHideFlags: 0
@@ -4460,7 +4460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116352528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.470016, y: -0.18188238, z: -28.818882}
+  m_LocalPosition: {x: -45.010017, y: 6.535352, z: -28.884445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4513,7 +4513,7 @@ MonoBehaviour:
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
-    GateFit: 2
+    GateFit: 0
     m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
@@ -4623,7 +4623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1201751800
 Transform:
   m_ObjectHideFlags: 0
@@ -4974,7 +4974,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1.25
+  m_LinearDrag: 1.75
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -5101,14 +5101,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: 
+  circleCastRadius: 3.4
+  _dashSpeed: 17.6
+  _canPerformDashDistance: 0
+  _dashCheckRight: 0
+  _dashCheckLeft: 0
+  chaseMaxSpeed: 3
+  chaseMinSpeed: 2
+  _chaseForce: 0
   normalAttackHitbox: {fileID: 227302045}
   heavyAttackHitbox: {fileID: 919919092}
   normalAttackHitbox2: {fileID: 1680547893}
-  circleCastRadius: 3.4
-  _dashSpeed: 15
   checkPlayerInRangeTimer: 0
   chasingPlayerTimer: 0
-  animationTesting: ChargeAttack
 --- !u!1 &1335734587
 GameObject:
   m_ObjectHideFlags: 0
@@ -7025,7 +7030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1627482243
 Transform:
   m_ObjectHideFlags: 0
@@ -7067,11 +7072,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 18.160393, y: 7.8942204}
-      - {x: -22.0541, y: 7.875845}
-      - {x: -21.954042, y: -9.8763075}
-      - {x: 1.8853929, y: -9.858786}
-      - {x: 18.209663, y: -9.876859}
+    - - {x: -15.354504, y: 13.035253}
+      - {x: -51.742664, y: 13.152426}
+      - {x: -51.76161, y: -0.20844586}
+      - {x: -15.578341, y: -0.28959244}
+      - {x: -15.45237, y: 4.161582}
 --- !u!1 &1636182114
 GameObject:
   m_ObjectHideFlags: 0

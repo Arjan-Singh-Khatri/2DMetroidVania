@@ -2810,6 +2810,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Warrior_SheetnoEffect_113
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 414
+        height: 748
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 338893cff2d982040a05ee2e4cf9d30f
+      internalID: 559406556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2889,6 +2910,7 @@ TextureImporter:
       Warrior_SheetnoEffect_86: 8302211577951854100
       Warrior_SheetnoEffect_89: -911998533861133671
       Warrior_SheetnoEffect_82: -5649971472603466743
+      Warrior_SheetnoEffect_113: 559406556
       Warrior_SheetnoEffect_101: 468184511
       Warrior_SheetnoEffect_106: -144304468
       Warrior_SheetnoEffect_54: -6197311563536490153
