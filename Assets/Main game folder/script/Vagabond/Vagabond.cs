@@ -66,11 +66,14 @@ public class Vagabond : EnemyParentScript
 
         if (isDieing)
             return;
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+            StartCoroutine(Dash(direction));
+
         hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
 
         CanAttackCheck();
-
         TiredChecks();
         EnemyAI();
 
@@ -93,7 +96,7 @@ public class Vagabond : EnemyParentScript
     }
 
     void Chase(){
-        //DashProbability();
+        //PerformDashWithChecks();
 
         if (animator.GetBool("Run") == false)
             animator.SetBool("Run", true);
@@ -208,34 +211,33 @@ public class Vagabond : EnemyParentScript
     #endregion
 
     #region Block , Dash and Tired
-    IEnumerator Dash(float direction)
-    {
+
+    IEnumerator Dash(float direction){
+        animator.SetBool("Dash", true);
         isDashing = true;
         Vector2 dashVector = new(direction * _dashSpeed, 0);
         rigbody.AddForce(dashVector, ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         isDashing = false;
-        //animator.SetBool("Dash", true);
+        animator.SetBool("Dash", false);
     }
-    bool IsInDashBoundary()
-    {
+    bool IsInDashBoundary(){
         if ((transform.position.x < _dashCheckRight) && (transform.position.x > _dashCheckLeft))
             return true;
         return false;
     }
-    void PerformDashWithChecks()
-    {
+    void PerformDashWithChecks(){
         if((Mathf.Abs(player.transform.position.x - transform.position.x) <= _canPerformDashDistance) && (IsInDashBoundary()) ) {
-            StartCoroutine(Dash(direction));
+            DashProbability();
         }
     }
 
     void DashProbability()
     {
         int random = Random.Range(1, 101);
-        if (random < 25)
-            PerformDashWithChecks();
+        if (random < 19)
+            StartCoroutine(Dash(direction));
     }
 
     void BlockAttack(){ 
@@ -243,8 +245,7 @@ public class Vagabond : EnemyParentScript
         // And then transition from block to either attack or dash back 
     }
 
-    void TiredChecks()
-    {
+    void TiredChecks(){
         if (isTired)
         {
             isTiredTimer -= Time.deltaTime;
