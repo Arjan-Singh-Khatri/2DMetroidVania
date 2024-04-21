@@ -23,12 +23,14 @@ public class Vagabond : EnemyParentScript
     private bool isTired;
     private const float TIRED_TIME = 2.7f;
     private float isTiredTimer;
+    private bool isHurt;
 
     [Header("DASH")]
     [SerializeField] private float _dashSpeed = 5f;
     [SerializeField] private float _canPerformDashDistance;
     [SerializeField] private float _dashCheckRight;
     [SerializeField] private float _dashCheckLeft;
+    private float _dashProbabilityTimer;
     private bool isDashing;
 
 
@@ -53,13 +55,13 @@ public class Vagabond : EnemyParentScript
     private bool isAttacking;
     private bool attackDowntime;
     private bool canAttack = true;
-
-
     
+
     void Start(){
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         rigbody = GetComponent<Rigidbody2D>();
+        health = 200f;
     }
 
     void Update(){
@@ -67,8 +69,9 @@ public class Vagabond : EnemyParentScript
         if (isDieing)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Tab))
-            StartCoroutine(Dash(direction));
+        //if(Input.GetKeyDown(KeyCode.Tab))
+        //    /////
+        //return;
 
         hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
@@ -80,23 +83,27 @@ public class Vagabond : EnemyParentScript
     }
     #region AI
     void EnemyAI(){
-        if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing) return;
+        if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing || isHurt) return;
 
         flip();
 
-        if (hit.collider.name == player.name)
-        {
+        if (hit.collider.name == player.name){
             ChooseAttack();
         }
-        if (chase)
-        {
-            Chase();   
-        }
-        
+        //if (playerRunningAway){
+        //    Chase();   
+        //}else if(playerRunningTowards)
+        //{
+        //    if()
+        //}
     }
 
     void Chase(){
-        //PerformDashWithChecks();
+        _dashProbabilityTimer -= Time.deltaTime;
+        if( _dashProbabilityTimer < 0){
+            _dashProbabilityTimer = 2.5f; 
+            PerformDashWithChecks();
+        }
 
         if (animator.GetBool("Run") == false)
             animator.SetBool("Run", true);
@@ -124,12 +131,13 @@ public class Vagabond : EnemyParentScript
         if(randomNumber < boarderForAttackChoice) {
             normalAttackChoosenCount += 1;
             if (normalAttackChoosenCount > 4)
-                boarderForAttackChoice++;
-            ChargingAttack(nameof(NormalAttack));
+                boarderForAttackChoice--;
+            ChargingAttack("NormalAttack");
             
         }else{
             boarderForAttackChoice = 7;
-            ChargingAttack(nameof(HeavyAttack));
+            normalAttackChoosenCount = 0;
+            ChargingAttack("HeavyAttack");
         }
     }
 
@@ -144,12 +152,12 @@ public class Vagabond : EnemyParentScript
 
     void NormalAttack(){
 
-        animator.SetTrigger("ChargeAttack");
+        animator.SetBool("ChargeAttack",true);
         
     }
     void HeavyAttack() {
 
-        animator.SetTrigger("ChargeHeavy");
+        animator.SetBool("ChargeHeavy",true);
 
     }
 
@@ -161,7 +169,7 @@ public class Vagabond : EnemyParentScript
             if (attackCoolDownTimer <= 0)
             {
                 canAttack = true;
-                attackCoolDownTimer = 2.7f;
+                attackCoolDownTimer = 2.3f;
             }
         }
     }
@@ -188,6 +196,7 @@ public class Vagabond : EnemyParentScript
     }
 
     void DeactivateNormalAttckHitbox(){
+        animator.SetBool("ChargeAttack", false);
         canAttack = false;
         normalAttackHitbox2.SetActive(false);
         isAttacking = false;
@@ -195,6 +204,7 @@ public class Vagabond : EnemyParentScript
     }
 
     void DeactivateHeavyAttackHitbox(){
+        animator.SetBool("ChargeHeavy", false);
         heavyAttackHitbox.SetActive(false);
         isHeavyAttacking= false;
         isTired = true;
@@ -236,13 +246,29 @@ public class Vagabond : EnemyParentScript
     void DashProbability()
     {
         int random = Random.Range(1, 101);
-        if (random < 19)
+        if (random < 19){
             StartCoroutine(Dash(direction));
+        }
     }
 
-    void BlockAttack(){ 
-        // Animation and make it so that it takes no damage 
-        // And then transition from block to either attack or dash back 
+    IEnumerator BlockAttack(){ 
+        
+        // DO I NEED A COLLIDER OR NOT ?
+        isBlocking = true;
+        if (animator.GetBool("Block") == false)
+            animator.SetBool("Block", true);
+
+        yield return new WaitForSeconds(Random.Range(2, 5.5f));
+        animator.SetBool("Block", false);
+        isBlocking = false;
+        if (hit.collider.name == player.name){
+            int randomNumber = Random.Range(1, 101);
+            if (randomNumber < 35)
+                ChooseAttack();
+        }else{
+            PerformDashWithChecks();
+        }
+
     }
 
     void TiredChecks(){
@@ -258,9 +284,21 @@ public class Vagabond : EnemyParentScript
     }
     #endregion
 
-    #region DEATH
+    #region DEATH And Damage
+    private void TakeDamage(){
+        isHurt = true;
+        if (isTired)
+            health -= DamageHolder.instance.playerDamage * 1.25f;
+        else 
+            health -= DamageHolder.instance.playerDamage;
 
-    [ContextMenu("DIE")]
+        if (health <= 0)
+            Die();
+        isDieing = true;
+        StartCoroutine(Dash(direction));
+    }
+
+
     void Die()
     {
         isDieing = true;
@@ -279,5 +317,11 @@ public class Vagabond : EnemyParentScript
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, circleCastRadius);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerAttackHitBox") && !isBlocking)
+            TakeDamage();
     }
 }
