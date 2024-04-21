@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 1284481760092918799}
   m_Layer: 0
   m_Name: HitboxHeavy
-  m_TagString: PlayerAttackHitBox
+  m_TagString: HitBoxHeavy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -336,9 +336,9 @@ GameObject:
   - component: {fileID: 6299837469599941285}
   - component: {fileID: 6299837469599941286}
   - component: {fileID: 6299837467693021316}
+  - component: {fileID: 6663873068737134140}
   - component: {fileID: 1303023224}
   - component: {fileID: 6299837469207031785}
-  - component: {fileID: 6663873068737134140}
   m_Layer: 0
   m_Name: Character 1
   m_TagString: Player
@@ -495,6 +495,24 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &6663873068737134140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6299837469599941343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032ce420ad8c6ce47b91d5036fb572d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAttacking: 0
+  isHeavyAttacking: 0
+  _attackNormalCollider: {fileID: 51264281760629008}
+  _followUpAttackCollider: {fileID: 4278467753333093900}
+  _attackHeavyCollider: {fileID: 613273508867549686}
+  projectileNormal: {fileID: 0}
 --- !u!70 &1303023224
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -526,23 +544,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &6663873068737134140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6299837469599941343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 032ce420ad8c6ce47b91d5036fb572d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAttacking: 0
-  isHeavyAttacking: 0
-  AttackNormalCollider: {fileID: 51264281760629008}
-  FollowUpCollider: {fileID: 4278467753333093900}
-  AttackHeavyCollider: {fileID: 613273508867549686}
 --- !u!1 &6583638342099810553
 GameObject:
   m_ObjectHideFlags: 0

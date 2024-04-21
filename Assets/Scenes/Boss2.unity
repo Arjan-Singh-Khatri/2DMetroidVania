@@ -13509,10 +13509,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 613273508867549686, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
-      propertyPath: m_TagString
-      value: HitBoxHeavy
-      objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_RootOrder
       value: 1

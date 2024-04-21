@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -34,7 +35,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void AttackInputHandler() {
         var playerMovement = GetComponent<PlayerMovement>();
-        if (Input.GetKeyDown(KeyCode.Z) && !_attackPressedAgain)
+        Debug.Log(playerMovement.IsJumping);
+        if (Input.GetKeyDown(KeyCode.C) && !_attackPressedAgain)
         {
             if (isAttacking)
             {
@@ -43,8 +45,11 @@ public class PlayerAttack : MonoBehaviour
             else
                 Attack();
         }
-        else if (Input.GetKeyDown(KeyCode.C) && !isAttacking && !playerMovement.IsDashing && !playerMovement.IsSliding 
-            && playerMovement.IsJumping && !playerMovement.IsWallJumping){
+        else if (Input.GetKeyDown(KeyCode.Z) && !isAttacking && !playerMovement.IsDashing && !playerMovement.IsSliding 
+            && !playerMovement.IsJumping
+            && !playerMovement.IsWallJumping
+            ){
+
             AttackHeavy();
         }
     }
@@ -57,10 +62,15 @@ public class PlayerAttack : MonoBehaviour
 
     public void FollowUpAttackCheck(){
         _attackNormalCollider.SetActive(false);
-        if (_attackPressedAgain) {
-            anim.SetBool("FollowUp", true);
-            _followUpAttackCollider.SetActive(true);   
+        if (!_attackPressedAgain || anim.GetBool("FollowUp")) {
+            isAttacking = false;
+            _attackPressedAgain = false;
+            return; 
         }
+        anim.SetBool("FollowUp", true);
+        _followUpAttackCollider.SetActive(true);
+        
+            
     }
     
     public void FollowUpAttackEnd()
@@ -72,7 +82,8 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void AttackHeavy(){
-        // PlayerEffects of Ground Breaking halka 
+        // ParticleEffects of Ground Breaking halka 
+
         isHeavyAttacking = true;
         anim.SetTrigger("Attack2");
         _attackHeavyCollider.SetActive(true);
