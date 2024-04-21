@@ -6,8 +6,6 @@ using UnityEngine.Serialization;
 public class PlayerAttack : MonoBehaviour
 {
     private Animator anim;
-    private GameObject projectilePrefabNormal;
-    private GameObject projectilePrefabHeavy;
     private bool _attackPressedAgain;
     public bool isAttacking;
     public bool isHeavyAttacking;
@@ -16,7 +14,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] GameObject _followUpAttackCollider;
     [SerializeField] GameObject _attackHeavyCollider;
 
-    [SerializeField] GameObject projectileNormal;
+    [SerializeField] GameObject projectile;
+    [SerializeField] Transform projectileTransform;
 
 
     void Start()
@@ -35,7 +34,6 @@ public class PlayerAttack : MonoBehaviour
 
     private void AttackInputHandler() {
         var playerMovement = GetComponent<PlayerMovement>();
-        Debug.Log(playerMovement.IsJumping);
         if (Input.GetKeyDown(KeyCode.C) && !_attackPressedAgain)
         {
             if (isAttacking)
@@ -94,8 +92,8 @@ public class PlayerAttack : MonoBehaviour
         _attackHeavyCollider.SetActive(false);
     }
 
-    private void InstantiateProjectile(GameObject projectilePrefab){
-        GameObject instantiatedProjectile = Instantiate(projectilePrefab);
+    private void InstantiateProjectile(){
+        GameObject instantiatedObejct = Instantiate(projectile,transform.position, transform.rotation);
     }
     #endregion
 }
