@@ -156,7 +156,7 @@ public class Vagabond : EnemyParentScript
         
     }
     void HeavyAttack() {
-
+        // PARTICLE EFFECTS 
         animator.SetBool("ChargeHeavy",true);
 
     }

@@ -9,6 +9,7 @@
 using System.Collections;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour , IDataPersistance
 {
@@ -113,6 +114,9 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
   
     private void Update()
 	{
+        #region reference
+		var playerAttack = GetComponent<PlayerAttack>();	
+        #endregion
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
 		LastOnWallTime -= Time.deltaTime;
@@ -127,18 +131,19 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		_moveInput.x = Input.GetAxisRaw("Horizontal");
 		_moveInput.y = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J))
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J)) && !playerAttack.isHeavyAttacking)
         {
 			
 			OnJumpInput();
         }
 
-		if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.C) || Input.GetKeyUp(KeyCode.J))
+		if ( (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.C) || Input.GetKeyUp(KeyCode.J)) && !playerAttack.isHeavyAttacking )
 		{
 			OnJumpUpInput();
 		}
 
-		if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K))
+		if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K)) 
+			&& !playerAttack.isHeavyAttacking)
 		{
 			OnDashInput();
 		}
@@ -297,16 +302,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		AnimationHandler();
         #endregion
 
-        #region Attack
-        if (Input.GetKeyDown(KeyCode.Z) && canAttack)
-        {
-            canAttack = false;
-            StartCoroutine(AttackManager());
-
-        }
-		
-
-        #endregion
+        
     }
 
     public void LoadData(GameData gameData)
@@ -321,8 +317,9 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
     private void FixedUpdate()
 	{
+		var playerAttack = GetComponent<PlayerAttack>();	
 		//Handle Run
-		if (!IsDashing)
+		if (!IsDashing && !playerAttack.isHeavyAttacking)
 		{
 			if (IsWallJumping)
 				Run(Data.wallJumpRunLerp);
@@ -691,21 +688,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		}
 	}
 
-        #region attack
-    private IEnumerator AttackManager()
-	{
-		anim.SetTrigger("attack");
-		playerAttackHitbox.SetActive(true);
-		yield return new WaitForSeconds(attackTime);
-		playerAttackHitbox.SetActive(false);
-		canAttack = true;
-
-    }
-
-
-    #endregion
-
 
 }
 
-// created by Dawnosaur :D
