@@ -513,8 +513,8 @@ MonoBehaviour:
   _attackNormalCollider: {fileID: 51264281760629008}
   _followUpAttackCollider: {fileID: 4278467753333093900}
   _attackHeavyCollider: {fileID: 613273508867549686}
-  projectile: {fileID: 8663733384323677007, guid: b2675fce1d81f8044b1ab942129e7f84, type: 3}
-  projectileTransform: {fileID: 0}
+  projectile: {fileID: 7965323700641713083, guid: 89dc1064f86cc8049963282931d9d7ab, type: 3}
+  projectileTransform: {fileID: 7595469428295131765}
 --- !u!70 &1303023224
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -618,7 +618,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7048631130219266066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -1.05, z: 0}
+  m_LocalPosition: {x: 2, y: -0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -6,6 +6,7 @@ public class DamageHolder : MonoBehaviour
 {
     public static DamageHolder instance;
     public float playerDamage = 15f;
+    public float playerHeavyDamage = 30f;
     public float fireBallDamage = 15f;
     public float twoHeadDamage = 30f;
     public float twoHeadAttackTwoDamage = 40f;

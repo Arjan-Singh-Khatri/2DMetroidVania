@@ -169,7 +169,7 @@ public class Vagabond : EnemyParentScript
             if (attackCoolDownTimer <= 0)
             {
                 canAttack = true;
-                attackCoolDownTimer = 2.3f;
+                attackCoolDownTimer = 1.7f;
             }
         }
     }

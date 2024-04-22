@@ -7,7 +7,7 @@ public class SpikedSlimeSpikes : EnemyParentScript
 
     [SerializeField] private float _speed = 20f;
     private float _lifeTime = 2f;
-    private Vector3 direction = new();
+    private Vector3 directionV = new();
     // Start is called before the first frame update
     private void Awake()
     {
@@ -18,15 +18,15 @@ public class SpikedSlimeSpikes : EnemyParentScript
         
         transform.parent = null;
         transform.rotation = new Quaternion(0, 0, -0.707926929f, 0.706285775f);
-        direction.x = (player.transform.position.x - transform.position.x);
-        direction.y = 0;
+        directionV.x = (player.transform.position.x - transform.position.x);
+        directionV.y = 0;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += _speed * Time.deltaTime * direction ;
+        transform.position += _speed * Time.deltaTime * directionV ;
         LifeSpanOver();
     }
 

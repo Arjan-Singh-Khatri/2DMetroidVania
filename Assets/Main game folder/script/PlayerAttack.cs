@@ -93,7 +93,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void InstantiateProjectile(){
-        GameObject instantiatedObejct = Instantiate(projectile,transform.position, transform.rotation);
+        GameObject instantiatedObejct = Instantiate(projectile, projectileTransform.position, transform.rotation);
     }
     #endregion
 }

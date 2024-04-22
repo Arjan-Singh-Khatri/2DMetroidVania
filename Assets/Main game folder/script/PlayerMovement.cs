@@ -55,10 +55,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	private Vector2 _lastDashDir;
 	private bool _isDashAttacking;
 
-    //Attack
-    private bool canAttack = true;
-	private float attackTime;
-
 
 	//AnimationClips 
 	private AnimationClip[] animationClips;
@@ -100,14 +96,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
 	private void Start()
 	{
-		animationClips = anim.runtimeAnimatorController.animationClips;
-		foreach(AnimationClip clip in animationClips)
-		{
-			if (clip.name == "attack")
-			{
-				attackTime = clip.length;
-			}	
-		}
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
 	}
