@@ -7,13 +7,13 @@ public class PlayerProjectile : MonoBehaviour
 {
 
     [SerializeField] private float _speed = 10f;
-    private const float LIFE_TIME = 2.5f;
-    private float localLifeTime = 0f;
+    private const float LIFE_TIME = 1.9f;
+    private float localLifeTime = 0.1f;
     private Rigidbody2D rig;
 
     private void Start(){
         rig = GetComponent<Rigidbody2D>();
-        transform.localScale = new Vector2(.5f, .8f);
+        transform.localScale = new Vector2(.1f, .8f);
     }
 
     void Update() {
@@ -22,7 +22,7 @@ public class PlayerProjectile : MonoBehaviour
     }
 
     void MoveForward(){
-        rig.AddForce(_speed * Vector2.right, ForceMode2D.Force);
+        transform.position += _speed * Time.deltaTime * Vector3.right ;
     }
 
     void ScaleOverLifeTime()
@@ -31,19 +31,16 @@ public class PlayerProjectile : MonoBehaviour
             Destroy(gameObject);
 
         localLifeTime += Time.deltaTime;
-    
-        float randomScale = 1+ (float)Random.Range(-3, 7)/100;
+        float offset = Mathf.Lerp(2f, .1f, localLifeTime / LIFE_TIME);
+
+        float randomScale = 1+ (float)Random.Range(-3, 7)/10;
 
         if (localLifeTime < LIFE_TIME / 2)
         {
-            if (transform.localScale.x >= 2)
-                return;
-            transform.localScale = new Vector2(transform.localScale.x + 0.01f, randomScale);
+            transform.localScale = new Vector2(offset, randomScale);
         }
         else if (localLifeTime > LIFE_TIME / 2){
-            if (transform.localScale.x <= .5)
-                return;
-            transform.localScale = new Vector2(transform.localScale.x - 0.01f, randomScale);
+            transform.localScale = new Vector2(offset, randomScale);
         }
 
 
