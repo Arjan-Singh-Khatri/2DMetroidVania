@@ -42,14 +42,16 @@ public class Vagabond : EnemyParentScript
     private float distanceBetween;
     private bool chase = true;
 
-    [Header("Attack ")]
+    [Header("Attack")]
     [SerializeField] private GameObject normalAttackHitbox;
     [SerializeField] private GameObject heavyAttackHitbox;
     [SerializeField] private GameObject normalAttackHitbox2;
-    [SerializeField] private float checkPlayerInRangeTimer;
-    [SerializeField] private float chasingPlayerTimer;
-    [SerializeField] private GameObject attackProjectile;
+
+    [SerializeField] private GameObject normalProjectile;
+    [SerializeField] private GameObject heavyProjectile;
     [SerializeField] private Transform projectileTransform;
+    [SerializeField] private Transform heavyProjectileTransform;
+
     private float attackCoolDownTimer;
     private int normalAttackChoosenCount;
     private int boarderForAttackChoice = 8;
@@ -63,7 +65,10 @@ public class Vagabond : EnemyParentScript
     [Header("Refernces")]
     private PlayerAttack script;
 
-    void Start(){
+    [Header("AI")]
+    private bool canChooseBehaviour = true;
+
+    void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         rigbody = GetComponent<Rigidbody2D>();
@@ -71,7 +76,7 @@ public class Vagabond : EnemyParentScript
         script = player.GetComponent<PlayerAttack>();
     }
 
-    void Update(){
+    void Update() {
 
         if (isDieing)
             return;
@@ -79,30 +84,44 @@ public class Vagabond : EnemyParentScript
         Debug.Log(rigbody.gravityScale);
         Debug.Log(script._canAttack);
 
-        hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
-        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
+        PhysicsAndCalcs();
+
+        if (chase)
+            Chase();
 
         CanAttackCheck();
         TiredChecks();
         EnemyAI();
 
     }
+
+    void PhysicsAndCalcs() {
+        hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
+        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
+    }
     #region AI
-    void EnemyAI(){
+    void EnemyAI() {
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing || isHurt) return;
         flip();
-
+        var randomVar = Random.Range(0, 101);
         // Enemy Attack Patterns and Chase/ Dash perform logic
-        if (hit.collider.name == player.name){
-            // either block or attack based on if Agressive or not
+        if (hit.collider.name == player.name) {
+            if (CanBeAggresive())
+                Debug.Log("Attacked Or Blocked");
         }
 
-        // if running away or keeps staying still then -- chase for a while then stop - if is chasing and attacks then chase stop 
-        /* if coming towards enemy then -- just stay and wait
-        */  
-       
+        if (!canChooseBehaviour) return;
 
+        if (randomVar >= 0 && randomVar < 30) {
+            animator.SetTrigger("NormalAttackB");
+        }
+        else if (randomVar >= 30 && randomVar <= 60) {
+            animator.SetTrigger("HeavyAttackB");
+        }
+        else
+            chase = true;
 
+        canChooseBehaviour = false;
     }
 
     bool CanBeAggresive(){
@@ -112,6 +131,11 @@ public class Vagabond : EnemyParentScript
         // if both health lower than threshold then aggresive - the one to hit wins 
         
         return false;
+    }
+
+    void CanChooseBehaviourTimer() {
+        if(!canChooseBehaviour) return;
+        ca
     }
     #endregion
 
@@ -131,8 +155,10 @@ public class Vagabond : EnemyParentScript
         Vector2 chaseVector = new(chaseSpeed * direction * _chaseForce , 0f);
 
         rigbody.AddForce(chaseVector , ForceMode2D.Force);
-
+        
+        // Timer maybe just to make sure it doesn't keep chasing for too long
     }
+
     #endregion
 
     #region Attack
@@ -146,24 +172,16 @@ public class Vagabond : EnemyParentScript
 
         animator.SetBool("Run", false);
 
-        if(randomNumber < boarderForAttackChoice) {
+
+        if (randomNumber < boarderForAttackChoice) {
             normalAttackChoosenCount += 1;
             if (normalAttackChoosenCount > 4)
                 boarderForAttackChoice--;
-            ChargingAttack("NormalAttack");
+            NormalAttack();
             
         }else{
             boarderForAttackChoice = 7;
             normalAttackChoosenCount = 0;
-            ChargingAttack("HeavyAttack");
-        }
-    }
-
-    void ChargingAttack(string attackName){
-        if (string.Equals(attackName, nameof(NormalAttack))){
-            NormalAttack();
-        }
-        else{
             HeavyAttack();
         }
     }
@@ -171,19 +189,12 @@ public class Vagabond : EnemyParentScript
     void NormalAttack(){
 
         animator.SetBool("ChargeAttack",true);
-        
     }
 
-    void NormalAttackProjectile() {
-        var probability = Random.Range(0, 2);
-        if (probability == 0)
-            Instantiate(attackProjectile,projectileTransform.position,Quaternion.identity);
-        
-    }
-    void HeavyAttack() {
+    void HeavyAttack()
+    {
         // PARTICLE EFFECTS 
-        animator.SetBool("ChargeHeavy",true);
-
+        animator.SetBool("ChargeHeavy", true);
     }
 
     void CanAttackCheck()
@@ -199,6 +210,31 @@ public class Vagabond : EnemyParentScript
         }
     }
 
+    #endregion
+
+    #region Attack BAD CODE
+
+    void NormalAttackInstantiation() {
+        
+        Instantiate(normalProjectile, projectileTransform.position, Quaternion.identity);
+    }
+
+    void HeavyAttackInstantiation() { 
+        Instantiate(heavyProjectile, heavyProjectileTransform.position, Quaternion.identity);
+    }
+
+    void NormalInstantiationWithProb() {
+        var randomNumber = Random.Range(0, 101);
+        if(randomNumber < 27)
+            Instantiate(normalProjectile, projectileTransform.position, Quaternion.identity);
+    }
+
+    void HeavyInstantiationWithProb()
+    {
+        var randomNumber = Random.Range(0, 101);
+        if (randomNumber < 33)
+            Instantiate(heavyProjectile, heavyProjectileTransform.position, Quaternion.identity);
+    }
     #endregion
 
     #region Attack Activations
@@ -225,7 +261,7 @@ public class Vagabond : EnemyParentScript
         canAttack = false;
         normalAttackHitbox2.SetActive(false);
         isAttacking = false;
-        chase = true;
+
     }
 
     void DeactivateHeavyAttackHitbox(){
@@ -316,7 +352,7 @@ public class Vagabond : EnemyParentScript
         isTired = false;
         animator.SetBool("Tired", false);
         canAttack = false;
-        chase = true;
+
     }
 
     void AvoidAttack(){

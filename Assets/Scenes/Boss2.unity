@@ -5517,8 +5517,10 @@ MonoBehaviour:
   normalAttackHitbox: {fileID: 227302045}
   heavyAttackHitbox: {fileID: 919919092}
   normalAttackHitbox2: {fileID: 1680547893}
-  checkPlayerInRangeTimer: 0
-  chasingPlayerTimer: 0
+  normalProjectile: {fileID: 0}
+  heavyProjectile: {fileID: 0}
+  projectileTransform: {fileID: 0}
+  heavyProjectileTransform: {fileID: 0}
 --- !u!1 &1335734587
 GameObject:
   m_ObjectHideFlags: 0
