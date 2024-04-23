@@ -69,7 +69,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -82,7 +82,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638372086687103902
+  platformSettingsDirtyTick: 638494739593352785
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,7 +121,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: vagabond-jump_Frame_0
     originalName: 
-    pivot: {x: 0.625, y: -0.90909094}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -141,7 +141,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 37}
   - name: vagabond-jump_Frame_1
     originalName: 
-    pivot: {x: 0.5625, y: -1}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -161,7 +161,7 @@ ScriptedImporter:
     uvTransform: {x: 30, y: 4}
   - name: vagabond-jump_Frame_2
     originalName: 
-    pivot: {x: 0.6111111, y: -0.79999995}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:

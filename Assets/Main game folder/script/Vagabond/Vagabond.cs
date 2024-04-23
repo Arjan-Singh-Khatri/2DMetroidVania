@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -47,6 +48,8 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private GameObject normalAttackHitbox2;
     [SerializeField] private float checkPlayerInRangeTimer;
     [SerializeField] private float chasingPlayerTimer;
+    [SerializeField] private GameObject attackProjectile;
+    [SerializeField] private Transform projectileTransform;
     private float attackCoolDownTimer;
     private int normalAttackChoosenCount;
     private int boarderForAttackChoice = 8;
@@ -55,13 +58,17 @@ public class Vagabond : EnemyParentScript
     private bool isAttacking;
     private bool attackDowntime;
     private bool canAttack = true;
-    
+
+
+    [Header("Refernces")]
+    private PlayerAttack script;
 
     void Start(){
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         rigbody = GetComponent<Rigidbody2D>();
         health = 200f;
+        script = player.GetComponent<PlayerAttack>();
     }
 
     void Update(){
@@ -69,9 +76,8 @@ public class Vagabond : EnemyParentScript
         if (isDieing)
             return;
 
-        //if(Input.GetKeyDown(KeyCode.Tab))
-        //    /////
-        //return;
+        Debug.Log(rigbody.gravityScale);
+        Debug.Log(script._canAttack);
 
         hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
@@ -84,25 +90,37 @@ public class Vagabond : EnemyParentScript
     #region AI
     void EnemyAI(){
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing || isHurt) return;
-
         flip();
 
+        // Enemy Attack Patterns and Chase/ Dash perform logic
         if (hit.collider.name == player.name){
-            ChooseAttack();
+            // either block or attack based on if Agressive or not
         }
-        //if (playerRunningAway){
-        //    Chase();   
-        //}else if(playerRunningTowards)
-        //{
-        //    if()
-        //}
+
+        // if running away or keeps staying still then -- chase for a while then stop - if is chasing and attacks then chase stop 
+        /* if coming towards enemy then -- just stay and wait
+        */  
+       
+
+
     }
 
+    bool CanBeAggresive(){
+        // based on current health and player health and player combo multiplyer
+        // if player can be do damage enough to be get enemy health to a threshold health then no aggresive
+        // if player health if low then agressive 
+        // if both health lower than threshold then aggresive - the one to hit wins 
+        
+        return false;
+    }
+    #endregion
+
+    #region Chase
     void Chase(){
         _dashProbabilityTimer -= Time.deltaTime;
         if( _dashProbabilityTimer < 0){
             _dashProbabilityTimer = 2.5f; 
-            PerformDashWithChecks();
+            PerformDashWithChecks(true);
         }
 
         if (animator.GetBool("Run") == false)
@@ -153,6 +171,13 @@ public class Vagabond : EnemyParentScript
     void NormalAttack(){
 
         animator.SetBool("ChargeAttack",true);
+        
+    }
+
+    void NormalAttackProjectile() {
+        var probability = Random.Range(0, 2);
+        if (probability == 0)
+            Instantiate(attackProjectile,projectileTransform.position,Quaternion.identity);
         
     }
     void HeavyAttack() {
@@ -207,17 +232,11 @@ public class Vagabond : EnemyParentScript
         animator.SetBool("ChargeHeavy", false);
         heavyAttackHitbox.SetActive(false);
         isHeavyAttacking= false;
-        isTired = true;
-        isTiredTimer = TIRED_TIME;
-        animator.SetBool("Tired", true);
+        //isTired = true;
+        //isTiredTimer = TIRED_TIME;
+        //animator.SetBool("Tired", true);
     }
-    void TiredStateEnd()
-    {
-        isTired = false;
-        animator.SetBool("Tired", false);
-        canAttack = false;
-        chase = true;
-    }
+
     #endregion
 
     #region Block , Dash and Tired
@@ -237,9 +256,17 @@ public class Vagabond : EnemyParentScript
             return true;
         return false;
     }
-    void PerformDashWithChecks(){
-        if((Mathf.Abs(player.transform.position.x - transform.position.x) <= _canPerformDashDistance) && (IsInDashBoundary()) ) {
-            DashProbability();
+    void PerformDashWithChecks(bool prob){
+        if (prob){
+            if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _canPerformDashDistance) && (IsInDashBoundary()))
+            {
+                DashProbability();
+            }
+        }else{
+            if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _canPerformDashDistance) && (IsInDashBoundary()))
+            {
+                StartCoroutine(Dash(direction));
+            }
         }
     }
 
@@ -253,7 +280,6 @@ public class Vagabond : EnemyParentScript
 
     IEnumerator BlockAttack(){ 
         
-        // DO I NEED A COLLIDER OR NOT ?
         isBlocking = true;
         if (animator.GetBool("Block") == false)
             animator.SetBool("Block", true);
@@ -265,11 +291,13 @@ public class Vagabond : EnemyParentScript
             int randomNumber = Random.Range(1, 101);
             if (randomNumber < 35)
                 ChooseAttack();
-        }else{
-            PerformDashWithChecks();
         }
-
+        /*  -- if player is hitting then right after player stops then attack
+            -- take a reference of the player script and check if the attack is in downtime
+         */
     }
+
+
 
     void TiredChecks(){
         if (isTired)
@@ -281,6 +309,18 @@ public class Vagabond : EnemyParentScript
                 TiredStateEnd();
             }
         }
+    }
+
+    void TiredStateEnd()
+    {
+        isTired = false;
+        animator.SetBool("Tired", false);
+        canAttack = false;
+        chase = true;
+    }
+
+    void AvoidAttack(){
+        
     }
     #endregion
 

@@ -9,6 +9,8 @@ public class PlayerAttack : MonoBehaviour
     private bool _attackPressedAgain;
     public bool isAttacking;
     public bool isHeavyAttacking;
+    public bool _canAttack;
+    private float _attackDownTime = 1.3f;  
 
     [SerializeField] GameObject _attackNormalCollider;
     [SerializeField] GameObject _followUpAttackCollider;
@@ -26,19 +28,28 @@ public class PlayerAttack : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-
+        
         AttackInputHandler();
+        if (_canAttack) {
+            _attackDownTime -= Time.deltaTime;
+            if(_attackDownTime < 0f) {
+                _attackDownTime = 1.2f;
+                _canAttack = true;
+            }
+        }
     }
 
     #region Attack 
 
     private void AttackInputHandler() {
+        if (!_canAttack) return;
         var playerMovement = GetComponent<PlayerMovement>();
         if (Input.GetKeyDown(KeyCode.C) && !_attackPressedAgain)
         {
             if (isAttacking)
             {
                 _attackPressedAgain = true;
+                _canAttack = false;
             }
             else
                 Attack();
@@ -66,11 +77,9 @@ public class PlayerAttack : MonoBehaviour
             return; 
         }
         anim.SetBool("FollowUp", true);
-        _followUpAttackCollider.SetActive(true);
-        
-            
+        _followUpAttackCollider.SetActive(true);      
     }
-    
+
     public void FollowUpAttackEnd()
     {
         isAttacking = false;
