@@ -106,7 +106,12 @@ public class BatEnemy : EnemyParentScript
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
             PushBack();
-            HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
+        }else if (collision.CompareTag("HeavyHitBox"))
+        {
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
         }
+
     }
 }

@@ -22,7 +22,7 @@ public class fireTrap : MonoBehaviour
         amim.speed = speed;
         if (FireOn && GetComponent<Collider2D>().IsTouching(GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>()))
         {
-            pl.Die();
+            
         }
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5760489934847850523}
   - component: {fileID: 5760489934847850526}
   - component: {fileID: 8448321838867402876}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SlimeOrange_00000
   m_TagString: Slime
   m_Icon: {fileID: 0}
@@ -135,4 +135,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2b7a732d43837448d6c85b7c289116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyID: 
   speed: 3

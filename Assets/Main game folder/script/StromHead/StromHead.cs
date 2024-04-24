@@ -35,6 +35,8 @@ public class StromHead : EnemyParentScript
        
     }
     #region Save And Load
+
+
     #endregion
 
     // Update is called once per frame
@@ -157,10 +159,18 @@ public class StromHead : EnemyParentScript
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
-        if (collision.gameObject.CompareTag("PlayerAttackHitBox")){
+        if (collision.gameObject.CompareTag("PlayerAttackHitBox") || collision.gameObject.CompareTag("HeavyHitBox")){
             animator.SetTrigger("hit");
-            HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref this.health);
-            damageTaken += DamageHolder.instance.playerDamage;
+            if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
+            {
+                HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref this.health);
+                damageTaken += DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier;
+            }else if (collision.gameObject.CompareTag("HeavyHitBox"))
+            {
+                HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref this.health);
+                damageTaken += DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier;
+            }
+
             if(health <= 0) {
                 _killed = true;
                 animator.SetTrigger("death");

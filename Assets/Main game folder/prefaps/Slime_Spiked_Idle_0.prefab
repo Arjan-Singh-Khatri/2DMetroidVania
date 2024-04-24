@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 6293434812557141978}
   - component: {fileID: 6293434813418900650}
   - component: {fileID: 6293434813418900651}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Slime_Spiked_Idle_0
   m_TagString: SpikedSlime
   m_Icon: {fileID: 0}

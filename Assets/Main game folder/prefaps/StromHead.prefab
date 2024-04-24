@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 229979393388390997}
   - component: {fileID: 229979393388390996}
   - component: {fileID: 229979393388390998}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StromHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}

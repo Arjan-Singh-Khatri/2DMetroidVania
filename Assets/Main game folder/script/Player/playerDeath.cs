@@ -9,7 +9,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 {
     private Animator anim;
     private Rigidbody2D rig;
-    private float health = 47;
+    private float health = 100;
     private float damageTakenCoolDown = 0f;
     private bool canTakeDamage = true;
     // turn collider off when canTakeDamage is off and turn it on when it is off
@@ -44,13 +44,6 @@ public class playerDeath : MonoBehaviour, IDataPersistance
             }
         }
     }
-
-    public void Die()
-    {
-        rig.bodyType = RigidbodyType2D.Static;
-        anim.SetTrigger("death"); 
-    }
-
     
     private void Restartlevel()
     {
@@ -68,10 +61,13 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     public void TakeDamage(float damage)
     {
+        DamageHolder.instance.damageMultiplier = 1;
+        DamageHolder.instance.comboNumber = 0;
         health -= damage;
         if (health <1)
         {
-            Die();
+            rig.bodyType = RigidbodyType2D.Static;
+            anim.SetTrigger("death");
         }
     }
 
@@ -80,7 +76,8 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
         if (collision.gameObject.CompareTag("trap"))
         {
-            Die();
+            rig.bodyType = RigidbodyType2D.Static;
+            anim.SetTrigger("death");
         }
         if (collision.gameObject.CompareTag("StromHead"))
         {
@@ -90,6 +87,8 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+        Debug.Log(collision.gameObject);
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
             IsHurt(DamageHolder.instance.strom);

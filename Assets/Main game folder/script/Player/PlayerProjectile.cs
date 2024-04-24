@@ -43,8 +43,6 @@ public class PlayerProjectile : MonoBehaviour
             transform.localScale = new Vector2(offset, randomScale);
         }
 
-
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

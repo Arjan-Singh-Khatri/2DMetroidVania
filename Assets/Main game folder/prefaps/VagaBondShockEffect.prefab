@@ -345,9 +345,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8594223288013208432}
-  - component: {fileID: 8594223288013208433}
   - component: {fileID: 6928149246449962272}
   - component: {fileID: 3638311034512777873}
+  - component: {fileID: 480954642134874938}
   m_Layer: 0
   m_Name: VagaBondShockEffect
   m_TagString: HitBoxHeavy
@@ -364,7 +364,7 @@ Transform:
   m_GameObject: {fileID: 8594223288013208434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24.56, y: -98.49, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8594223287136025740}
@@ -376,19 +376,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8594223288013208433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8594223288013208434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e525751dad214488936f3cdef24056, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 20
 --- !u!50 &6928149246449962272
 Rigidbody2D:
   serializedVersion: 4
@@ -397,7 +384,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8594223288013208434}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -420,7 +407,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.29261637, y: 0.4414636}
@@ -436,6 +423,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.3209538, y: 1.1304848}
   m_EdgeRadius: 0
+--- !u!114 &480954642134874938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8594223288013208434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 067f7ea77d826a640b27f5cb7648af59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 
+  circleCastRadius: 3.8
+  _dashSpeed: 5
+  _canPerformDashDistance: 0
+  _dashCheckRight: 0
+  _dashCheckLeft: 0
+  chaseMaxSpeed: 4
+  chaseMinSpeed: 2
+  _chaseForce: 10
+  normalAttackHitbox: {fileID: 0}
+  heavyAttackHitbox: {fileID: 0}
+  normalAttackHitbox2: {fileID: 0}
+  normalProjectile: {fileID: 0}
+  heavyProjectile: {fileID: 0}
+  projectileTransform: {fileID: 0}
+  heavyProjectileTransform: {fileID: 0}
+  _damageNormal: 0
+  _damageHeavy: 0
 --- !u!1 &8594223288064271546
 GameObject:
   m_ObjectHideFlags: 0

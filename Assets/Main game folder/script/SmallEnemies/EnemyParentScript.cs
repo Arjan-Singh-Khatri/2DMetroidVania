@@ -21,6 +21,9 @@ public class EnemyParentScript : MonoBehaviour
 
     protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy)
     {
+        DamageHolder.instance.comboNumber += 1;
+        DamageHolder.instance.damageMultiplier += .25f * DamageHolder.instance.comboNumber;
+       
         healthofEnemy -= attackPower;
         
     }
@@ -28,9 +31,9 @@ public class EnemyParentScript : MonoBehaviour
     protected void PushBack()
     {
         if (player.transform.position.x <= transform.position.x)
-            transform.position = transform.position + new Vector3(5, 0, 0);
+            transform.position = transform.position + new Vector3(1.75f, 0, 0);
         else 
-            transform.position = transform.position + new Vector3(-5, 0, 0);
+            transform.position = transform.position + new Vector3(-1.75f, 0, 0);
     }
 
     protected void flip()

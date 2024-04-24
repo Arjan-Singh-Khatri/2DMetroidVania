@@ -84,6 +84,11 @@ public class enemyMoveBetween : EnemyParentScript, IDataPersistance
             HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
 
         }
+        else if (collision.CompareTag("HeavyHitBox"))
+        {
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
+        }
 
     }
 }

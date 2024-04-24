@@ -148,7 +148,13 @@ public class TwoHead : EnemyParentScript
         {
             isHurt = true;
             PushBack();
-            HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
+
+        }else if(collision.gameObject.CompareTag("PlayerAttackHitBox"))
+        {
+            isHurt = true;
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
 
         }
     }

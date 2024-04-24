@@ -19,12 +19,12 @@ public class Vagabond : EnemyParentScript
     [Header("MISCELLANEOUS FOR NOW ")]
     [SerializeField] private float circleCastRadius = 3.8f;
     //[SerializeField] private float blockDistance = 4f;
-    private bool isDieing;
-    private bool isBlocking;
-    private bool isTired;
+    private bool isDying = false;
+    private bool isBlocking = false;
+    private bool isTired = false;
     private const float TIRED_TIME = 2.7f;
     private float isTiredTimer;
-    private bool isHurt;
+    private bool isHurt = false;
 
     [Header("DASH")]
     [SerializeField] private float _dashSpeed = 5f;
@@ -32,7 +32,7 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private float _dashCheckRight;
     [SerializeField] private float _dashCheckLeft;
     private float _dashProbabilityTimer;
-    private bool isDashing;
+    private bool isDashing = false;
 
 
     [Header("CHASE / FOLLOW")]
@@ -52,6 +52,9 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private Transform projectileTransform;
     [SerializeField] private Transform heavyProjectileTransform;
 
+    [SerializeField] protected float _damageNormal = 0f;
+    [SerializeField] protected float _damageHeavy = 0f;
+
     private float attackCoolDownTimer;
     private int normalAttackChoosenCount;
     private int boarderForAttackChoice = 8;
@@ -67,8 +70,12 @@ public class Vagabond : EnemyParentScript
 
     [Header("AI")]
     private bool canChooseBehaviour = true;
+    private float canChooseTimer = 2f;
+    private bool canChooseTrigger = false;
+    private float damageTaken = 0f;
 
     void Start() {
+       
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         rigbody = GetComponent<Rigidbody2D>();
@@ -78,28 +85,30 @@ public class Vagabond : EnemyParentScript
 
     void Update() {
 
-        if (isDieing)
+        if (true)
             return;
-
-        Debug.Log(rigbody.gravityScale);
-        Debug.Log(script._canAttack);
+        if (isDying)
+            return;
 
         PhysicsAndCalcs();
 
         if (chase)
             Chase();
 
+        // TIMER FOR BEHAVIOUR CHECK
         CanAttackCheck();
+
+        // ENEMY STUNNED 
         TiredChecks();
+        
+        // ENEMY BEHAVIOUR 
         EnemyAI();
 
+        if (canChooseTrigger)  
+            CanChooseBehaviourTimer();
     }
 
-    void PhysicsAndCalcs() {
-        hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
-        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
-    }
-    #region AI
+    #region Enemy Behaviour
     void EnemyAI() {
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing || isHurt) return;
         flip();
@@ -112,6 +121,13 @@ public class Vagabond : EnemyParentScript
 
         if (!canChooseBehaviour) return;
 
+        AvoidAttack();
+        canChooseBehaviour = false;
+
+        // Dash Away if 
+        //if(damageTaken >= health/10)
+        //    StartCoroutine(Dash(-direction));
+
         if (randomVar >= 0 && randomVar < 30) {
             animator.SetTrigger("NormalAttackB");
         }
@@ -121,7 +137,10 @@ public class Vagabond : EnemyParentScript
         else
             chase = true;
 
-        canChooseBehaviour = false;
+    }
+
+    void AvoidAttack(){
+        // This one needes to be tested very properly !!
     }
 
     bool CanBeAggresive(){
@@ -135,7 +154,16 @@ public class Vagabond : EnemyParentScript
 
     void CanChooseBehaviourTimer() {
         if(!canChooseBehaviour) return;
-        ca
+        canChooseTimer -= Time.deltaTime;
+        if(canChooseTimer < 0) {
+            canChooseTimer =2 ;
+            canChooseBehaviour = true;
+            canChooseTrigger = false;
+        }
+    }
+
+    void CanChooseToggle() {
+        canChooseTrigger = true;
     }
     #endregion
 
@@ -214,11 +242,13 @@ public class Vagabond : EnemyParentScript
 
     #region Attack BAD CODE
 
+    [ContextMenu("Normal")]
     void NormalAttackInstantiation() {
         
         Instantiate(normalProjectile, projectileTransform.position, Quaternion.identity);
     }
 
+    [ContextMenu("Heavy")]
     void HeavyAttackInstantiation() { 
         Instantiate(heavyProjectile, heavyProjectileTransform.position, Quaternion.identity);
     }
@@ -314,8 +344,9 @@ public class Vagabond : EnemyParentScript
         }
     }
 
-    IEnumerator BlockAttack(){ 
-        
+    IEnumerator BlockAttack(){
+        chase = false;
+        animator.SetBool("Run", false); 
         isBlocking = true;
         if (animator.GetBool("Block") == false)
             animator.SetBool("Block", true);
@@ -328,12 +359,11 @@ public class Vagabond : EnemyParentScript
             if (randomNumber < 35)
                 ChooseAttack();
         }
+        CanChooseToggle();
         /*  -- if player is hitting then right after player stops then attack
             -- take a reference of the player script and check if the attack is in downtime
          */
     }
-
-
 
     void TiredChecks(){
         if (isTired)
@@ -355,29 +385,29 @@ public class Vagabond : EnemyParentScript
 
     }
 
-    void AvoidAttack(){
-        
-    }
+
     #endregion
 
     #region DEATH And Damage
-    private void TakeDamage(){
+    private void TakeDamage(float Damage){
         isHurt = true;
         if (isTired)
-            health -= DamageHolder.instance.playerDamage * 1.25f;
-        else 
-            health -= DamageHolder.instance.playerDamage;
+            HealthDepleteEnemy(Damage * DamageHolder.instance.damageMultiplier, ref health);
+        else
+            HealthDepleteEnemy(Damage, ref health);
 
         if (health <= 0)
             Die();
-        isDieing = true;
-        StartCoroutine(Dash(direction));
+
     }
 
+    void HurtWhileAttacking()
+    {
 
+    }
     void Die()
     {
-        isDieing = true;
+        isDying = true;
         animator.SetTrigger("Death");
         gameObject.GetComponent<Collider2D>().enabled = false;
         rigbody.bodyType = RigidbodyType2D.Static;
@@ -389,15 +419,29 @@ public class Vagabond : EnemyParentScript
     }
     #endregion
 
+    void PhysicsAndCalcs()
+    {
+        hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
+        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
+    }
+
     private void OnDrawGizmos(){
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, circleCastRadius);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerAttackHitBox") && !isBlocking)
-            TakeDamage();
+        if (!isBlocking) return;
+        Debug.Log("Damage Taken");
+        if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
+            TakeDamage(DamageHolder.instance.playerDamage *  DamageHolder.instance.damageMultiplier);
+        else if (collision.gameObject.CompareTag("HeavyHitBox"))
+            TakeDamage(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier);
+
+        if (health < 0)
+            Die();
+            
     }
 }

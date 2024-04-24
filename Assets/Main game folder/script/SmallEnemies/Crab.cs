@@ -127,7 +127,7 @@ public class Crab : EnemyParentScript
         {
             animator.SetTrigger("Hit");
             PushBack();
-            HealthDepleteEnemy(DamageHolder.instance.playerDamage, ref health);
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)
             {
                 _killed = true;
@@ -135,6 +135,17 @@ public class Crab : EnemyParentScript
             }
 
            
+        }
+        else if (collision.CompareTag("HeavyHitBox"))
+        {
+            animator.SetTrigger("Hit");
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
+            if (health <= 0)
+            {
+                _killed = true;
+                animator.SetTrigger("death");
+            }
         }
     }
 }

@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4404401363134142292}
   - component: {fileID: 153126925928743111}
   - component: {fileID: 1916068150284098289}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TwoHead
   m_TagString: TwoHead
   m_Icon: {fileID: 0}
@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4747ca377fe68f448d86e240c959af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyID: 
   fireBall: {fileID: 8355728606705629881, guid: badc64412485e024fbf23657c70847aa, type: 3}
   fireBallFirePosition: {fileID: 8215192525845330903}
   moveSpeed: 5

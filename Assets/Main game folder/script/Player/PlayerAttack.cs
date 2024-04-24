@@ -6,10 +6,10 @@ using UnityEngine.Serialization;
 public class PlayerAttack : MonoBehaviour
 {
     private Animator anim;
-    private bool _attackPressedAgain;
+    public bool _attackPressedAgain = false;
     public bool isAttacking;
     public bool isHeavyAttacking;
-    public bool _canAttack;
+    public bool _canAttack ;
     private float _attackDownTime = 1.3f;  
 
     [SerializeField] GameObject _attackNormalCollider;
@@ -24,25 +24,31 @@ public class PlayerAttack : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         anim.SetBool("FollowUp", false);
+        _canAttack = true;
+        _attackPressedAgain = false;
     }
 
     // Update is called once per frame
     void Update(){
-        
+
         AttackInputHandler();
         AttackDownTime();
-    }
 
+        Debug.Log(DamageHolder.instance.damageMultiplier);
+
+    }
     #region Attack 
 
     private void AttackDownTime()
     {
-        if (_canAttack)
+        if (!_canAttack)
         {
             _attackDownTime -= Time.deltaTime;
             if (_attackDownTime < 0f)
             {
-                _attackDownTime = 1.2f;
+                _attackDownTime = .7f;
+                _attackPressedAgain = false;
+                isAttacking = false;
                 _canAttack = true;
             }
         }
@@ -73,18 +79,35 @@ public class PlayerAttack : MonoBehaviour
     private void Attack(){
         isAttacking = true;
         anim.SetTrigger("attack");
+    }
+
+    private void ColliderActivations()
+    {
         _attackNormalCollider.SetActive(true);
+    }
+    private void AttackFollowActivation() {
+
+        _followUpAttackCollider.SetActive(true);
+    }
+
+    private void DeactivateNormal()
+    {
+        _attackNormalCollider.SetActive(false);
+    }
+
+    private void DeactivateFollowUp() {
+
+        _followUpAttackCollider.SetActive(false);
     }
 
     public void FollowUpAttackCheck(){
-        _attackNormalCollider.SetActive(false);
-        if (!_attackPressedAgain || anim.GetBool("FollowUp")) {
-            isAttacking = false;
-            _attackPressedAgain = false;
-            return; 
+        if (_attackPressedAgain)
+            anim.SetBool("FollowUp", true);
+        else
+        {
+            isAttacking=false; ;
+            _attackPressedAgain=false;
         }
-        anim.SetBool("FollowUp", true);
-        _followUpAttackCollider.SetActive(true);      
     }
 
     public void FollowUpAttackEnd()
@@ -92,20 +115,36 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = false;
         _attackPressedAgain = false;
         anim.SetBool("FollowUp",false);
-        _followUpAttackCollider.SetActive(false);
     }
 
     private void AttackHeavy(){
         // ParticleEffects of Ground Breaking halka 
 
         isHeavyAttacking = true;
+        _canAttack = false;
         anim.SetTrigger("Attack2");
+    }
+
+    private void ActivationHeavy()
+    {
         _attackHeavyCollider.SetActive(true);
     }
+
+    private void DeactivateHeavy() { 
+    _attackHeavyCollider.SetActive(false);}
 
     public void AttackHeavyEnd(){
         isHeavyAttacking = false;
         _attackHeavyCollider.SetActive(false);
+    }
+
+    void HurtWhileAttacking(){
+        isAttacking = false;
+        anim.SetBool("FollowUp", false);
+        _attackPressedAgain = false;
+        DeactivateFollowUp();
+        DeactivateHeavy();
+        DeactivateNormal();
     }
 
     private void InstantiateProjectile(){

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4530782481956234671}
   - component: {fileID: 9199258589121064121}
   - component: {fileID: 1334894317}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bat_Full_0
   m_TagString: Bat
   m_Icon: {fileID: 0}
@@ -120,10 +120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e66815ab5561244ae3d178640ac4d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyID: 
   speed: 3
-  chase: 0
   dash_force: 15
   dashtime: 2
+  killed: 0
+  chase: 0
   return_tostart: 0
 --- !u!70 &9199258589121064121
 CapsuleCollider2D:

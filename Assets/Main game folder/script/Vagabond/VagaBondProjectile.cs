@@ -7,36 +7,65 @@ enum ProjectileType {
 }
 
 
-public class VagaBondProjectile : MonoBehaviour
+public class VagaBondProjectile : Vagabond
 {
-    [SerializeField]private float _speedNormal;
-    [SerializeField]private float _speedHeavy;
-    [SerializeField]private float _timeToLive;
+    private float _speedNormal = 20;
+    private float _speedHeavy = 17;
+    private const float LIFE_TIME = 1.9f;
+    private float localLifeTime = 0.1f;
     private ProjectileType _currentType;
 
+
     void Start(){
-        if(gameObject.name.CompareTo("") == 0) 
-            _currentType = ProjectileType.Normal;
+        if(gameObject.name.CompareTo("VagaBondShockEffect") == 0) 
+            _currentType = ProjectileType.Heavy;
         else
-            _currentType=ProjectileType.Heavy;  
+            _currentType=ProjectileType.Normal;  
     }
 
     // Update is called once per frame
     void Update(){
 
         Movement();
-        RotationForNormalAttack();
+        ScaleOverLifeTime();
     }
 
-    void Movement() { 
-        
+    void Movement() {
+        if (_currentType == ProjectileType.Normal)
+            transform.position += _speedNormal * Time.deltaTime * Vector3.right;
+        else
+            transform.position += _speedHeavy * Time.deltaTime * Vector3.right;
     }
 
-    void RotationForNormalAttack() {
-        if (_currentType == ProjectileType.Heavy) return;
+    void ScaleOverLifeTime()
+    {
+        if (localLifeTime >= LIFE_TIME)
+            Destroy(gameObject);
+
+        localLifeTime += Time.deltaTime;
+        float offset = Mathf.Lerp(2f, .1f, localLifeTime / LIFE_TIME);
+
+        float randomScale = 1 + (float)Random.Range(-3, 7) / 10;
+
+        if (_currentType == ProjectileType.Normal) return;
+        if (localLifeTime < LIFE_TIME / 2)
+        {
+            transform.localScale = new Vector2(offset, randomScale);
+        }
+        else if (localLifeTime > LIFE_TIME / 2)
+        {
+            transform.localScale = new Vector2(offset, randomScale);
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision){
-        
+        if (collision.gameObject.CompareTag("Player")) {
+            if (_currentType == ProjectileType.Normal)
+                player.GetComponent<playerDeath>().TakeDamage(_damageNormal);
+            else
+                player.GetComponent<playerDeath>().TakeDamage(_damageHeavy);
+        }
+            
     }
 }
