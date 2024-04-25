@@ -11,8 +11,7 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
     private int wayPointIndex = 0;
     [SerializeField] private float jumpDistance = 4.5f;
     private float nextJumpTime = 2f;
-    private bool _killed;
-
+    private bool _killed; 
 
     // Start is called before the first frame update
     void Start()
@@ -83,10 +82,11 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
     {
         nextJumpTime -= Time.deltaTime;
         if(nextJumpTime <= 0) {
-            nextJumpTime = 3;
+            nextJumpTime = Random.Range(3,6);
             rig.AddForce(Vector2.up * jumpDistance, ForceMode2D.Impulse);
         }
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -94,7 +94,6 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
         {
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplyer, ref health);
-
         }
         else if (collision.CompareTag("HeavyHitBox"))
         {

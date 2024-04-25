@@ -84,6 +84,8 @@ public class TwoHead : EnemyParentScript
         }
     }
 
+   
+
     private void InstantiateFireBall()
     {
         Instantiate(fireBall,fireBallFirePosition.position,transform.rotation);

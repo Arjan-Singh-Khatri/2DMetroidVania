@@ -10,7 +10,6 @@ public class EnemyParentScript : MonoBehaviour
     protected bool enemyDead;
     protected float direction;
     [SerializeField] protected string enemyID;
-
     [ContextMenu("GUID ID GENERATE")]
     private void GenerateGUID()
     {
@@ -26,7 +25,6 @@ public class EnemyParentScript : MonoBehaviour
        
         healthofEnemy -= attackPower;
         StartCoroutine(HitAnimation());
-        
     }
 
     protected void PushBack()
@@ -52,19 +50,18 @@ public class EnemyParentScript : MonoBehaviour
 
     }
 
-    protected IEnumerator HitAnimation() {
-        var _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        Color alpha1 = new Color(255, 2555, 255, 255);
-        Color alpha2 = new Color(255, 255, 255, 100);
-        Color aplha3 = new Color(255, 255, 255, 170);
+    protected IEnumerator HitAnimation()
+    {
 
-        _spriteRenderer.color = alpha2;
-        yield return new WaitForSeconds(.5f);
-        _spriteRenderer.color = alpha1;
-        yield return new WaitForSeconds(.5f);
-        _spriteRenderer.color = aplha3;
-        yield return new WaitForSeconds(.5f);
-        _spriteRenderer.color = alpha1;
+        var _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+
+        _spriteRenderer.color = new Color(255, 255, 255, .4f);
+        yield return new WaitForSeconds(.25f);
+        _spriteRenderer.color = new Color(255, 255, 255, 1);
+        yield return new WaitForSeconds(.25f);
+        _spriteRenderer.color = new Color(255, 255, 255, .6f);
+        yield return new WaitForSeconds(.25f);
+        _spriteRenderer.color = new Color(255, 255, 255, 1);
     }
 
     protected void EnemyDeath()

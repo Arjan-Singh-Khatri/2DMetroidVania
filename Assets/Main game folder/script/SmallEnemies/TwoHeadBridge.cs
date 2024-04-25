@@ -15,10 +15,10 @@ public class TwoHeadBridge : MonoBehaviour
         Events.instance.OnDeathTwoHeadBridgeActive += BridgeActive;
 
     }
-
     private void BridgeActive()
     {
-        gameObject.SetActive(true);
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        gameObject.GetComponent<Collider2D>().enabled = false;
         animator.SetTrigger("Fade");
     }
 

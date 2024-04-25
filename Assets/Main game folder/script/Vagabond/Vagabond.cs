@@ -121,7 +121,7 @@ public class Vagabond : EnemyParentScript
 
         if (!canChooseBehaviour) return;
 
-        AvoidAttack();
+        AvoidProjectilesAttack();
         canChooseBehaviour = false;
 
         // Dash Away if 
@@ -139,7 +139,7 @@ public class Vagabond : EnemyParentScript
 
     }
 
-    void AvoidAttack(){
+    void AvoidProjectilesAttack(){
         // This one needes to be tested very properly !!
     }
 
