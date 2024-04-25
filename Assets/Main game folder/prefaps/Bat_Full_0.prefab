@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: 
+  _spriteRenderer: {fileID: 4189737684654628847}
   speed: 3
   dash_force: 15
   dashtime: 2

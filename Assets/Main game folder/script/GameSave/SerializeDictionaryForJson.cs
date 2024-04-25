@@ -6,8 +6,8 @@ using UnityEngine;
 [System.Serializable]
 public class SerializeDictionaryForJson<Tkey,Tvalue> : Dictionary<Tkey,Tvalue>, ISerializationCallbackReceiver
 {
-    [SerializeField] List<Tkey> key;
-    [SerializeField] List<Tvalue> value;
+    [SerializeField] List<Tkey> key = new();
+    [SerializeField] List<Tvalue> value = new();
 
 
     // Save The Dicitonary to list

@@ -34,7 +34,6 @@ public class PlayerAttack : MonoBehaviour
         AttackInputHandler();
         AttackDownTime();
 
-        Debug.Log(DamageHolder.instance.damageMultiplier);
 
     }
     #region Attack 

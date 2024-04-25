@@ -58,12 +58,12 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.5426693, y: 1.0612875}
-      - {x: -0.21975279, y: 1.2098826}
-      - {x: -0.90669173, y: 1.2024033}
-      - {x: -1.9690117, y: 0.74450153}
+      - {x: -0.79422235, y: 0.8652554}
+      - {x: -1.1218357, y: 0.92737883}
+      - {x: -2.976026, y: 1.0837183}
       - {x: -2.536029, y: 0.4109143}
-      - {x: -2.1487126, y: 0.31455815}
-      - {x: -1.8792915, y: 0.38707048}
+      - {x: -2.064411, y: -0.28589737}
+      - {x: -1.9918289, y: -0.41383216}
       - {x: -1.5649948, y: 0.4146847}
       - {x: -1.2010117, y: 0.44094092}
       - {x: -0.6202043, y: 0.40961498}
@@ -474,6 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634fe20a893598b4ea24eaabaeabbbae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageCollider: {fileID: 1303023224}
+  _spriteRenderer: {fileID: 6299837469599941280}
 --- !u!114 &6299837467693021316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,14 +526,14 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6299837469599941343}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0025539314, y: 0.028728504}
-  m_Size: {x: 0.72715294, y: 2.009758}
+  m_Offset: {x: 0.013001647, y: 0.023795538}
+  m_Size: {x: 0.819741, y: 2.054645}
   m_Direction: 0
 --- !u!111 &6299837469207031785
 Animation:
@@ -558,7 +560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8102117298587988929}
   - component: {fileID: 5603357310530231215}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ColliderForEnvironment
   m_TagString: Untagged
   m_Icon: {fileID: 0}

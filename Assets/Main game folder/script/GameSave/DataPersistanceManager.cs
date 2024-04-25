@@ -70,8 +70,8 @@ public class DataPersistanceManager : MonoBehaviour
     }
 
     // REMOVE THIS -- TO DO LATER
-    private void OnApplicationQuit()
-    {
-        SaveGame();
-    }
+    //private void OnApplicationQuit()
+    //{
+    //    SaveGame();
+    //}
 }

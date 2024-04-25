@@ -9,9 +9,8 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
     private Vector2[] endPonints = new Vector2[2];
     [SerializeField] float speed = 5;
     private int wayPointIndex = 0;
-    [SerializeField] private float jumpSpeed = 4.5f;
-    [SerializeField] private float jumpInterval = 1f;
-    private float nextJumpTime = 0f;
+    [SerializeField] private float jumpDistance = 4.5f;
+    private float nextJumpTime = 2f;
     private bool _killed;
 
 
@@ -56,6 +55,8 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
             EnemyDeath();
             return;
         }
+
+        Hop();
         EnemyMove();
     }
 
@@ -66,7 +67,7 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
         if (Vector2.Distance(transform.position, endPonints[wayPointIndex]) > .5)
         {
             transform.position = Vector2.MoveTowards(transform.position, endPonints[wayPointIndex], speed * Time.deltaTime);
-            Hop();
+            
         }
         else
         {
@@ -80,10 +81,10 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
 
     private void Hop()
     {
-        if (Time.time >= nextJumpTime)
-        {
-            rig.AddForce(new Vector2(0f, jumpSpeed), ForceMode2D.Impulse);
-            nextJumpTime = Time.time + jumpInterval;
+        nextJumpTime -= Time.deltaTime;
+        if(nextJumpTime <= 0) {
+            nextJumpTime = 3;
+            rig.AddForce(Vector2.up * jumpDistance, ForceMode2D.Impulse);
         }
     }
 
@@ -93,11 +94,13 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
         {
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplyer, ref health);
+
         }
         else if (collision.CompareTag("HeavyHitBox"))
         {
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
+
         }
 
     }

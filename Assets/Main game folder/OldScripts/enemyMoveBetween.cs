@@ -88,6 +88,7 @@ public class enemyMoveBetween : EnemyParentScript, IDataPersistance
         {
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
+
         }
 
     }

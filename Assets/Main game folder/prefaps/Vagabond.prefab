@@ -424,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: 
+  _spriteRenderer: {fileID: 8391644425374571638}
   circleCastRadius: 3.4
   _dashSpeed: 20
   _canPerformDashDistance: 10

@@ -12,6 +12,9 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     private float health = 100;
     private float damageTakenCoolDown = 0f;
     private bool canTakeDamage = true;
+
+    [SerializeField] Collider2D damageCollider;
+    [SerializeField] SpriteRenderer _spriteRenderer;
     // turn collider off when canTakeDamage is off and turn it on when it is off
 
 
@@ -21,6 +24,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
     }
+
     public void SaveData(ref GameData gameData)
     {
         gameData._health = this.health;
@@ -31,20 +35,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         this.health = gameData._health;
     }
 
-    private void Update()
-    {
-        if (health < 1) return;
-        if (!canTakeDamage)
-        {
-            damageTakenCoolDown += Time.deltaTime;
-            if (damageTakenCoolDown > 1.3f)
-            {
-                damageTakenCoolDown = 0f;
-                canTakeDamage = true;
-            }
-        }
-    }
-    
+ 
     private void Restartlevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -55,25 +46,54 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         if (!canTakeDamage) return;
         canTakeDamage = false;
         TakeDamage(damage);
-        anim.SetTrigger("hurt");
-        
+        StartCoroutine(HitAnimation());
+    }
+
+    IEnumerator ColliderTrigger()
+    {
+        damageCollider.enabled = false;
+        yield return new WaitForSeconds(.8f);
+        damageCollider.enabled = true;
     }
 
     public void TakeDamage(float damage)
     {
         DamageHolder.instance.damageMultiplier = 1;
         DamageHolder.instance.comboNumber = 0;
+        StartCoroutine(ColliderTrigger());
         health -= damage;
-        if (health <1)
+        if (health <=0)
         {
             rig.bodyType = RigidbodyType2D.Static;
             anim.SetTrigger("death");
         }
     }
 
+    protected IEnumerator HitAnimation()
+    {
+        Color alpha1 = new Color(255, 2555, 255, 255);
+        Color aplha2 = new Color(255, 255, 255, 100);
+        Color aplha3 = new Color(255, 255, 255, 170);
+
+        _spriteRenderer.color = aplha2;
+        yield return new WaitForSeconds(.5f);
+        _spriteRenderer.color = alpha1;
+        yield return new WaitForSeconds(.5f);
+        _spriteRenderer.color = aplha3;
+        yield return new WaitForSeconds(.5f);
+        _spriteRenderer.color = alpha1;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
+        
+
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.CompareTag("trap"))
         {
             rig.bodyType = RigidbodyType2D.Static;
@@ -83,12 +103,8 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         {
             IsHurt(DamageHolder.instance.stromHead);
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
 
-        Debug.Log(collision.gameObject);
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
             IsHurt(DamageHolder.instance.strom);
@@ -100,20 +116,22 @@ public class playerDeath : MonoBehaviour, IDataPersistance
             IsHurt(DamageHolder.instance.crabAttack);
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
             IsHurt(DamageHolder.instance.spikedSlimeAttack);
-        if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
-            IsHurt(DamageHolder.instance.spikdSlimeSpikes);
 
 
         // Enemies 
-        if (collision.gameObject.CompareTag("Slime"))
-            IsHurt(DamageHolder.instance.slimeDamage);
+
         if (collision.gameObject.CompareTag("TwoHead"))
             IsHurt(DamageHolder.instance.twoHeadDamage);
         if (collision.gameObject.CompareTag("Crab"))
             IsHurt(DamageHolder.instance.crab);
+        if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
+            IsHurt(DamageHolder.instance.spikdSlimeSpikes);
         if (collision.gameObject.CompareTag("Bat"))
             IsHurt(DamageHolder.instance.batDamage);
         if (collision.gameObject.CompareTag("SpikedSlime"))
             IsHurt(DamageHolder.instance.slimeDamage);
+        if (collision.gameObject.CompareTag("Slime"))
+            IsHurt(DamageHolder.instance.slimeDamage);
+
     }
 }

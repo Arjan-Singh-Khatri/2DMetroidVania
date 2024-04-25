@@ -127,7 +127,6 @@ public class SpikedSlime : EnemyParentScript
     {
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
-            animator.SetTrigger("Hit");
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)
@@ -137,7 +136,6 @@ public class SpikedSlime : EnemyParentScript
             }
         }else if (collision.CompareTag("HeavyHitBox"))
         {
-            animator.SetTrigger("Hit");
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)

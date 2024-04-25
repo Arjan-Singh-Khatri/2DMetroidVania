@@ -332,9 +332,9 @@ GameObject:
   m_Component:
   - component: {fileID: 229979393388391000}
   - component: {fileID: 229979393388390994}
+  - component: {fileID: 229979393388390996}
   - component: {fileID: 229979393388390999}
   - component: {fileID: 229979393388390997}
-  - component: {fileID: 229979393388390996}
   - component: {fileID: 229979393388390998}
   m_Layer: 7
   m_Name: StromHead
@@ -414,6 +414,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &229979393388390996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229979393388391003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a01a74bba4798249af65e162f820fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 25c70a0c-ebee-40e5-a8f7-6a532f878ba0
+  _spriteRenderer: {fileID: 229979393388390994}
+  stromAttackCollider: {fileID: 229979392943885814}
+  teleportPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  projectilePrefab: {fileID: 6774784428500382708, guid: 10faba245f67bac4eb2eb3392eb85751, type: 3}
+  firingLocations:
+  - {fileID: 229979394561348363}
+  - {fileID: 229979393252935739}
+  - {fileID: 229979392585079542}
+  - {fileID: 229979393175863049}
+  projectileAttackParticle: {fileID: 229979392669959150}
 --- !u!50 &229979393388390999
 Rigidbody2D:
   serializedVersion: 4
@@ -455,33 +483,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &229979393388390996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 229979393388391003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a01a74bba4798249af65e162f820fd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyID: 25c70a0c-ebee-40e5-a8f7-6a532f878ba0
-  stromAttackCollider: {fileID: 229979392943885814}
-  teleportPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  projectilePrefab: {fileID: 6774784428500382708, guid: 10faba245f67bac4eb2eb3392eb85751, type: 3}
-  firingLocations:
-  - {fileID: 229979394561348363}
-  - {fileID: 229979393252935739}
-  - {fileID: 229979392585079542}
-  - {fileID: 229979393175863049}
-  projectileAttackParticle: {fileID: 229979392669959150}
 --- !u!70 &229979393388390998
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

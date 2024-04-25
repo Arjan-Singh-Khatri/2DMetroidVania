@@ -81,9 +81,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1398736386099982952}
   - component: {fileID: 1398736386099982955}
+  - component: {fileID: 1398736386099982932}
   - component: {fileID: 1398736386099982954}
   - component: {fileID: 1398736386099982933}
-  - component: {fileID: 1398736386099982932}
   m_Layer: 7
   m_Name: Crab_Idle_0
   m_TagString: Crab
@@ -159,6 +159,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1398736386099982932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398736386099982935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16488044217b35044995635573c35036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 
+  _spriteRenderer: {fileID: 1398736386099982955}
+  crabCollider: {fileID: 1398736385919714904}
+  speed: 10
 --- !u!95 &1398736386099982954
 Animator:
   serializedVersion: 5
@@ -214,18 +230,3 @@ PolygonCollider2D:
       - {x: 0.8182144, y: -1.2300824}
       - {x: 0.88113785, y: -0.35869464}
       - {x: 0.71821445, y: -0.1468277}
---- !u!114 &1398736386099982932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398736386099982935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16488044217b35044995635573c35036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyID: 
-  crabCollider: {fileID: 1398736385919714904}
-  speed: 10

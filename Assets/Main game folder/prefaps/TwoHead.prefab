@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: 
+  _spriteRenderer: {fileID: 1916068150284098289}
   fireBall: {fileID: 8355728606705629881, guid: badc64412485e024fbf23657c70847aa, type: 3}
   fireBallFirePosition: {fileID: 8215192525845330903}
   moveSpeed: 5

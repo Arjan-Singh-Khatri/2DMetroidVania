@@ -365,6 +365,10 @@ public class Vagabond : EnemyParentScript
          */
     }
 
+    void Tired() { 
+    
+    }
+
     void TiredChecks(){
         if (isTired)
         {
@@ -396,15 +400,12 @@ public class Vagabond : EnemyParentScript
         else
             HealthDepleteEnemy(Damage, ref health);
 
+        //StartCoroutine(HitAnimation());
         if (health <= 0)
             Die();
-
     }
 
-    void HurtWhileAttacking()
-    {
-
-    }
+    
     void Die()
     {
         isDying = true;

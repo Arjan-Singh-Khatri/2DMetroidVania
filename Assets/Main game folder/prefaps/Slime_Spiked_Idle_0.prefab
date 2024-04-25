@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: a1a5130d-9134-4dcf-8423-619d5c293c72
+  _spriteRenderer: {fileID: 6293434812557141977}
   spikes: {fileID: 8504852350299765516, guid: 19b84c22e44d2c84b9abb146e262c7e7, type: 3}
   spikesPosition: {fileID: 1396489495}
   slimeCollider: {fileID: 351306763}

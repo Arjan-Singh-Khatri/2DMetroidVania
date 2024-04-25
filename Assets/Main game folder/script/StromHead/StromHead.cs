@@ -160,7 +160,6 @@ public class StromHead : EnemyParentScript
 
     private void OnTriggerEnter2D(Collider2D collision){
         if (collision.gameObject.CompareTag("PlayerAttackHitBox") || collision.gameObject.CompareTag("HeavyHitBox")){
-            animator.SetTrigger("hit");
             if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
             {
                 HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref this.health);

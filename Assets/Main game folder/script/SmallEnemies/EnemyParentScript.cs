@@ -25,6 +25,7 @@ public class EnemyParentScript : MonoBehaviour
         DamageHolder.instance.damageMultiplier += .25f * DamageHolder.instance.comboNumber;
        
         healthofEnemy -= attackPower;
+        StartCoroutine(HitAnimation());
         
     }
 
@@ -49,6 +50,21 @@ public class EnemyParentScript : MonoBehaviour
             direction = 1;  
         }
 
+    }
+
+    protected IEnumerator HitAnimation() {
+        var _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        Color alpha1 = new Color(255, 2555, 255, 255);
+        Color alpha2 = new Color(255, 255, 255, 100);
+        Color aplha3 = new Color(255, 255, 255, 170);
+
+        _spriteRenderer.color = alpha2;
+        yield return new WaitForSeconds(.5f);
+        _spriteRenderer.color = alpha1;
+        yield return new WaitForSeconds(.5f);
+        _spriteRenderer.color = aplha3;
+        yield return new WaitForSeconds(.5f);
+        _spriteRenderer.color = alpha1;
     }
 
     protected void EnemyDeath()
