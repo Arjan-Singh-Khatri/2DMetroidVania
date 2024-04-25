@@ -9,7 +9,6 @@ using UnityEngine.UIElements;
 
 public class Vagabond : EnemyParentScript
 {
-
     // MAKE AN ENTRY ANIMATION WHERE HE LIKE WAKES UP THEN TRANSITION THAT TO THE IDEL STATE 
     [Header("GET COMPONENTS")]
     private Animator animator;
@@ -34,7 +33,6 @@ public class Vagabond : EnemyParentScript
     private float _dashProbabilityTimer;
     private bool isDashing = false;
 
-
     [Header("CHASE / FOLLOW")]
     [SerializeField] private float chaseMaxSpeed = 4f;
     [SerializeField] private float chaseMinSpeed = 2f;
@@ -52,35 +50,54 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private Transform projectileTransform;
     [SerializeField] private Transform heavyProjectileTransform;
 
-    [SerializeField] protected float _damageNormal = 0f;
-    [SerializeField] protected float _damageHeavy = 0f;
-
     private float attackCoolDownTimer;
     private int normalAttackChoosenCount;
     private int boarderForAttackChoice = 8;
     private bool isCharingAttack;
     private bool isHeavyAttacking;
     private bool isAttacking;
-    private bool attackDowntime;
     private bool canAttack = true;
 
+    [Header("Damages")]
+    [SerializeField] protected float _damageNormalProjectile = 0f;
+    [SerializeField] protected float _damageHeavyProjectile = 0f;
+    [SerializeField] protected float _damageNormal = 0f;
+    [SerializeField] protected float _damageHeavy = 0f;
 
     [Header("Refernces")]
-    private PlayerAttack script;
+    private PlayerAttack _playerAttackScript;
+    private playerDeath _playerDeathScript;
+    private float playerHealthAfterHit;
 
     [Header("AI")]
     private bool canChooseBehaviour = true;
     private float canChooseTimer = 2f;
     private bool canChooseTrigger = false;
     private float damageTaken = 0f;
+    private const float ORIGINAL_HEALTH = 200 ; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
+    private float criticalHealth;
+
+    [Header("Probabilities For Attack")]
+    private float probForNormal = 0f;
+    private float probForHeavy = 0f;
+    private float probForChase = 0f;
 
     void Start() {
        
+        // References
         player = GameObject.FindGameObjectWithTag("Player");
+        _playerAttackScript = player.GetComponent<PlayerAttack>();
+        _playerDeathScript = player.GetComponent<playerDeath>();
+        playerHealthAfterHit = _playerDeathScript.health - _damageNormalProjectile;
+
+        // GameObject components
         animator = GetComponent<Animator>();
         rigbody = GetComponent<Rigidbody2D>();
-        health = 200f;
-        script = player.GetComponent<PlayerAttack>();
+
+        // For boss logic
+        health = ORIGINAL_HEALTH;
+        criticalHealth = ORIGINAL_HEALTH/5; // Twenty Percent Of the Original Health
+
     }
 
     void Update() {
@@ -115,8 +132,7 @@ public class Vagabond : EnemyParentScript
         var randomVar = Random.Range(0, 101);
         // Enemy Attack Patterns and Chase/ Dash perform logic
         if (hit.collider.name == player.name) {
-            if (CanBeAggresive())
-                Debug.Log("Attacked Or Blocked");
+            
         }
 
         if (!canChooseBehaviour) return;
@@ -143,28 +159,58 @@ public class Vagabond : EnemyParentScript
         // This one needes to be tested very properly !!
     }
 
-    bool CanBeAggresive(){
-        // based on current health and player health and player combo multiplyer
-        // if player can be do damage enough to be get enemy health to a threshold health then no aggresive
-        // if player health if low then agressive 
-        // if both health lower than threshold then aggresive - the one to hit wins 
-        
-        return false;
+    void CanChooseToggle() {
+        canChooseTrigger = true;
     }
 
-    void CanChooseBehaviourTimer() {
-        if(!canChooseBehaviour) return;
+    void CanChooseBehaviourTimer()
+    {
+        if (!canChooseBehaviour) return;
         canChooseTimer -= Time.deltaTime;
-        if(canChooseTimer < 0) {
-            canChooseTimer =2 ;
+        if (canChooseTimer < 0)
+        {
+            canChooseTimer = 2;
             canChooseBehaviour = true;
             canChooseTrigger = false;
         }
     }
+    #endregion
 
-    void CanChooseToggle() {
-        canChooseTrigger = true;
+    #region Aggresion and Defensive Behaviour
+
+    bool BeAggresive()
+    {
+        // BASE CONDITION 
+        if ((health > criticalHealth && !HitCauseCriticalHealth()) || DefenseiveOverride())
+            return true;
+        
+        return false;
     }
+
+    bool BeDefensive()
+    {
+        // BASE CONDITION
+        if ((health < criticalHealth || HitCauseCriticalHealth()) && !DefenseiveOverride())
+            return true;
+        
+        return false;
+    }
+    
+    bool DefenseiveOverride() {
+
+        if (playerHealthAfterHit <= 30)
+            return true;
+        return false;
+    }
+
+    bool HitCauseCriticalHealth()
+    {
+        if (playerHealthAfterHit <= criticalHealth)
+            return true;
+        return false;
+    }
+
+
     #endregion
 
     #region Chase
@@ -442,7 +488,6 @@ public class Vagabond : EnemyParentScript
             TakeDamage(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier);
 
         if (health < 0)
-            Die();
-            
+            Die();      
     }
 }

@@ -62,9 +62,9 @@ public class VagaBondProjectile : Vagabond
     private void OnCollisionEnter2D(Collision2D collision){
         if (collision.gameObject.CompareTag("Player")) {
             if (_currentType == ProjectileType.Normal)
-                player.GetComponent<playerDeath>().TakeDamage(_damageNormal);
+                player.GetComponent<playerDeath>().TakeDamage(_damageNormalProjectile);
             else
-                player.GetComponent<playerDeath>().TakeDamage(_damageHeavy);
+                player.GetComponent<playerDeath>().TakeDamage(_damageHeavyProjectile);
         }
             
     }

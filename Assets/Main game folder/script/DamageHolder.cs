@@ -11,6 +11,7 @@ public class DamageHolder : MonoBehaviour
 
     public float damageMultiplyer = 1 ;
     public float comboNumber = 0;
+    public int playerCharge = 0;
 
     public float damageMultiplier = 1 ; 
     public float playerDamage = 15f;

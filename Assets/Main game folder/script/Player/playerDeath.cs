@@ -9,9 +9,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 {
     private Animator anim;
     private Rigidbody2D rig;
-    private float health = 100;
-    private float damageTakenCoolDown = 0f;
-    private bool canTakeDamage = true;
+    public float health = 100;
 
     [SerializeField] Collider2D damageCollider;
     [SerializeField] SpriteRenderer _spriteRenderer;
@@ -41,12 +39,13 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void IsHurt(float damage)
+    private IEnumerator IsHurt(float damage)
     {
-        if (!canTakeDamage) return;
-        canTakeDamage = false;
+        damageCollider.enabled = false;
         TakeDamage(damage);
         StartCoroutine(HitAnimation());
+        yield return new WaitForSeconds(.7f);
+        damageCollider.enabled = true;
     }
 
     IEnumerator ColliderTrigger()
@@ -71,16 +70,16 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     protected IEnumerator HitAnimation()
     {
-        Color alpha1 = new Color(255, 2555, 255, 255);
-        Color aplha2 = new Color(255, 255, 255, 100);
-        Color aplha3 = new Color(255, 255, 255, 170);
+        Color alpha1 = new Color(255, 2555, 255, 1);
+        Color aplha2 = new Color(255, 255, 255, .4f);
+        Color aplha3 = new Color(255, 255, 255, .6f);
 
         _spriteRenderer.color = aplha2;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.1f);
         _spriteRenderer.color = alpha1;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.1f);
         _spriteRenderer.color = aplha3;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.1f);
         _spriteRenderer.color = alpha1;
     }
 
@@ -101,37 +100,37 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         }
         if (collision.gameObject.CompareTag("StromHead"))
         {
-            IsHurt(DamageHolder.instance.stromHead);
+            StartCoroutine(IsHurt(DamageHolder.instance.stromHead));
         }
 
 
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
-            IsHurt(DamageHolder.instance.strom);
+            StartCoroutine(IsHurt(DamageHolder.instance.strom));
         if (collision.gameObject.CompareTag("TwoHeadAttack2"))
-            IsHurt(DamageHolder.instance.twoHeadAttackTwoDamage);
+            StartCoroutine(IsHurt(DamageHolder.instance.twoHeadAttackTwoDamage));
         if (collision.gameObject.CompareTag("FireBall"))
-            IsHurt(DamageHolder.instance.fireBallDamage);
+            StartCoroutine(IsHurt(DamageHolder.instance.fireBallDamage));
         if (collision.gameObject.CompareTag("CrabAttack"))
-            IsHurt(DamageHolder.instance.crabAttack);
+            StartCoroutine(IsHurt(DamageHolder.instance.crabAttack));
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
-            IsHurt(DamageHolder.instance.spikedSlimeAttack);
+            StartCoroutine(IsHurt(DamageHolder.instance.spikedSlimeAttack));
 
 
         // Enemies 
 
         if (collision.gameObject.CompareTag("TwoHead"))
-            IsHurt(DamageHolder.instance.twoHeadDamage);
+            StartCoroutine(IsHurt(DamageHolder.instance.twoHeadDamage));
         if (collision.gameObject.CompareTag("Crab"))
-            IsHurt(DamageHolder.instance.crab);
+            StartCoroutine(IsHurt(DamageHolder.instance.crab));
         if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
-            IsHurt(DamageHolder.instance.spikdSlimeSpikes);
+            StartCoroutine(IsHurt(DamageHolder.instance.spikdSlimeSpikes));
         if (collision.gameObject.CompareTag("Bat"))
-            IsHurt(DamageHolder.instance.batDamage);
+            StartCoroutine(IsHurt(DamageHolder.instance.batDamage));
         if (collision.gameObject.CompareTag("SpikedSlime"))
-            IsHurt(DamageHolder.instance.slimeDamage);
+            StartCoroutine(IsHurt(DamageHolder.instance.spikedSlime));
         if (collision.gameObject.CompareTag("Slime"))
-            IsHurt(DamageHolder.instance.slimeDamage);
+            StartCoroutine(IsHurt(DamageHolder.instance.slimeDamage));
 
     }
 }

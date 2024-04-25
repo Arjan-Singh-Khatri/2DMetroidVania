@@ -18,6 +18,7 @@ public class PlayerAttack : MonoBehaviour
 
     [SerializeField] GameObject projectile;
     [SerializeField] Transform projectileTransform;
+    [SerializeField] int baseChargeNumber = 3;
 
 
     void Start()
@@ -117,11 +118,20 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void AttackHeavy(){
-        // ParticleEffects of Ground Breaking halka 
-
+        // ParticleEffects of Ground Breaking halka
+        if (!EvaluateCharge()) return; 
         isHeavyAttacking = true;
         _canAttack = false;
         anim.SetTrigger("Attack2");
+    }
+
+    private bool EvaluateCharge() {
+        if (DamageHolder.instance.playerCharge >= baseChargeNumber){
+            DamageHolder.instance.playerCharge -= baseChargeNumber;
+            return true;
+        }
+        return false;
+
     }
 
     private void ActivationHeavy()
