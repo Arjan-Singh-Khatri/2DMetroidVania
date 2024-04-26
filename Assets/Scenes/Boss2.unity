@@ -3913,6 +3913,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageMultiplyer: 0
   comboNumber: 0
+  playerCharge: 0
   damageMultiplier: 1
   playerDamage: 15
   playerHeavyDamage: 30
@@ -14403,11 +14404,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8391644425374571639, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.07
+      value: 24.5
       objectReference: {fileID: 0}
     - target: {fileID: 8391644425374571639, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -78.14
+      value: -97.9
       objectReference: {fileID: 0}
     - target: {fileID: 8391644425374571639, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: m_LocalPosition.z

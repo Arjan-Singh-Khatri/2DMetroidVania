@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: -6074313955414519208}
   m_Layer: 0
   m_Name: PlayerShockEffect
-  m_TagString: HeavyHitBox
+  m_TagString: PlayerProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
