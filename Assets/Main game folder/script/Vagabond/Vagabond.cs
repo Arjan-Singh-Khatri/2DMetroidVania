@@ -15,6 +15,7 @@ public class Vagabond : EnemyParentScript
     private Animator animator;
     private Rigidbody2D rigbody;
     private RaycastHit2D hit;
+    private Collider2D[] colliders;
 
     [Header("MISCELLANEOUS FOR NOW ")]
     [SerializeField] private float circleCastRadius = 3.8f;
@@ -27,7 +28,8 @@ public class Vagabond : EnemyParentScript
 
     [Header("DASH")]
     [SerializeField] private float _dashSpeed = 5f;
-    [SerializeField] private float _canPerformDashDistance;
+    [SerializeField] private float _maxDashThreshold = 10f;
+    [SerializeField] private float _minDashThreshold = 0f;
     [SerializeField] private float _dashCheckRight;
     [SerializeField] private float _dashCheckLeft;
     private float _dashProbabilityTimer;
@@ -42,7 +44,7 @@ public class Vagabond : EnemyParentScript
     private float lerpSpeed = 0f;
     private float chaseSpeed = 0f;
     private float distanceBetween;
-    private bool chase = true;
+    private bool chase = false;
 
     // JUMP
     [SerializeField] private float _jumpForce = 0f;
@@ -79,12 +81,12 @@ public class Vagabond : EnemyParentScript
     private float playerHealthAfterHit;
 
     [Header("AI")]
+    private const float ORIGINAL_HEALTH = 200; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
     private bool canChooseBehaviour = true;
     private float canChooseTimer = 2f;
     private bool canChooseTrigger = false;
-    private float _damageTaken = 0f;
-    private const float ORIGINAL_HEALTH = 200 ; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
     private float criticalHealth;
+    private float _damageTaken = 0f;
 
     [Header("Probabilities For Attack")]
     private float probForNormal = 0f;
@@ -114,11 +116,21 @@ public class Vagabond : EnemyParentScript
 
         if (isDying)
             return;
+        // JUST ALL THE CALCULATIONS AND PHYSICS CAST 
+        flip();
+        colliders = Physics2D.OverlapCircleAll(transform.position, circleCastRadius);
 
-        PhysicsAndCalcs();
+        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
+
+        //AvoidProjectilesAttack();
+        return;
 
         if (chase)
+        {
+            CalculateChaseVector();
             Chase();
+        }
+            
 
         // TIMER FOR BEHAVIOUR CHECK
         CanAttackCheck();
@@ -141,15 +153,19 @@ public class Vagabond : EnemyParentScript
         // Enemy Flip and Determine Probabilities
         flip();
         DetermineProbabilities();
-        var randomVar = Random.Range(0,101) ;
 
         // WHEN PLAYER IS IN ATTACK DISTANCE
-        if (hit.collider.gameObject.CompareTag("Player")) {
-            if (randomVar <= probForChoiceBlock)
-                StartCoroutine(BlockAttack());
-            else
-                ChooseAttack();
-            canChooseBehaviour = false;
+        var randomVar = Random.Range(0,101) ;
+        
+        foreach(var col in colliders) { 
+            if(col.name == player.name) 
+            {
+                if (randomVar <= probForChoiceBlock)
+                    StartCoroutine(BlockAttack());
+                else
+                    ChooseAttack();
+                canChooseBehaviour = false;
+            }
         }
 
         // CHOOSING WHAT TO DO BY ENEMY LONG RANGE ATTACKS AND CHASE BEHAVIOURS
@@ -160,27 +176,28 @@ public class Vagabond : EnemyParentScript
         // Dash Away left to do If needed IG
 
         if (randomVar <= probForNormal) {
-            animator.SetTrigger("NormalAttackB");
+            Debug.Log("NormalB");
         }
         else if (randomVar > probForNormal && randomVar <= probForHeavy) {
-            animator.SetTrigger("HeavyAttackB");
+            Debug.Log("HeavyB");
         }
         else if(randomVar > probForHeavy)
             chase = true;
 
     }
 
+    [ContextMenu("CANCHOOSETOGGLE")]
     void CanChooseToggle() {
         canChooseTrigger = true;
     }
 
     void CanChooseBehaviourTimer()
     {
-        if (!canChooseBehaviour) return;
+        if (canChooseBehaviour) return;
         canChooseTimer -= Time.deltaTime;
         if (canChooseTimer < 0)
         {
-            canChooseTimer = 2;
+            canChooseTimer = 4f;
             canChooseBehaviour = true;
             canChooseTrigger = false;
         }
@@ -267,11 +284,11 @@ public class Vagabond : EnemyParentScript
             _jumpForceVector = new(chaseVector.x, _jumpForce);
         else
             _jumpForceVector = new(0f, _jumpForce);
-        // ANIMATION -- 
-        // set value of ySpeed for the blend tree
-        // add upward force to the rigidBody
+        // Addforce to the rigidBody
+        // ANIMATION --set value of ySpeed for the blend tree
+
     }
-    
+
     void AvoidProjectilesAttack()
     {
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing) return;
@@ -416,12 +433,14 @@ public class Vagabond : EnemyParentScript
     }
     void PerformDashWithChecks(bool prob){
         if (prob){
-            if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _canPerformDashDistance) && (IsInDashBoundary()))
+            if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _maxDashThreshold) 
+                && (Mathf.Abs(player.transform.position.x - transform.position.x) >= _minDashThreshold) && (IsInDashBoundary()))
             {
                 DashProbability();
             }
         }else{
-            if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _canPerformDashDistance) && (IsInDashBoundary()))
+            if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _maxDashThreshold)
+                && (Mathf.Abs(player.transform.position.x - transform.position.x) >= _minDashThreshold) && (IsInDashBoundary()))
             {
                 StartCoroutine(Dash(direction));
             }
@@ -450,8 +469,10 @@ public class Vagabond : EnemyParentScript
             var randomVar = Random.Range(0, 101);
             if(randomVar < 90)
                 ChooseAttack();
+        }else {
+            CanChooseToggle();
         }
-        CanChooseToggle();
+
     }
 
     void Tired() { 
@@ -508,23 +529,19 @@ public class Vagabond : EnemyParentScript
     }
     #endregion
 
-    void PhysicsAndCalcs()
+    #region OTHER STUFF
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        hit = Physics2D.CircleCast(transform.position, circleCastRadius, new Vector2(direction, 0));
-        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
-        CalculateChaseVector();
-    }
-
-    private void OnDrawGizmos(){
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, circleCastRadius);
+        Debug.Log($"Collison {collision.gameObject.name}");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!isBlocking) return;
-        Debug.Log("Damage Taken");
+
+        Debug.Log(collision.gameObject.tag);
+
         if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
             TakeDamage(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier);
         else if (collision.gameObject.CompareTag("HeavyHitBox"))
@@ -535,4 +552,12 @@ public class Vagabond : EnemyParentScript
         if (health < 0)
             Die();      
     }
+
+    private void OnDrawGizmos(){
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, circleCastRadius);
+    }
+
+    #endregion
 }

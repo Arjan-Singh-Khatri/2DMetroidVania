@@ -676,6 +676,5 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		}
 	}
 
-
 }
 

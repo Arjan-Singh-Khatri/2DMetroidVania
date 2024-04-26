@@ -9,15 +9,16 @@ enum ProjectileType {
 
 public class VagaBondProjectile : Vagabond
 {
-    private float _speedNormal = 20;
-    private float _speedHeavy = 17;
+    private float _speedNormal = 15f;
+    private float _speedHeavy = 12f;
     private const float LIFE_TIME = 1.9f;
     private float localLifeTime = 0.1f;
     private ProjectileType _currentType;
-
+    private Vector3 directionVector = new();
 
     void Start(){
-        if(gameObject.name.CompareTo("VagaBondShockEffect") == 0) 
+
+        if (gameObject.name.CompareTo("VagaBondShockEffect(Clone)") == 0) 
             _currentType = ProjectileType.Heavy;
         else
             _currentType=ProjectileType.Normal;  
@@ -25,16 +26,16 @@ public class VagaBondProjectile : Vagabond
 
     // Update is called once per frame
     void Update(){
-
+        Debug.Log(directionVector);
         Movement();
         ScaleOverLifeTime();
     }
 
     void Movement() {
         if (_currentType == ProjectileType.Normal)
-            transform.position += _speedNormal * Time.deltaTime * Vector3.right;
+            transform.position += _speedNormal * Time.deltaTime * directionVector;
         else
-            transform.position += _speedHeavy * Time.deltaTime * Vector3.right;
+            transform.position += _speedHeavy * Time.deltaTime * directionVector;
     }
 
     void ScaleOverLifeTime()
@@ -48,6 +49,7 @@ public class VagaBondProjectile : Vagabond
         float randomScale = 1 + (float)Random.Range(-3, 7) / 10;
 
         if (_currentType == ProjectileType.Normal) return;
+
         if (localLifeTime < LIFE_TIME / 2)
         {
             transform.localScale = new Vector2(offset, randomScale);

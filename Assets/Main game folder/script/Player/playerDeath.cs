@@ -103,7 +103,6 @@ public class playerDeath : MonoBehaviour, IDataPersistance
             StartCoroutine(IsHurt(DamageHolder.instance.stromHead));
         }
 
-
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
             StartCoroutine(IsHurt(DamageHolder.instance.strom));
@@ -131,6 +130,6 @@ public class playerDeath : MonoBehaviour, IDataPersistance
             StartCoroutine(IsHurt(DamageHolder.instance.spikedSlime));
         if (collision.gameObject.CompareTag("Slime"))
             StartCoroutine(IsHurt(DamageHolder.instance.slimeDamage));
-
+        // LIGHTNING
     }
 }
