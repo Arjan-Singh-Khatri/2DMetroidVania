@@ -150,15 +150,14 @@ public class StromHead : EnemyParentScript
         animator.SetBool("Sleep", true);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+
+    private void OnTriggerEnter2D(Collider2D collision){
+        
         if (collision.gameObject.CompareTag("Player"))
         {
             player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.stromHead);
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision){
         if (collision.gameObject.CompareTag("PlayerAttackHitBox") || collision.gameObject.CompareTag("HeavyHitBox")){
             if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
             {

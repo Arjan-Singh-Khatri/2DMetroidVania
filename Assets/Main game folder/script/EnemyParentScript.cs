@@ -8,7 +8,7 @@ public class EnemyParentScript : MonoBehaviour
     protected GameObject player;
     protected float health;
     protected bool enemyDead;
-    protected float direction;
+    public float direction;
     [SerializeField] protected string enemyID;
     [ContextMenu("GUID ID GENERATE")]
     private void GenerateGUID()

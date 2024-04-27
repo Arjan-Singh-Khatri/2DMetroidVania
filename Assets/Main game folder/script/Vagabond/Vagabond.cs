@@ -25,6 +25,8 @@ public class Vagabond : EnemyParentScript
     private bool isTired = false;
     private const float TIRED_TIME = 2.7f;
     private float isTiredTimer;
+    // FOR PROJECTILES
+    protected float directionForProjectile;
 
     [Header("DASH")]
     [SerializeField] private float _dashSpeed = 5f;
@@ -70,8 +72,6 @@ public class Vagabond : EnemyParentScript
     private bool canAttack = true;
 
     [Header("Damage")]
-    [SerializeField] protected float _damageNormalProjectile = 0f;
-    [SerializeField] protected float _damageHeavyProjectile = 0f;
     [SerializeField] protected float _damageNormal = 0f;
     [SerializeField] protected float _damageHeavy = 0f;
 
@@ -94,13 +94,14 @@ public class Vagabond : EnemyParentScript
     private float probForChoiceBlock = 0f;
     #endregion
 
+
     void Start() {
        
         // References
         player = GameObject.FindGameObjectWithTag("Player");
         _playerAttackScript = player.GetComponent<PlayerAttack>();
         _playerDeathScript = player.GetComponent<playerDeath>();
-        playerHealthAfterHit = _playerDeathScript.health - _damageNormalProjectile;
+        playerHealthAfterHit = _playerDeathScript.health - _damageNormal;
 
         // GameObject components
         animator = GetComponent<Animator>();
@@ -117,20 +118,13 @@ public class Vagabond : EnemyParentScript
         if (isDying)
             return;
         // JUST ALL THE CALCULATIONS AND PHYSICS CAST 
-        flip();
-        colliders = Physics2D.OverlapCircleAll(transform.position, circleCastRadius);
-
-        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
-
-        //AvoidProjectilesAttack();
-        return;
+        Math();
 
         if (chase)
         {
             CalculateChaseVector();
             Chase();
         }
-            
 
         // TIMER FOR BEHAVIOUR CHECK
         CanAttackCheck();
@@ -147,8 +141,13 @@ public class Vagabond : EnemyParentScript
 
     #region Enemy Behaviour
     void EnemyAI() {
-        
-        if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing) return;
+
+
+        if (isCharingAttack || isAttacking || isHeavyAttacking || isTired || isDashing) return;
+        else if (isBlocking) { 
+            flip();
+            return;
+        }
         
         // Enemy Flip and Determine Probabilities
         flip();
@@ -176,17 +175,17 @@ public class Vagabond : EnemyParentScript
         // Dash Away left to do If needed IG
 
         if (randomVar <= probForNormal) {
-            Debug.Log("NormalB");
+            animator.SetTrigger("NormalAttackB");
         }
         else if (randomVar > probForNormal && randomVar <= probForHeavy) {
-            Debug.Log("HeavyB");
+            animator.SetTrigger("HeavyAttackB");
         }
         else if(randomVar > probForHeavy)
             chase = true;
+            
 
     }
 
-    [ContextMenu("CANCHOOSETOGGLE")]
     void CanChooseToggle() {
         canChooseTrigger = true;
     }
@@ -197,7 +196,7 @@ public class Vagabond : EnemyParentScript
         canChooseTimer -= Time.deltaTime;
         if (canChooseTimer < 0)
         {
-            canChooseTimer = 4f;
+            canChooseTimer = 2f;
             canChooseBehaviour = true;
             canChooseTrigger = false;
         }
@@ -205,16 +204,17 @@ public class Vagabond : EnemyParentScript
 
     private void DetermineProbabilities() {
         if (BeAggresive()) {
-            probForChoiceBlock = 40f;
+            probForChoiceBlock = 90f;
             probForNormal = 30f;
             probForHeavy = 60f;
         }else if (BeDefensive()) {
-            probForChoiceBlock = 60f;
+            probForChoiceBlock = 40f;
             probForNormal = 30f;
             probForHeavy = 80f;
         }
     }
 
+    // MAYBE 
     private void DashAway() { 
         // AFTER SOME BEHAVIOUR DASH AWAY IF THERE IS LESS THAN SOME THRESHOLD DISTANCE BETWEEN VAGABOND AND THE PLAYER
     }
@@ -257,11 +257,11 @@ public class Vagabond : EnemyParentScript
 
     #endregion
 
-    #region MOVEMENTS
+    #region MOVEMENT
     void Chase(){
         _dashProbabilityTimer -= Time.deltaTime;
         if( _dashProbabilityTimer < 0){
-            _dashProbabilityTimer = 2.5f; 
+            _dashProbabilityTimer = 1.5f; 
             PerformDashWithChecks(true);
         }
 
@@ -352,27 +352,25 @@ public class Vagabond : EnemyParentScript
 
     #region Attack INSTANTIATIONS BAD CODE
 
-    [ContextMenu("Normal")]
     void NormalAttackInstantiation() {
         
         Instantiate(normalProjectile, projectileTransform.position, Quaternion.identity);
     }
 
-    [ContextMenu("Heavy")]
     void HeavyAttackInstantiation() { 
         Instantiate(heavyProjectile, heavyProjectileTransform.position, Quaternion.identity);
     }
 
     void NormalInstantiationWithProb() {
         var randomNumber = Random.Range(0, 101);
-        if(randomNumber < 27)
+        if(randomNumber < 15)
             Instantiate(normalProjectile, projectileTransform.position, Quaternion.identity);
     }
 
     void HeavyInstantiationWithProb()
     {
         var randomNumber = Random.Range(0, 101);
-        if (randomNumber < 33)
+        if (randomNumber < 15)
             Instantiate(heavyProjectile, heavyProjectileTransform.position, Quaternion.identity);
     }
     #endregion
@@ -426,11 +424,13 @@ public class Vagabond : EnemyParentScript
         isDashing = false;
         animator.SetBool("Dash", false);
     }
+
     bool IsInDashBoundary(){
         if ((transform.position.x < _dashCheckRight) && (transform.position.x > _dashCheckLeft))
             return true;
         return false;
     }
+
     void PerformDashWithChecks(bool prob){
         if (prob){
             if ((Mathf.Abs(player.transform.position.x - transform.position.x) <= _maxDashThreshold) 
@@ -455,9 +455,9 @@ public class Vagabond : EnemyParentScript
         }
     }
 
-    IEnumerator BlockAttack(){
+    IEnumerator BlockAttack() {
         chase = false;
-        animator.SetBool("Run", false); 
+        animator.SetBool("Run", false);
         isBlocking = true;
         if (animator.GetBool("Block") == false)
             animator.SetBool("Block", true);
@@ -465,11 +465,15 @@ public class Vagabond : EnemyParentScript
         yield return new WaitForSeconds(Random.Range(2, 5.5f));
         animator.SetBool("Block", false);
         isBlocking = false;
-        if (hit.collider.name == player.name && _playerAttackScript.isAttacking == false){
+        Debug.Log($"Player Attack bool :{_playerAttackScript.isAttacking}");
+        if (hit.collider.name == player.name && _playerAttackScript.isAttacking == false)
+        {
             var randomVar = Random.Range(0, 101);
-            if(randomVar < 90)
+            if (randomVar < 90)
                 ChooseAttack();
-        }else {
+        }
+        else
+        {
             CanChooseToggle();
         }
 
@@ -498,8 +502,7 @@ public class Vagabond : EnemyParentScript
         canAttack = false;
 
     }
-
-
+    
     #endregion
 
     #region DEATH And Damage
@@ -530,25 +533,27 @@ public class Vagabond : EnemyParentScript
     #endregion
 
     #region OTHER STUFF
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log($"Collison {collision.gameObject.name}");
+    void Math(){
+        directionForProjectile = direction;
+        colliders = Physics2D.OverlapCircleAll(transform.position, circleCastRadius);
+        distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isBlocking) return;
+        if (isBlocking) return;
+        // PLAYER TAKES DAMAGE IF HIT BY A DASH
+        if (isDashing && collision.gameObject.CompareTag("Player"))
+            _playerDeathScript.TakeDamage(_damageNormal);
 
-        Debug.Log(collision.gameObject.tag);
-
+        // VAGABOND TAKING DAMAGE
         if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
             TakeDamage(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier);
         else if (collision.gameObject.CompareTag("HeavyHitBox"))
             TakeDamage(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier);
         else if (collision.gameObject.CompareTag("PlayerProjectile"))
             TakeDamage(DamageHolder.instance.playerHeavyDamage);
-
+        
         if (health < 0)
             Die();      
     }

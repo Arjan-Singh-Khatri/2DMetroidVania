@@ -13,10 +13,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     [SerializeField] Collider2D damageCollider;
     [SerializeField] SpriteRenderer _spriteRenderer;
-    // turn collider off when canTakeDamage is off and turn it on when it is off
 
-
-    // Start is called before the first frame update
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -39,33 +36,26 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private IEnumerator IsHurt(float damage)
+    public void TakeDamage(float damage)
     {
         damageCollider.enabled = false;
-        TakeDamage(damage);
+        DamageHolder.instance.damageMultiplier = 1;
+        DamageHolder.instance.comboNumber = 0;
         StartCoroutine(HitAnimation());
-        yield return new WaitForSeconds(.7f);
-        damageCollider.enabled = true;
+        StartCoroutine(ColliderTrigger());
+        health -= damage;
+        if (health <= 0)
+        {
+            rig.bodyType = RigidbodyType2D.Static;
+            anim.SetTrigger("death");
+        }
     }
 
     IEnumerator ColliderTrigger()
     {
         damageCollider.enabled = false;
-        yield return new WaitForSeconds(.8f);
+        yield return new WaitForSeconds(1f);
         damageCollider.enabled = true;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        DamageHolder.instance.damageMultiplier = 1;
-        DamageHolder.instance.comboNumber = 0;
-        StartCoroutine(ColliderTrigger());
-        health -= damage;
-        if (health <=0)
-        {
-            rig.bodyType = RigidbodyType2D.Static;
-            anim.SetTrigger("death");
-        }
     }
 
     protected IEnumerator HitAnimation()
@@ -75,20 +65,12 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         Color aplha3 = new Color(255, 255, 255, .6f);
 
         _spriteRenderer.color = aplha2;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.3f);
         _spriteRenderer.color = alpha1;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.3f);
         _spriteRenderer.color = aplha3;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.3f);
         _spriteRenderer.color = alpha1;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -100,36 +82,35 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         }
         if (collision.gameObject.CompareTag("StromHead"))
         {
-            StartCoroutine(IsHurt(DamageHolder.instance.stromHead));
+            TakeDamage(DamageHolder.instance.stromHead);
         }
 
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
-            StartCoroutine(IsHurt(DamageHolder.instance.strom));
+            TakeDamage(DamageHolder.instance.strom);
         if (collision.gameObject.CompareTag("TwoHeadAttack2"))
-            StartCoroutine(IsHurt(DamageHolder.instance.twoHeadAttackTwoDamage));
+            TakeDamage(DamageHolder.instance.twoHeadAttackTwoDamage);
         if (collision.gameObject.CompareTag("FireBall"))
-            StartCoroutine(IsHurt(DamageHolder.instance.fireBallDamage));
+            TakeDamage(DamageHolder.instance.fireBallDamage);
         if (collision.gameObject.CompareTag("CrabAttack"))
-            StartCoroutine(IsHurt(DamageHolder.instance.crabAttack));
+            TakeDamage(DamageHolder.instance.crabAttack);
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
-            StartCoroutine(IsHurt(DamageHolder.instance.spikedSlimeAttack));
+            TakeDamage(DamageHolder.instance.spikedSlimeAttack);
 
 
         // Enemies 
 
         if (collision.gameObject.CompareTag("TwoHead"))
-            StartCoroutine(IsHurt(DamageHolder.instance.twoHeadDamage));
+            TakeDamage(DamageHolder.instance.twoHeadDamage);
         if (collision.gameObject.CompareTag("Crab"))
-            StartCoroutine(IsHurt(DamageHolder.instance.crab));
+            TakeDamage(DamageHolder.instance.crab);
         if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
-            StartCoroutine(IsHurt(DamageHolder.instance.spikdSlimeSpikes));
+            TakeDamage(DamageHolder.instance.spikdSlimeSpikes);
         if (collision.gameObject.CompareTag("Bat"))
-            StartCoroutine(IsHurt(DamageHolder.instance.batDamage));
+            TakeDamage(DamageHolder.instance.batDamage  );
         if (collision.gameObject.CompareTag("SpikedSlime"))
-            StartCoroutine(IsHurt(DamageHolder.instance.spikedSlime));
+            TakeDamage(DamageHolder.instance.spikedSlime);
         if (collision.gameObject.CompareTag("Slime"))
-            StartCoroutine(IsHurt(DamageHolder.instance.slimeDamage));
-        // LIGHTNING
+            TakeDamage(DamageHolder.instance.slimeDamage);
     }
 }
