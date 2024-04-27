@@ -14,7 +14,6 @@ public class Vagabond : EnemyParentScript
     [Header("GET COMPONENTS")]
     private Animator animator;
     private Rigidbody2D rigbody;
-    private RaycastHit2D hit;
     private Collider2D[] colliders;
 
     [Header("MISCELLANEOUS FOR NOW ")]
@@ -25,6 +24,7 @@ public class Vagabond : EnemyParentScript
     private bool isTired = false;
     private const float TIRED_TIME = 2.7f;
     private float isTiredTimer;
+    private bool canAttackAfterBlock;
     // FOR PROJECTILES
     protected float directionForProjectile;
 
@@ -117,7 +117,7 @@ public class Vagabond : EnemyParentScript
 
         if (isDying)
             return;
-        // JUST ALL THE CALCULATIONS AND PHYSICS CAST 
+        // TRYING TO MAKE THINGS LOOK CLEAN
         Math();
 
         if (chase)
@@ -293,8 +293,6 @@ public class Vagabond : EnemyParentScript
     {
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing) return;
 
-        if (hit.collider.gameObject.CompareTag("PlayerProjectile"))
-            Jump();
     }
 
 
@@ -462,21 +460,22 @@ public class Vagabond : EnemyParentScript
         if (animator.GetBool("Block") == false)
             animator.SetBool("Block", true);
 
-        yield return new WaitForSeconds(Random.Range(2, 5.5f));
+        yield return new WaitForSeconds(Random.Range(2, 3.5f));
+
         animator.SetBool("Block", false);
         isBlocking = false;
-        Debug.Log($"Player Attack bool :{_playerAttackScript.isAttacking}");
-        if (hit.collider.name == player.name && _playerAttackScript.isAttacking == false)
-        {
-            var randomVar = Random.Range(0, 101);
-            if (randomVar < 90)
-                ChooseAttack();
-        }
-        else
-        {
-            CanChooseToggle();
-        }
 
+        foreach(var col in colliders) { 
+            if(col.name == player.name && !_playerAttackScript.isAttacking) {
+                var randomVar = Random.Range(0, 101);
+                if (randomVar < 90)
+                    ChooseAttack();
+            }
+            else{
+                CanChooseToggle();
+            }
+        }
+        
     }
 
     void Tired() { 
@@ -537,6 +536,7 @@ public class Vagabond : EnemyParentScript
         directionForProjectile = direction;
         colliders = Physics2D.OverlapCircleAll(transform.position, circleCastRadius);
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
