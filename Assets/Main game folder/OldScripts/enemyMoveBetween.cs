@@ -78,6 +78,12 @@ public class enemyMoveBetween : EnemyParentScript, IDataPersistance
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.spikedSlime);
+        }
+
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
             PushBack();

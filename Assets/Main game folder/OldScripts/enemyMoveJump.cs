@@ -90,6 +90,11 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.slimeDamage);
+        }
+
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
             PushBack();

@@ -36,8 +36,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void TakeDamage(float damage)
-    {
+    public void TakeDamage(float damage){
         damageCollider.enabled = false;
         DamageHolder.instance.damageMultiplier = 1;
         DamageHolder.instance.comboNumber = 0;
@@ -51,15 +50,15 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         }
     }
 
-    IEnumerator ColliderTrigger()
-    {
+    IEnumerator ColliderTrigger(){
+
         damageCollider.enabled = false;
         yield return new WaitForSeconds(1f);
         damageCollider.enabled = true;
     }
 
-    protected IEnumerator HitAnimation()
-    {
+    protected IEnumerator HitAnimation(){
+
         Color alpha1 = new Color(255, 2555, 255, 1);
         Color aplha2 = new Color(255, 255, 255, .4f);
         Color aplha3 = new Color(255, 255, 255, .6f);
@@ -73,44 +72,29 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         _spriteRenderer.color = alpha1;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision){
+
         if (collision.gameObject.CompareTag("trap"))
         {
             rig.bodyType = RigidbodyType2D.Static;
             anim.SetTrigger("death");
         }
-        if (collision.gameObject.CompareTag("StromHead"))
-        {
-            TakeDamage(DamageHolder.instance.stromHead);
-        }
 
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
             TakeDamage(DamageHolder.instance.strom);
+        
         if (collision.gameObject.CompareTag("TwoHeadAttack2"))
             TakeDamage(DamageHolder.instance.twoHeadAttackTwoDamage);
+        
         if (collision.gameObject.CompareTag("FireBall"))
             TakeDamage(DamageHolder.instance.fireBallDamage);
+        
         if (collision.gameObject.CompareTag("CrabAttack"))
             TakeDamage(DamageHolder.instance.crabAttack);
+        
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
             TakeDamage(DamageHolder.instance.spikedSlimeAttack);
-
-
-        // Enemies 
-
-        if (collision.gameObject.CompareTag("TwoHead"))
-            TakeDamage(DamageHolder.instance.twoHeadDamage);
-        if (collision.gameObject.CompareTag("Crab"))
-            TakeDamage(DamageHolder.instance.crab);
-        if (collision.gameObject.CompareTag("SpikedSlimeSpikes"))
-            TakeDamage(DamageHolder.instance.spikdSlimeSpikes);
-        if (collision.gameObject.CompareTag("Bat"))
-            TakeDamage(DamageHolder.instance.batDamage  );
-        if (collision.gameObject.CompareTag("SpikedSlime"))
-            TakeDamage(DamageHolder.instance.spikedSlime);
-        if (collision.gameObject.CompareTag("Slime"))
-            TakeDamage(DamageHolder.instance.slimeDamage);
+      
     }
 }

@@ -10,16 +10,13 @@ public class EnemyParentScript : MonoBehaviour
     protected bool enemyDead;
     public float direction;
     [SerializeField] protected string enemyID;
+
     [ContextMenu("GUID ID GENERATE")]
-    private void GenerateGUID()
-    {
+    private void GenerateGUID(){
         enemyID = System.Guid.NewGuid().ToString();
     }
-    
-    
-
-    protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy)
-    {
+ 
+    protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy){
         DamageHolder.instance.comboNumber += 1;
         DamageHolder.instance.damageMultiplier += .25f * DamageHolder.instance.comboNumber;
         DamageHolder.instance.playerCharge += 1;
@@ -28,16 +25,14 @@ public class EnemyParentScript : MonoBehaviour
         StartCoroutine(HitAnimation());
     }
 
-    protected void PushBack()
-    {
+    protected void PushBack(){
         if (player.transform.position.x <= transform.position.x)
             transform.position = transform.position + new Vector3(1.75f, 0, 0);
         else 
             transform.position = transform.position + new Vector3(-1.75f, 0, 0);
     }
 
-    protected void flip()
-    {
+    protected void flip(){
         if (player.transform.position.x < transform.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -51,8 +46,7 @@ public class EnemyParentScript : MonoBehaviour
 
     }
 
-    protected IEnumerator HitAnimation()
-    {
+    protected IEnumerator HitAnimation(){
 
         var _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
@@ -65,8 +59,7 @@ public class EnemyParentScript : MonoBehaviour
         _spriteRenderer.color = new Color(255, 255, 255, 1);
     }
 
-    protected void EnemyDeath()
-    {
+    protected void EnemyDeath(){
         Destroy(gameObject);
     }
 }
