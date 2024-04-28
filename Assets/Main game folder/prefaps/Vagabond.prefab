@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455962838556429854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.59, y: -0.08, z: 0}
+  m_LocalPosition: {x: 3.59, y: -0.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -423,16 +423,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba6f63d04060624393b3b4159eabf30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: 0
   enemyID: 
-  _spriteRenderer: {fileID: 8391644425374571638}
-  circleCastRadius: 3.4
+  circleCastRadius: 3.75
   _dashSpeed: 20
-  _canPerformDashDistance: 10
+  _maxDashThreshold: 10
+  _minDashThreshold: 0
   _dashCheckRight: 40.88
   _dashCheckLeft: -3.06
   chaseMaxSpeed: 5
   chaseMinSpeed: 4
-  _chaseForce: 9
+  _chaseForce: 1
+  chase: 0
+  _jumpForce: 18
   normalAttackHitbox: {fileID: 8391644424258273309}
   heavyAttackHitbox: {fileID: 8391644424405631860}
   normalAttackHitbox2: {fileID: 8391644425728178869}

@@ -4671,7 +4671,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116352528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.52001, y: 6.308688, z: -28.884445}
+  m_LocalPosition: {x: -47.490013, y: 6.5553513, z: -28.884445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14394,17 +14394,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5801599866440971912, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.56
-      objectReference: {fileID: 0}
     - target: {fileID: 8391644425374571636, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: m_Name
       value: Vagabond
-      objectReference: {fileID: 0}
-    - target: {fileID: 8391644425374571636, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8391644425374571639, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: m_RootOrder
@@ -14450,22 +14442,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8391644425374571640, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
-      propertyPath: _chaseForce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
-      propertyPath: circleCastRadius
-      value: 3.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
-      propertyPath: _maxDashThreshold
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
 --- !u!1001 &6299837469207031776
@@ -14489,11 +14465,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.94
+      value: -0.03
       objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -98.66
+      value: -98.29
       objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_LocalPosition.z

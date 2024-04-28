@@ -1,11 +1,3 @@
-/*
-	Created by @DawnosaurDev at youtube.com/c/DawnosaurStudios
-	Thanks so much for checking this out and I hope you find it helpful! 
-	If you have any further queries, questions or feedback feel free to reach out on my twitter or leave a comment on youtube :D
-
-	Feel free to use this in your own games, and I'd love to see anything you make!
- */
-
 using System.Collections;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
@@ -564,7 +556,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	}
     #endregion
 
-
     #region CHECK METHODS
     public void CheckDirectionToFace(bool isMovingRight)
 	{
@@ -612,7 +603,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	}
     #endregion
 
-
     #region EDITOR METHODS
     private void OnDrawGizmosSelected()
     {
@@ -626,7 +616,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
 	private void AnimationHandler()
 	{
-		// Horizontal Movement 
+        #region WALK AND SLIDE
         if (_moveInput.x != 0)
         {
             anim.SetBool("walk", true);
@@ -637,25 +627,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
             anim.SetBool("walk", false);
         }
 
-		// Vertical Movement And Dashes 
-
-        if (IsJumping)
-		{
-			anim.SetBool("jump", true);
-			anim.SetFloat("yspeed", 0.1f);
-		}
-
-		//if (IsDashing)
-		//{
-		//	anim.SetBool("jump", true);
-		//	anim.SetFloat("yspeed", 0.1f);
-		
-		//}
-		//else
-		//{
-		//	Debug.Log("Ground Dashing ");
-		//}
-
 		if (IsSliding)
 		{
 			anim.SetBool("Slide", true);
@@ -663,8 +634,16 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		{
 			anim.SetBool("Slide", false);
 		}
+        #endregion
 
-		// Falling Movement
+        #region Jump
+
+        if (IsJumping)
+        {
+            anim.SetBool("jump", true);
+            anim.SetFloat("yspeed", 0.1f);
+        }
+
         if (RB.gravityScale >2.6 && !CanJump())
         {
             anim.SetBool("jump", true);
@@ -674,7 +653,12 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		{
 			anim.SetBool("jump", false);
 		}
-	}
+        #endregion
 
+        #region DASH
+
+
+        #endregion
+    }
 }
 

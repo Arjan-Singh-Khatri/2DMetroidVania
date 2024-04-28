@@ -7,7 +7,7 @@ public class PlayerProjectile : MonoBehaviour
 {
 
     [SerializeField] private float _speed = 10f;
-    private const float LIFE_TIME = 1.9f;
+    private const float LIFE_TIME = 2.5f;
     private float localLifeTime = 0.1f;
     private Rigidbody2D rig;
 

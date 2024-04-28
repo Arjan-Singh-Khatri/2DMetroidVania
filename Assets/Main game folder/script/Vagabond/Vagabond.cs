@@ -10,7 +10,8 @@ using UnityEngine.UIElements;
 public class Vagabond : EnemyParentScript
 {
     #region VARIABLES AND COMPONENTS
-    // MAKE AN ENTRY ANIMATION WHERE HE LIKE WAKES UP THEN TRANSITION THAT TO THE IDEL STATE 
+    // TO DO - MAKE AN ENTRY ANIMATION WHERE HE LIKE WAKES UP THEN TRANSITION THAT TO THE IDEL STATE 
+
     [Header("GET COMPONENTS")]
     private Animator animator;
     private Rigidbody2D rigbody;
@@ -18,13 +19,11 @@ public class Vagabond : EnemyParentScript
 
     [Header("MISCELLANEOUS FOR NOW ")]
     [SerializeField] private float circleCastRadius = 3.8f;
-    //[SerializeField] private float blockDistance = 4f;
     private bool isDying = false;
     private bool isBlocking = false;
     private bool isTired = false;
     private const float TIRED_TIME = 2.7f;
     private float isTiredTimer;
-    private bool canAttackAfterBlock;
     // FOR PROJECTILES
     protected float directionForProjectile;
 
@@ -43,15 +42,16 @@ public class Vagabond : EnemyParentScript
     [SerializeField] private float chaseMinSpeed = 2f;
     [SerializeField] private float _chaseForce = 10f;
     private Vector2 chaseVector = new();
+    public bool chase = false;
+    private float distanceBetween;
     private float lerpSpeed = 0f;
     private float chaseSpeed = 0f;
-    private float distanceBetween;
-    private bool chase = false;
 
     // JUMP
     [SerializeField] private float _jumpForce = 0f;
-    private float _ySpeed;
+    private bool isJumping = false;
     private Vector2 _jumpForceVector = new();
+    private bool toggleChase = false;
 
     [Header("Attack")]
     [SerializeField] private GameObject normalAttackHitbox;
@@ -94,7 +94,6 @@ public class Vagabond : EnemyParentScript
     private float probForChoiceBlock = 0f;
     #endregion
 
-
     void Start() {
        
         // References
@@ -117,33 +116,31 @@ public class Vagabond : EnemyParentScript
 
         if (isDying)
             return;
+
         // TRYING TO MAKE THINGS LOOK CLEAN
         Math();
-
-        if (chase)
-        {
-            CalculateChaseVector();
+        // IF CHASE THEN CHASE THE PLAYER
+        CalculateChaseVector();
+        if (chase){
             Chase();
         }
-
-        // TIMER FOR BEHAVIOUR CHECK
-        CanAttackCheck();
-
-        // ENEMY STUNNED 
-        TiredChecks();
-        
+        // TRY TO AVOID PLAYER PROJECTILE
+        AvoidProjectiles();
         // ENEMY BEHAVIOUR 
-        EnemyAI();
-
+        EnemyBehaviour();
+        // TIMER TOO SEE IF THE VAGABOND CAN ATTACK AGAIN
+        CanAttackCheck();
+        // TIMER TO END STUNNED STATE OF VAGABOND
+        StunnedTimer();
+        // TO TRIGGER TIMER FOR VAGABOND TO CHOOSE BEHAVIOUR
         if (canChooseTrigger)  
             CanChooseBehaviourTimer();
     }
 
     #region Enemy Behaviour
-    void EnemyAI() {
+    void EnemyBehaviour() {
 
-
-        if (isCharingAttack || isAttacking || isHeavyAttacking || isTired || isDashing) return;
+        if (isCharingAttack || isAttacking || isHeavyAttacking || isTired || isDashing || isJumping) return;
         else if (isBlocking) { 
             flip();
             return;
@@ -153,36 +150,32 @@ public class Vagabond : EnemyParentScript
         flip();
         DetermineProbabilities();
 
-        // WHEN PLAYER IS IN ATTACK DISTANCE
+        // WHEN PLAYER IS IN ATTACK OR BLOCK DISTANCE
         var randomVar = Random.Range(0,101) ;
-        
-        foreach(var col in colliders) { 
-            if(col.name == player.name) 
-            {
-                if (randomVar <= probForChoiceBlock)
-                    StartCoroutine(BlockAttack());
-                else
-                    ChooseAttack();
-                canChooseBehaviour = false;
-            }
+
+        if (IsPlayerInRange()) {
+            if (randomVar <= probForChoiceBlock)
+                StartCoroutine(BlockAttack());
+            else
+                ChooseAttack();
+            canChooseBehaviour = false;
         }
 
         // CHOOSING WHAT TO DO BY ENEMY LONG RANGE ATTACKS AND CHASE BEHAVIOURS
-        if (!canChooseBehaviour) return;
+        if (!canChooseBehaviour && isJumping) return;
 
         canChooseBehaviour = false;
 
-        // Dash Away left to do If needed IG
+        // Dash Away ???
 
-        if (randomVar <= probForNormal) {
+        if (randomVar <= probForNormal){
             animator.SetTrigger("NormalAttackB");
         }
-        else if (randomVar > probForNormal && randomVar <= probForHeavy) {
+        else if (randomVar > probForNormal && randomVar <= probForHeavy){
             animator.SetTrigger("HeavyAttackB");
         }
-        else if(randomVar > probForHeavy)
+        else if (randomVar > probForHeavy)
             chase = true;
-            
 
     }
 
@@ -204,7 +197,7 @@ public class Vagabond : EnemyParentScript
 
     private void DetermineProbabilities() {
         if (BeAggresive()) {
-            probForChoiceBlock = 90f;
+            probForChoiceBlock = 20f;
             probForNormal = 30f;
             probForHeavy = 60f;
         }else if (BeDefensive()) {
@@ -214,10 +207,6 @@ public class Vagabond : EnemyParentScript
         }
     }
 
-    // MAYBE 
-    private void DashAway() { 
-        // AFTER SOME BEHAVIOUR DASH AWAY IF THERE IS LESS THAN SOME THRESHOLD DISTANCE BETWEEN VAGABOND AND THE PLAYER
-    }
     #endregion
 
     #region Aggresion and Defensive Behaviour
@@ -253,21 +242,19 @@ public class Vagabond : EnemyParentScript
             return true;
         return false;
     }
-
-
     #endregion
 
     #region MOVEMENT
     void Chase(){
-        _dashProbabilityTimer -= Time.deltaTime;
-        if( _dashProbabilityTimer < 0){
-            _dashProbabilityTimer = 1.5f; 
-            PerformDashWithChecks(true);
-        }
 
         if (animator.GetBool("Run") == false)
             animator.SetBool("Run", true);
 
+        _dashProbabilityTimer -= Time.deltaTime;
+        if( _dashProbabilityTimer < 0){
+            _dashProbabilityTimer =Random.Range(1.1f,1.5f); 
+            PerformDashWithChecks(true);
+        }
         rigbody.AddForce(chaseVector, ForceMode2D.Force);
         
         // Timer maybe just to make sure it doesn't keep chasing for too long
@@ -280,21 +267,62 @@ public class Vagabond : EnemyParentScript
     }
 
     void Jump() {
-        if (chase)
+        isJumping = true;
+        animator.SetBool("Jump", true);
+        if (chase) { 
             _jumpForceVector = new(chaseVector.x, _jumpForce);
+            animator.SetBool("Run", false);
+            chase = false;
+            toggleChase = true;
+        }
         else
             _jumpForceVector = new(0f, _jumpForce);
-        // Addforce to the rigidBody
-        // ANIMATION --set value of ySpeed for the blend tree
-
+        rigbody.AddForce(_jumpForceVector, ForceMode2D.Impulse);
     }
 
-    void AvoidProjectilesAttack()
-    {
+    void AvoidProjectiles(){
+
+        SetJumpFalse();
+        
         if (isCharingAttack || isAttacking || isHeavyAttacking || isBlocking || isTired || isDashing) return;
 
+        animator.SetFloat("ySpeed", rigbody.velocity.y);
+        if (IsProjectileInRange() && !animator.GetBool("Jump")){
+            Jump();
+        }
     }
 
+    void SetJumpFalse() {
+        if ( (rigbody.velocity.y < -10f || rigbody.velocity.y == 0) && animator.GetBool("Jump")) { 
+            animator.SetBool("Jump", false);
+            isJumping = false;
+            if (toggleChase) { 
+                chase = true;
+                toggleChase = false;
+            }
+        }
+    }
+
+    private bool IsPlayerInRange()
+    {
+        foreach (var col in colliders)
+        {
+            if (col.name == player.name)
+                return true;
+        }
+        return false;
+    }
+
+    private bool IsProjectileInRange()
+    {
+
+        foreach (var col in colliders)
+        {
+            if (col.tag.CompareTo("PlayerProjectile") == 0)
+                return true;
+        }
+        return false;
+    }
 
     #endregion
 
@@ -341,7 +369,7 @@ public class Vagabond : EnemyParentScript
             if (attackCoolDownTimer <= 0)
             {
                 canAttack = true;
-                attackCoolDownTimer = 1.7f;
+                attackCoolDownTimer = .7f;
             }
         }
     }
@@ -407,10 +435,9 @@ public class Vagabond : EnemyParentScript
         isHeavyAttacking= false;
         CanChooseToggle();
     }
-
     #endregion
 
-    #region Block , Dash and Tired
+    #region Block , Dash and Stunned
 
     IEnumerator Dash(float direction){
         animator.SetBool("Dash", true);
@@ -465,68 +492,68 @@ public class Vagabond : EnemyParentScript
         animator.SetBool("Block", false);
         isBlocking = false;
 
-        foreach(var col in colliders) { 
-            if(col.name == player.name && !_playerAttackScript.isAttacking) {
-                var randomVar = Random.Range(0, 101);
-                if (randomVar < 90)
-                    ChooseAttack();
-            }
-            else{
-                CanChooseToggle();
-            }
+         
+        if(IsPlayerInRange() && !_playerAttackScript.isAttacking) {
+            var randomVar = Random.Range(0, 101);
+            if (randomVar < 90)
+                ChooseAttack();
         }
-        
+        else{
+            CanChooseToggle();
+        }   
     }
 
-    void Tired() { 
-    
+    void Stunned() {
+        isTired = true;
+        _damageTaken = 0;
+
+        // Animation play and Timer to take him out of the tired state and
+        // Make other things false like chasing and attacking
+        // Be careful
     }
 
-    void TiredChecks(){
+    void StunnedTimer(){
         if (isTired)
         {
             isTiredTimer -= Time.deltaTime;
             if (isTiredTimer <= 0f)
             {
                 isTiredTimer = TIRED_TIME;
-                TiredStateEnd();
+                StunnedStateEnd();
             }
         }
     }
 
-    void TiredStateEnd()
+    void StunnedStateEnd()
     {
         isTired = false;
         animator.SetBool("Tired", false);
         canAttack = false;
-
     }
     
     #endregion
 
     #region DEATH And Damage
     private void TakeDamage(float Damage){
+
         if (isTired)
             HealthDepleteEnemy(Damage * DamageHolder.instance.damageMultiplier, ref health);
-        else
+        else {
+            _damageTaken += Damage * DamageHolder.instance.damageMultiplier;
             HealthDepleteEnemy(Damage, ref health);
-
-        //StartCoroutine(HitAnimation());
-        if (health <= 0)
+        }
+        if (health < 1)
             Die();
     }
 
-    
-    void Die()
-    {
+    void Die(){
         isDying = true;
         animator.SetTrigger("Death");
         gameObject.GetComponent<Collider2D>().enabled = false;
         rigbody.bodyType = RigidbodyType2D.Static;
     }
 
-    void Destroy()
-    {
+    void Destroy(){
         Destroy(gameObject);    
     }
     #endregion
@@ -539,12 +566,14 @@ public class Vagabond : EnemyParentScript
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (isBlocking) return;
+    private void OnTriggerEnter2D(Collider2D collision){
+        
         // PLAYER TAKES DAMAGE IF HIT BY A DASH
         if (isDashing && collision.gameObject.CompareTag("Player"))
             _playerDeathScript.TakeDamage(_damageNormal);
+
+        // IF BLOCKING IGNORE COLLISIONS 
+        if (isBlocking) return;
 
         // VAGABOND TAKING DAMAGE
         if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
@@ -554,15 +583,14 @@ public class Vagabond : EnemyParentScript
         else if (collision.gameObject.CompareTag("PlayerProjectile"))
             TakeDamage(DamageHolder.instance.playerHeavyDamage);
         
-        if (health < 0)
-            Die();      
     }
 
     private void OnDrawGizmos(){
-
+        
+        //GIZMOS FOR OVERLAP CIRCLE
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, circleCastRadius);
     }
-
     #endregion
+
 }
