@@ -12,6 +12,8 @@ using Random = UnityEngine.Random;
 public class Vagabond : EnemyParentScript{
     #region VARIABLES AND COMPONENTS
     // TO DO - MAKE AN ENTRY ANIMATION WHERE HE LIKE WAKES UP THEN TRANSITION THAT TO THE IDEL STATE 
+    // AND DAMAGE HARU SET GARNA BAKI 
+
     [Header("GET COMPONENTS")]
     private Animator animator;
     private Rigidbody2D rigbody;

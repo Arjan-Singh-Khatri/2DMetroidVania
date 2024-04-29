@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	//just paste in all the parameters, though you will need to manuly change all references in this script
 	public PlayerData Data;
 	private Animator anim;
+	[SerializeField] PlayerAttack _playerAttack;
 
 	#region COMPONENTS
     public Rigidbody2D RB { get; private set; }
@@ -86,14 +87,14 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
 	}
 
-	private void Start()
-	{
+	private void Start(){
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
 	}
   
     private void Update()
 	{
+		Debug.Log(LastOnGroundTime);
         #region reference
 		var playerAttack = GetComponent<PlayerAttack>();	
         #endregion
@@ -111,19 +112,19 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		_moveInput.x = Input.GetAxisRaw("Horizontal");
 		_moveInput.y = Input.GetAxisRaw("Vertical");
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J)) && !playerAttack.isHeavyAttacking)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J)) && !playerAttack.isHeavyAttacking && !IsDashing)
         {
 			
 			OnJumpInput();
         }
 
-		if ( (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.C) || Input.GetKeyUp(KeyCode.J)) && !playerAttack.isHeavyAttacking )
+		if ( (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.J)) && !playerAttack.isHeavyAttacking && !IsDashing)
 		{
 			OnJumpUpInput();
 		}
 
-		if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K)) 
-			&& !playerAttack.isHeavyAttacking)
+		if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K)) && !IsJumping && !IsSliding 
+			&& !(_playerAttack.isAttacking || playerAttack.isHeavyAttacking))
 		{
 			OnDashInput();
 		}
@@ -297,9 +298,8 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
     private void FixedUpdate()
 	{
-		var playerAttack = GetComponent<PlayerAttack>();	
 		//Handle Run
-		if (!IsDashing && !playerAttack.isHeavyAttacking)
+		if (!IsDashing && !_playerAttack.isHeavyAttacking)
 		{
 			if (IsWallJumping)
 				Run(Data.wallJumpRunLerp);
@@ -616,6 +616,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
 	private void AnimationHandler()
 	{
+
         #region WALK AND SLIDE
         if (_moveInput.x != 0)
         {
@@ -657,7 +658,14 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
         #region DASH
 
+        if (_isDashAttacking && !anim.GetBool("Dash"))
+        {
+            anim.SetBool("Dash", true);
+        }
 
+        if (!_isDashAttacking && anim.GetBool("Dash")) { 
+			anim.SetBool("Dash",false );
+		}
         #endregion
     }
 }

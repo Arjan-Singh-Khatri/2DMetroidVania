@@ -34,8 +34,6 @@ public class PlayerAttack : MonoBehaviour
 
         AttackInputHandler();
         AttackDownTime();
-
-
     }
     #region Attack 
 
@@ -85,6 +83,7 @@ public class PlayerAttack : MonoBehaviour
     {
         _attackNormalCollider.SetActive(true);
     }
+
     private void AttackFollowActivation() {
 
         _followUpAttackCollider.SetActive(true);
