@@ -10,8 +10,6 @@ public class Tween : MonoBehaviour
     private bool movingUp = true;
     private float start;
 
-    [SerializeField]
-    private Transform endPoint;
 
 
     private void Start()

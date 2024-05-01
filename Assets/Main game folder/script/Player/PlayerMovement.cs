@@ -94,7 +94,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
   
     private void Update()
 	{
-		Debug.Log(LastOnGroundTime);
         #region reference
 		var playerAttack = GetComponent<PlayerAttack>();	
         #endregion
@@ -124,7 +123,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		}
 
 		if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K)) && !IsJumping && !IsSliding 
-			&& !(_playerAttack.isAttacking || playerAttack.isHeavyAttacking))
+			&& !(_playerAttack.isAttacking || _playerAttack.isHeavyAttacking))
 		{
 			OnDashInput();
 		}

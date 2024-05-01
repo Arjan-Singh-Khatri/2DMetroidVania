@@ -81,7 +81,7 @@ public class SpikedSlime : EnemyParentScript
 
     private bool PlayerInsideRange()
     {
-        if (Mathf.Abs(player.transform.position.x - startPoint) < 6f)
+        if (Mathf.Abs(player.transform.position.x - startPoint) < 4f)
             return true;
         return false;
     }
