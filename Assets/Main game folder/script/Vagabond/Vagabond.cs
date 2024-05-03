@@ -90,7 +90,7 @@ public class Vagabond : EnemyParentScript{
     private float playerHealthAfterHit;
 
     [Header("AI")]
-    private const float ORIGINAL_HEALTH = 200; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
+    private const float ORIGINAL_HEALTH = 500; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
     private bool canChooseBehaviour = false;
     private float canChooseTimer = 2.5f;
     private bool canChooseTrigger = true;
@@ -215,14 +215,14 @@ public class Vagabond : EnemyParentScript{
     }
 
     private void DetermineProbabilities() {
-        if (BeAggresive()) {
-            probForChoiceBlock = 20f;
+        if (IsAggresive()) {
+            probForChoiceBlock = 15f;
             probForNormal = 30f;
             probForHeavy = 60f;
-        }else if (BeDefensive()) {
+        }else if (IsDefensive()) {
             probForChoiceBlock = 40f;
             probForNormal = 30f;
-            probForHeavy = 80f;
+            probForHeavy = 70f;
         }
     }
 
@@ -230,7 +230,7 @@ public class Vagabond : EnemyParentScript{
 
     #region Aggresion and Defensive Behaviour
 
-    bool BeAggresive()
+    bool IsAggresive()
     {
         // BASE CONDITION 
         if ((health > criticalHealth && !HitCauseCriticalHealth()) || DefenseiveOverride())
@@ -239,7 +239,7 @@ public class Vagabond : EnemyParentScript{
         return false;
     }
 
-    bool BeDefensive()
+    bool IsDefensive()
     {
         // BASE CONDITION
         if ((health < criticalHealth || HitCauseCriticalHealth()) && !DefenseiveOverride())
@@ -554,10 +554,10 @@ public class Vagabond : EnemyParentScript{
     IEnumerator StunnedStateEnd()
     {
         animator.SetBool("Stunned", false);
-
         yield return new WaitForSeconds(.7f);
         isStunned = false;
-        chase = true;
+        if(toggleChase)
+            chase = true;
     }
     
     #endregion
