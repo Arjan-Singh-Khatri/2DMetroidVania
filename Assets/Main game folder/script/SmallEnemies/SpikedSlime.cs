@@ -19,7 +19,7 @@ public class SpikedSlime : EnemyParentScript
 
     void Start()
     {
-        health = 25f;
+        health = 45f;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         startPoint = transform.position.x;
@@ -125,6 +125,11 @@ public class SpikedSlime : EnemyParentScript
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.spikedSlime);
+        }
+
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
             PushBack();
@@ -132,7 +137,7 @@ public class SpikedSlime : EnemyParentScript
             if (health <= 0)
             {
                 _killed = true;
-                animator.SetTrigger("death");
+                animator.SetTrigger("Death");
             }
         }else if (collision.CompareTag("HeavyHitBox"))
         {

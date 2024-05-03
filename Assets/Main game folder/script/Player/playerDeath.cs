@@ -74,8 +74,6 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     private void OnTriggerEnter2D(Collider2D collision){
 
-        Debug.Log(collision.name);
-
         if (collision.gameObject.CompareTag("trap"))
         {
             rig.bodyType = RigidbodyType2D.Static;

@@ -81,7 +81,7 @@ public class enemyMoveBetween : EnemyParentScript, IDataPersistance
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.spikedSlime);
+            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.slimeDamage);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))
