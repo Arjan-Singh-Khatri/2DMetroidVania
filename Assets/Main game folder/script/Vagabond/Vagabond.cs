@@ -126,6 +126,11 @@ public class Vagabond : EnemyParentScript{
         if (isDying)
             return;
 
+        if(chase && (isAttacking || isHeavyAttacking)) { 
+            DeactivateHeavyAttackHitbox();
+            DeactivateNormalAttckHitbox();
+        }
+
         // TRYING TO MAKE THINGS LOOK CLEAN
         Math();
 
@@ -594,7 +599,7 @@ public class Vagabond : EnemyParentScript{
         directionForProjectile = direction;
         colliders = Physics2D.OverlapCircleAll(transform.position, circleCastRadius);
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
-
+        playerHealthAfterHit = _playerDeathScript.health - _damageNormal;
     }
 
     private void OnTriggerEnter2D(Collider2D collision){

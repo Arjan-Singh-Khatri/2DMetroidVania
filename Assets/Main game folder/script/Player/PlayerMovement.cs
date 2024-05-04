@@ -5,11 +5,14 @@ using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour , IDataPersistance
 {
-	//Scriptable object which holds all the player's movement parameters. If you don't want to use it
-	//just paste in all the parameters, though you will need to manuly change all references in this script
-	public PlayerData Data;
+    //Scriptable object which holds all the player's movement parameters. If you don't want to use it
+    //just paste in all the parameters, though you will need to manuly change all references in this script
+
+    
+    public PlayerData Data;
 	private Animator anim;
 	[SerializeField] PlayerAttack _playerAttack;
+	[SerializeField] TrailRenderer _trailRenderer;
 
 	#region COMPONENTS
     public Rigidbody2D RB { get; private set; }
@@ -51,6 +54,8 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 
 	//AnimationClips 
 	private AnimationClip[] animationClips;
+	private bool _isInAir;
+
 
     #endregion
 
@@ -90,13 +95,11 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	private void Start(){
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
+		_trailRenderer.emitting = false;
 	}
   
     private void Update()
 	{
-        #region reference
-		var playerAttack = GetComponent<PlayerAttack>();	
-        #endregion
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
 		LastOnWallTime -= Time.deltaTime;
@@ -111,19 +114,19 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		_moveInput.x = Input.GetAxisRaw("Horizontal");
 		_moveInput.y = Input.GetAxisRaw("Vertical");
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J)) && !playerAttack.isHeavyAttacking && !IsDashing)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J)) && !_playerAttack.isHeavyAttacking && !IsDashing)
         {
 			
 			OnJumpInput();
         }
 
-		if ( (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.J)) && !playerAttack.isHeavyAttacking && !IsDashing)
+		if ( (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.J)) && !_playerAttack.isHeavyAttacking && !IsDashing)
 		{
 			OnJumpUpInput();
 		}
 
-		if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K)) && !IsJumping && !IsSliding 
-			&& !(_playerAttack.isAttacking || _playerAttack.isHeavyAttacking))
+		if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K)) //&&!IsJumping
+			&& !IsSliding && !(_playerAttack.isAttacking || _playerAttack.isHeavyAttacking))
 		{
 			OnDashInput();
 		}
@@ -481,9 +484,12 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	//Dash Coroutine
 	private IEnumerator StartDash(Vector2 dir)
 	{
-		//Overall this method of dashing aims to mimic Celeste, if you're looking for
-		// a more physics-based approach try a method similar to that used in the jump
 
+		if (dir.y == 0 && !anim.GetBool("Dash"))
+            anim.SetBool("Dash", true);
+
+        _trailRenderer.emitting = true;
+		
 		LastOnGroundTime = 0;
 		LastPressedDashTime = 0;
 
@@ -517,6 +523,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		}
 
 		//Dash over
+		_trailRenderer.emitting = false;
 		IsDashing = false;
 	}
 
@@ -616,6 +623,21 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 	private void AnimationHandler()
 	{
 
+        #region DASH
+       
+        //// GROUND DASH
+        //if (_isDashAttacking && !anim.GetBool("Dash") && !_isInAir)
+        //{
+        //    anim.SetBool("Dash", true);
+        //}
+
+        if (!_isDashAttacking && anim.GetBool("Dash"))
+        {
+            anim.SetBool("Dash", false);
+        }
+
+        #endregion
+
         #region WALK AND SLIDE
         if (_moveInput.x != 0)
         {
@@ -655,17 +677,6 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
 		}
         #endregion
 
-        #region DASH
-
-        if (_isDashAttacking && !anim.GetBool("Dash"))
-        {
-            anim.SetBool("Dash", true);
-        }
-
-        if (!_isDashAttacking && anim.GetBool("Dash")) { 
-			anim.SetBool("Dash",false );
-		}
-        #endregion
     }
 }
 

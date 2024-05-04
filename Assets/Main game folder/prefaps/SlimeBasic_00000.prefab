@@ -120,8 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f60a1e32f14846b42810430edcc501b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyID: aa04ce05-73ce-4819-8e46-28a59f56d437
-  _spriteRenderer: {fileID: 7961517852778689970}
+  direction: 0
+  enemyID: 50c71d15-283e-4bb8-941a-3b76714d0ac2
   speed: 3
   jumpDistance: 5
 --- !u!70 &7961517852778689980
@@ -148,7 +148,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7961517852778689968}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
