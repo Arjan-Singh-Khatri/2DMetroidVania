@@ -15,9 +15,9 @@ public class BatEnemy : EnemyParentScript
     private float last_dash_time =2f;
 
     //Public 
-    public bool killed;
     public bool chase = false;
     public bool return_tostart = false;
+    public bool _killed = false;
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class BatEnemy : EnemyParentScript
         if (enemyDead) return;
         if (health <= 0)
         {
-            killed = true;
+            _killed = true;
             anim.SetTrigger("death");
             enemyDead = true;
             return;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class DataPersistanceManager : MonoBehaviour
 {
@@ -19,17 +20,34 @@ public class DataPersistanceManager : MonoBehaviour
         if(Instance != null)
         {
             Debug.LogError("More than One instance");
+            Destroy(this.gameObject);
+            return;
         }
         Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+
+        this.dataHandlerFile = new DataHandlerFile(Application.persistentDataPath, fileName);
+
+    }
+    private void OnEnable(){
+        this.dataPersistanceObjects = GetAllDataPersistanceObjects();
+        LoadGame();
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+    }
+
+
+    private void OnDisable(){
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode) { 
         
     }
 
-    private void Start()
-    {
-        this.dataHandlerFile = new DataHandlerFile(Application.persistentDataPath, fileName);
-        this.dataPersistanceObjects = GetAllDataPersistanceObjects();
-        LoadGame();
-        
+    public void OnSceneUnloaded(Scene scene){ 
     }
 
     private List<IDataPersistance> GetAllDataPersistanceObjects()

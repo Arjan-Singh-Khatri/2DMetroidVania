@@ -7,20 +7,19 @@ using UnityEngine.UIElements;
 
 public class TwoHeadBridge : MonoBehaviour
 {
-    Animator animator;
-    // Start is called before the first frame update
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-        Events.instance.OnDeathTwoHeadBridgeActive += BridgeActive;
+    [SerializeField]private GameObject twoHead;
 
-    }
-    private void BridgeActive()
+    private void Update()
     {
-        gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        gameObject.GetComponent<Collider2D>().enabled = false;
-        animator.SetTrigger("Fade");
+        if (!twoHead.activeSelf)
+            gameObject.SetActive(false);
     }
 
-    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Events.instance.playerInTwoHeadArea();
+        }
+    }
 }

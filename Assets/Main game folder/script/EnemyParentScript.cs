@@ -60,6 +60,6 @@ public class EnemyParentScript : MonoBehaviour
     }
 
     protected void EnemyDeath(){
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

@@ -13,7 +13,6 @@ public class SpikedSlime : EnemyParentScript
     private float attackDownTime = 0;
     private bool isAttacking = false;
     private float startPoint;
-    private bool _killed;
 
 
 
@@ -26,26 +25,6 @@ public class SpikedSlime : EnemyParentScript
 
     }
 
-
-    #region Save And Load
-    public void SaveData(ref GameData gameData)
-    {
-        if (gameData.enemyKilled.ContainsKey(this.enemyID))
-        {
-            gameData.enemyKilled.Remove(this.enemyID);
-        }
-        gameData.enemyKilled.Add(this.enemyID, _killed);
-    }
-
-    public void LoadData(GameData gameData)
-    {
-        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
-        if (_killed)
-        {
-            gameObject.SetActive(false);
-        }
-    }
-    #endregion
 
     // Update is called once per frame
     void Update()
@@ -136,7 +115,6 @@ public class SpikedSlime : EnemyParentScript
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)
             {
-                _killed = true;
                 animator.SetTrigger("Death");
             }
         }else if (collision.CompareTag("HeavyHitBox"))
@@ -145,7 +123,6 @@ public class SpikedSlime : EnemyParentScript
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)
             {
-                _killed = true;
                 animator.SetTrigger("death");
             }
         }

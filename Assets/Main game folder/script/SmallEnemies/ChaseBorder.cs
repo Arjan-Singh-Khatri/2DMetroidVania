@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security;
 using UnityEngine;
 
-public class ChaseBorder : EnemyParentScript , IDataPersistance
+public class ChaseBorder : EnemyParentScript
 {
     private BatEnemy childBatEnemy;
     private bool _killed;
@@ -13,31 +13,10 @@ public class ChaseBorder : EnemyParentScript , IDataPersistance
         childBatEnemy = GetComponentInChildren<BatEnemy>();
     }
 
-    #region Save And Load
-
-    public void SaveData(ref GameData gameData)
-    {
-        if (gameData.enemyKilled.ContainsKey(this.enemyID))
-        {
-            gameData.enemyKilled.Remove(this.enemyID);
-        }
-        gameData.enemyKilled.Add(this.enemyID, _killed);
-    }
-
-    public void LoadData(GameData gameData)
-    {
-        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
-        if (_killed)
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
-    #endregion
 
     private void Update()
     {
-        if(childBatEnemy.killed) { _killed = true; }
+        if(childBatEnemy._killed) { gameObject.SetActive(false); }
     }
 
  

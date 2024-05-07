@@ -21,7 +21,7 @@ public class Vagabond : EnemyParentScript{
 
     [Header("MISCELLANEOUS FOR NOW ")]
     [SerializeField] private float circleCastRadius = 3.8f;
-    private bool isDying = false;
+    private bool _killed = false;
     private bool isBlocking = false;
 
     // FOR VAGABOND STUN
@@ -123,7 +123,7 @@ public class Vagabond : EnemyParentScript{
 
     void Update() {
 
-        if (isDying)
+        if (_killed)
             return;
 
         if(chase && (isAttacking || isHeavyAttacking)) { 
@@ -583,7 +583,7 @@ public class Vagabond : EnemyParentScript{
     }
 
     void Die(){
-        isDying = true;
+        _killed = true;
         animator.SetBool("Death",true);
         gameObject.GetComponent<Collider2D>().enabled = false;
         rigbody.bodyType = RigidbodyType2D.Static;

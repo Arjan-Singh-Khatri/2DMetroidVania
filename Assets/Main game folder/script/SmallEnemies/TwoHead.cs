@@ -18,7 +18,8 @@ public class TwoHead : EnemyParentScript
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private GameObject attackTwoHitBox;
     private Animator animator;
-
+    [SerializeField] private GameObject wallFirst;
+    [SerializeField] private GameObject wallSecond;
 
 
     [Header("Variables")]
@@ -29,6 +30,7 @@ public class TwoHead : EnemyParentScript
     private readonly float endPointXOne = 25.2f;
     private readonly float endPointXTwo = 64.84f;
     private bool _killed;
+    private bool playerInArea = false;
 
     private void Awake()
     {
@@ -39,22 +41,22 @@ public class TwoHead : EnemyParentScript
     {
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
-
+        Events.instance.playerInTwoHeadArea += PlayerInArea ;
     }
 
     #region Save And Load
     public void SaveData(ref GameData gameData)
     {
-        if (gameData.enemyKilled.ContainsKey(this.enemyID))
+        if (gameData.bossesKilled.ContainsKey(this.enemyID))
         {
-            gameData.enemyKilled.Remove(this.enemyID);
+            gameData.bossesKilled.Remove(this.enemyID);
         }
-        gameData.enemyKilled.Add(this.enemyID, _killed);
+        gameData.bossesKilled.Add(this.enemyID, _killed);
     }
 
     public void LoadData(GameData gameData)
     {
-        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
+        gameData.bossesKilled.TryGetValue(this.enemyID, out _killed);
         if (_killed)
         {
             gameObject.SetActive(false);
@@ -64,13 +66,13 @@ public class TwoHead : EnemyParentScript
 
     private void Update()
     {
-        if (enemyDead) return;
+        if (enemyDead || !playerInArea) return;
+
         if (health <= 0)
         {
             _killed = true;
             animator.SetTrigger("Death");
             enemyDead = true;
-            Events.instance.OnDeathTwoHeadBridgeActive();
             return;
         }
         flip();
@@ -142,6 +144,12 @@ public class TwoHead : EnemyParentScript
         {
             RunAttack();
         }
+    }
+
+    private void PlayerInArea() {
+        playerInArea = true;
+        wallFirst.SetActive(true);
+        wallSecond.SetActive(true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

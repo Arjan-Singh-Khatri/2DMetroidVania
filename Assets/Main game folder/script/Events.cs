@@ -8,10 +8,10 @@ public class Events : MonoBehaviour
 {
     public static Events instance;
 
-    public Action OnDeathTwoHeadBridgeActive;
     public Action StromAttackStart;
     public Action StromAttackEnd;
     public Action followPlayer;
+    public Action playerInTwoHeadArea;
     private void Start()
     {
         if (instance != null)

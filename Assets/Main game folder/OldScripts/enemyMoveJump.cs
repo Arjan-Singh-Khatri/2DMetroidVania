@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemyMoveJump : EnemyParentScript , IDataPersistance
+public class enemyMoveJump : EnemyParentScript 
 {
     private Rigidbody2D rig;
     private float startPoint;
@@ -11,7 +11,6 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
     private int wayPointIndex = 0;
     [SerializeField] private float jumpDistance = 4.5f;
     private float nextJumpTime = 2f;
-    private bool _killed; 
 
     // Start is called before the first frame update
     void Start()
@@ -25,32 +24,12 @@ public class enemyMoveJump : EnemyParentScript , IDataPersistance
         wayPointIndex = Random.Range(0, 2);
     }
 
-    #region Save And Load
-    public void SaveData(ref GameData gameData)
-    {
-        if (gameData.enemyKilled.ContainsKey(this.enemyID))
-        {
-            gameData.enemyKilled.Remove(this.enemyID);
-        }
-        gameData.enemyKilled.Add(this.enemyID, _killed);
-    }
-
-    public void LoadData(GameData gameData)
-    {
-        gameData.enemyKilled.TryGetValue(this.enemyID, out _killed);
-        if (_killed)
-        {
-            gameObject.SetActive(false);
-        }
-    }
-    #endregion
 
     // Update is called once per frame
     void Update()
     {
         if (health <= 0)
         {
-            _killed = true;
             EnemyDeath();
             return;
         }
