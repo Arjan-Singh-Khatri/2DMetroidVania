@@ -123,6 +123,7 @@ MonoBehaviour:
   direction: 0
   enemyID: 50c71d15-283e-4bb8-941a-3b76714d0ac2
   speed: 3
+  offset: 5
   jumpDistance: 5
 --- !u!70 &7961517852778689980
 CapsuleCollider2D:

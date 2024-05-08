@@ -8,6 +8,7 @@ public class enemyMoveJump : EnemyParentScript
     private float startPoint;
     private Vector2[] endPonints = new Vector2[2];
     [SerializeField] float speed = 5;
+    [SerializeField] float offset =5f;
     private int wayPointIndex = 0;
     [SerializeField] private float jumpDistance = 4.5f;
     private float nextJumpTime = 2f;
@@ -16,8 +17,8 @@ public class enemyMoveJump : EnemyParentScript
     void Start()
     {
         startPoint = transform.position.x;
-        endPonints[0] = new Vector3(startPoint-5, transform.position.y);
-        endPonints[1] = new Vector3(startPoint + 5, transform.position.y);
+        endPonints[0] = new Vector3(startPoint- offset, transform.position.y);
+        endPonints[1] = new Vector3(startPoint + offset, transform.position.y);
         player = GameObject.FindGameObjectWithTag("Player");
         rig = GetComponent<Rigidbody2D>();
         health = 40f;
