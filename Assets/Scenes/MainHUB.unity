@@ -22126,7 +22126,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 18a67d3b48a69ee46be6eab7e4f93703, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -30973,7 +30973,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: 0.011885169, z: -0, w: 0.9999294}
-  m_LocalPosition: {x: -85.13739, y: 2.0734406, z: -2.6759348}
+  m_LocalPosition: {x: -127.214035, y: 59.824997, z: -2.717764}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48809,7 +48809,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274485895}
   m_LocalRotation: {x: -0, y: 0.011885169, z: -0, w: 0.9999294}
-  m_LocalPosition: {x: 22.706566, y: -66.57667, z: -16.342379}
+  m_LocalPosition: {x: -19.234032, y: -25.776669, z: -16.384209}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -107414,6 +107414,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkyBackground
       objectReference: {fileID: 0}
+    - target: {fileID: 501591947751378622, guid: c75676aef6416bc4a988cfabc8b67a93, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501591947751378622, guid: c75676aef6416bc4a988cfabc8b67a93, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501591947751378622, guid: c75676aef6416bc4a988cfabc8b67a93, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 501591947751378623, guid: c75676aef6416bc4a988cfabc8b67a93, type: 3}
       propertyPath: m_RootOrder
       value: 392
@@ -107731,11 +107743,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.1
+      value: -5.6
       objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -106
+      value: -44.8
       objectReference: {fileID: 0}
     - target: {fileID: 6299837469599941281, guid: 000083b021f33ef479a1dd718993b4e0, type: 3}
       propertyPath: m_LocalPosition.z
