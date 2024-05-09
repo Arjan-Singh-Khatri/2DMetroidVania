@@ -41,7 +41,6 @@ public class TwoHead : EnemyParentScript
     {
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
-        Events.instance.playerInTwoHeadArea += PlayerInArea ;
     }
 
     #region Save And Load
@@ -146,7 +145,7 @@ public class TwoHead : EnemyParentScript
         }
     }
 
-    private void PlayerInArea() {
+    public void PlayerInTwoHeadArea() {
         playerInArea = true;
         wallFirst.SetActive(true);
         wallSecond.SetActive(true);

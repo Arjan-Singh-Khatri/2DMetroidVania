@@ -40,14 +40,19 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         damageCollider.enabled = false;
         DamageHolder.instance.damageMultiplier = 1;
         DamageHolder.instance.comboNumber = 0;
+        health -= damage;
+        Events.instance.onHealthChangePlayer();
         StartCoroutine(HitAnimation());
         StartCoroutine(ColliderTrigger());
-        health -= damage;
         if (health <= 0)
         {
-            rig.bodyType = RigidbodyType2D.Static;
-            anim.SetTrigger("death");
+            Death();
         }
+    }
+
+    private void Death() {
+        rig.bodyType = RigidbodyType2D.Static;
+        anim.SetTrigger("death");
     }
 
     IEnumerator ColliderTrigger(){
@@ -76,8 +81,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
         if (collision.gameObject.CompareTag("trap"))
         {
-            rig.bodyType = RigidbodyType2D.Static;
-            anim.SetTrigger("death");
+            Death();
         }
 
         //Enemy Attack Colliders

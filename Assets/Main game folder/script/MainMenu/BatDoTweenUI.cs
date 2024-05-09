@@ -17,17 +17,9 @@ public class BatDoTweenUI : MonoBehaviour
     [SerializeField] Vector3 _rotation;
     [SerializeField] float rotateduration;
     Quaternion rotation = Quaternion.AngleAxis(180, new Vector3(0, 1, 0));
-    private bool loopedBack = false;
     void Start(){
         rectTransform = GetComponent<RectTransform>();
         transform.DOPath(path,_tweenDuration,_pathType,_pathMode).SetLoops(-1,_loopType);
     }
-    private void Update()
-    {
-        //if (transform.position == path[7] || (loopedBack && transform.position == path[0])) {
-        //    Debug.Log("LOOPED");
-        //    loopedBack = true;
-        //    rectTransform.rotation *= rotation;
-        //}
-    }
+
 }

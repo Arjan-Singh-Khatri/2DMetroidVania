@@ -3,7 +3,7 @@ using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerMovement : MonoBehaviour , IDataPersistance
+public class PlayerMovement : MonoBehaviour
 {
     //Scriptable object which holds all the player's movement parameters. If you don't want to use it
     //just paste in all the parameters, though you will need to manuly change all references in this script
@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
     public PlayerData Data;
 	private Animator anim;
 	[SerializeField] PlayerAttack _playerAttack;
+	[SerializeField] playerDeath _playerDeath;	
 	[SerializeField] TrailRenderer _trailRenderer;
 
 	#region COMPONENTS
@@ -100,6 +101,7 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
   
     private void Update()
 	{
+		if (_playerDeath.health <= 0) return;
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
 		LastOnWallTime -= Time.deltaTime;
@@ -288,20 +290,12 @@ public class PlayerMovement : MonoBehaviour , IDataPersistance
         
     }
 
-    public void LoadData(GameData gameData)
-    {
-        this.transform.position = gameData._position;
-    }
-
-    public void SaveData(ref GameData gameData)
-    {
-        gameData._position = this.transform.position;
-    }
-
     private void FixedUpdate()
 	{
-		//Handle Run
-		if (!IsDashing && !_playerAttack.isHeavyAttacking)
+        if (_playerDeath.health <= 0) return;
+
+        //Handle Run
+        if (!IsDashing && !_playerAttack.isHeavyAttacking)
 		{
 			if (IsWallJumping)
 				Run(Data.wallJumpRunLerp);

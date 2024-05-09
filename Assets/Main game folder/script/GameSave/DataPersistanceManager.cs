@@ -15,39 +15,34 @@ public class DataPersistanceManager : MonoBehaviour
     private List<IDataPersistance> dataPersistanceObjects;
     private DataHandlerFile dataHandlerFile;
 
-    private void Awake()
-    {
-        if(Instance != null)
-        {
-            Debug.LogError("More than One instance");
+    private void Awake(){
+        if(Instance != null){
             Destroy(this.gameObject);
+            Debug.LogError("More than One instance");
             return;
         }
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
         this.dataHandlerFile = new DataHandlerFile(Application.persistentDataPath, fileName);
-
     }
     private void OnEnable(){
-        this.dataPersistanceObjects = GetAllDataPersistanceObjects();
-        LoadGame();
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
-
     }
-
 
     private void OnDisable(){
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode) { 
-        
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        this.dataPersistanceObjects = GetAllDataPersistanceObjects();
+        LoadGame();
     }
 
-    public void OnSceneUnloaded(Scene scene){ 
+    public void OnSceneUnloaded(Scene scene){
+        
     }
 
     private List<IDataPersistance> GetAllDataPersistanceObjects()
@@ -56,14 +51,12 @@ public class DataPersistanceManager : MonoBehaviour
         return new List<IDataPersistance>(dataPersistanceObjects);
     }
 
-    private void NewGame()
-    {
+    private void NewGame(){
         this.gameData = new GameData();
     }
 
     // LOAD GAME AT MAIN MENU -- TO DO LATER
-    private void LoadGame()
-    {
+    private void LoadGame(){
         this.gameData = this.dataHandlerFile.Load();
         if(this.gameData == null)
         {
@@ -77,19 +70,16 @@ public class DataPersistanceManager : MonoBehaviour
     }
 
     // SAVE GAME AT ONLY CHECKPOINT -- TO DO LATER
-    private void SaveGame()
-    {
+    private void SaveGame(){
         foreach(IDataPersistance dataPersistance in dataPersistanceObjects)
         {
             dataPersistance.SaveData(ref gameData);
         }
-
         this.dataHandlerFile.Save(gameData);
     }
 
     // REMOVE THIS -- TO DO LATER
-    //private void OnApplicationQuit()
-    //{
-    //    SaveGame();
-    //}
+    private void OnApplicationQuit(){
+        SaveGame();
+    }
 }

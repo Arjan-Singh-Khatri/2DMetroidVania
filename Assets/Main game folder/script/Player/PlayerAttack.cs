@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : MonoBehaviour, IDataPersistance
 {
     private Animator anim;
     public bool _attackPressedAgain = false;
@@ -35,6 +35,20 @@ public class PlayerAttack : MonoBehaviour
         AttackInputHandler();
         AttackDownTime();
     }
+
+    #region Save System
+    public void LoadData(GameData gameData)
+    {
+        this.transform.position = gameData._position;
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData._position = this.transform.position;
+    }
+
+    #endregion
+
     #region Attack 
 
     private void AttackDownTime()

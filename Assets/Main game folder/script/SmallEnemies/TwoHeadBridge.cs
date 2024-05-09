@@ -19,7 +19,7 @@ public class TwoHeadBridge : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Events.instance.playerInTwoHeadArea();
+            twoHead.GetComponent<TwoHead>().PlayerInTwoHeadArea();
         }
     }
 }

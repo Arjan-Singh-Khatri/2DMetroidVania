@@ -8,13 +8,11 @@ public class itemsBehaviour : MonoBehaviour, IDataPersistance
     private bool collected;
 
     [ContextMenu("New GUID ID")]
-    private void NewGuidId()
-    {
+    private void NewGuidId(){
         ID = System.Guid.NewGuid().ToString();
     }
     
-    public void SaveData(ref GameData gameData)
-    {
+    public void SaveData(ref GameData gameData){
         if(gameData.itemCollected.ContainsKey(ID))
         {
             gameData.itemCollected.Remove(ID);
@@ -22,8 +20,7 @@ public class itemsBehaviour : MonoBehaviour, IDataPersistance
         gameData.itemCollected.Add(ID, collected);
     }
 
-    public void LoadData(GameData gameData)
-    {
+    public void LoadData(GameData gameData){
         gameData.itemCollected.TryGetValue(ID,out collected);
         if(collected)
         {
@@ -31,15 +28,14 @@ public class itemsBehaviour : MonoBehaviour, IDataPersistance
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision){
         if (collision.gameObject.CompareTag("Player"))
         {
             collected = true;
+            Events.instance.onItemCollectedPlayer();
             //Particle Effects Maybe??
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
-
     
 }
