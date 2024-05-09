@@ -8,10 +8,19 @@ public class Events : MonoBehaviour
 {
     public static Events instance;
 
+    // STROM HEAD
     public Action StromAttackStart;
     public Action StromAttackEnd;
     public Action followPlayer;
+
+    // TWO HEAD
     public Action playerInTwoHeadArea;
+
+    // PLAYER UI 
+    public Action onTakeDamagePlayer;
+    public Action onItemCollectedPlayer;
+    //public Action onHealthRecoveredPlayer;
+
     private void Start()
     {
         if (instance != null)
