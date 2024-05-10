@@ -25,5 +25,5 @@ public class Events : MonoBehaviour
 
     // PLAYER UI 
     public Action onItemCollectedPlayer;
-    public Action onHealthChangePlayer;
+    public Action<float> onHealthChangePlayer;
 }

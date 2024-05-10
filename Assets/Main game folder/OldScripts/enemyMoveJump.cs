@@ -78,7 +78,7 @@ public class enemyMoveJump : EnemyParentScript
         if (collision.CompareTag("PlayerAttackHitBox"))
         {
             PushBack();
-            HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplyer, ref health);
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
         }
         else if (collision.CompareTag("HeavyHitBox"))
         {

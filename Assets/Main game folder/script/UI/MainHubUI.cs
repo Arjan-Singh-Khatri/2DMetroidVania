@@ -19,7 +19,6 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
     [SerializeField] private TextMeshProUGUI soulCount;
     [SerializeField] private GameObject soulParentGameobject;
     private int soulAmount = 0 ;
-    private playerDeath _playerHealthRef;
 
     void Start(){
 
@@ -27,22 +26,23 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
         Events.instance.onItemCollectedPlayer += UpdateSoulCount;
         Events.instance.onHealthChangePlayer += UpdateHealthSlider;
 
-        //ref
-        _playerHealthRef = GameObject.FindGameObjectWithTag("Player").GetComponent<playerDeath>();
-
         //UI 
-        
-        UpdateHealthSlider();
+        UpdateHealthSlider(GameObject.FindGameObjectWithTag("Player").GetComponent<playerDeath>().health);
+
         soulCount.text = $"{soulAmount}/10";
+
         continueButton.onClick.AddListener(() =>{
+            DisableButtons();
             Continue();
         });
 
         mainMenuButton.onClick.AddListener(() =>{
+            DisableButtons();
             MainMenu();
         });
 
         quitButton.onClick.AddListener(() =>{
+            DisableButtons();
             QuitGame();
         });
 
@@ -73,8 +73,8 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
         Application.Quit();
     }
 
-    void UpdateHealthSlider() { 
-        playerHealthSlider.value = _playerHealthRef.health;
+    void UpdateHealthSlider(float health) { 
+        playerHealthSlider.value = health;
     }
 
     // MILAUNA PARYO
@@ -94,4 +94,18 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
             }
         }
     }
+
+    void DisableButtons(){
+        quitButton.interactable = false;
+        continueButton.interactable = false;
+        mainMenuButton.interactable = false;
+    }
+
+    private void OnDisable()
+    {
+        Events.instance.onItemCollectedPlayer -= UpdateSoulCount;
+        Events.instance.onHealthChangePlayer -= UpdateHealthSlider;
+
+    }
+
 }

@@ -10,7 +10,7 @@ public class DataPersistanceManager : MonoBehaviour
     public static DataPersistanceManager Instance { get; private set; }
 
     [SerializeField] private string fileName;
-    private GameData gameData;
+    public GameData gameData;
 
     private List<IDataPersistance> dataPersistanceObjects;
     private DataHandlerFile dataHandlerFile;
@@ -42,7 +42,7 @@ public class DataPersistanceManager : MonoBehaviour
     }
 
     public void OnSceneUnloaded(Scene scene){
-        
+        SaveGame();
     }
 
     private List<IDataPersistance> GetAllDataPersistanceObjects()
@@ -51,17 +51,18 @@ public class DataPersistanceManager : MonoBehaviour
         return new List<IDataPersistance>(dataPersistanceObjects);
     }
 
-    private void NewGame(){
+    public void NewGame(){
         this.gameData = new GameData();
     }
 
     // LOAD GAME AT MAIN MENU -- TO DO LATER
-    private void LoadGame(){
+    public void LoadGame(){
+        
         this.gameData = this.dataHandlerFile.Load();
         if(this.gameData == null)
         {
-            Debug.LogError("No GameDataFound initializing new Game");
-            NewGame();
+            Debug.LogError("No GameDataFound.");
+            return;
         }
         foreach(IDataPersistance dataPersistance in dataPersistanceObjects)
         {
@@ -70,7 +71,12 @@ public class DataPersistanceManager : MonoBehaviour
     }
 
     // SAVE GAME AT ONLY CHECKPOINT -- TO DO LATER
-    private void SaveGame(){
+    public void SaveGame(){
+
+        if(gameData == null) {
+            Debug.Log("No Game Data Was Found. Start a new Game");
+        }
+
         foreach(IDataPersistance dataPersistance in dataPersistanceObjects)
         {
             dataPersistance.SaveData(ref gameData);

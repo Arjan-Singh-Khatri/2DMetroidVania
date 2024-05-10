@@ -41,7 +41,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         DamageHolder.instance.damageMultiplier = 1;
         DamageHolder.instance.comboNumber = 0;
         health -= damage;
-        Events.instance.onHealthChangePlayer();
+        Events.instance.onHealthChangePlayer?.Invoke(health);
         StartCoroutine(HitAnimation());
         StartCoroutine(ColliderTrigger());
         if (health <= 0)

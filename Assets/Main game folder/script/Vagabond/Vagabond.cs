@@ -629,4 +629,24 @@ public class Vagabond : EnemyParentScript{
     }
     #endregion
 
+    #region Save And Load
+    public void SaveData(ref GameData gameData)
+    {
+        if (gameData.bossesKilled.ContainsKey(this.enemyID))
+        {
+            gameData.bossesKilled.Remove(this.enemyID);
+        }
+        gameData.bossesKilled.Add(this.enemyID, _killed);
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        gameData.bossesKilled.TryGetValue(this.enemyID, out _killed);
+        if (_killed)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    #endregion
 }

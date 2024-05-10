@@ -340,8 +340,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1555072243
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -4559207926025917490, guid: cbbfd9b6535ce904195bd37acf81cc46, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -424,8 +424,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
-  enemyID: 
+  enemyID: 49429800-7ba1-40cb-9901-1e1228085c36
   circleCastRadius: 3.75
+  canStun: 0
   _dashSpeed: 20
   _maxDashThreshold: 10
   _minDashThreshold: 0
@@ -433,7 +434,7 @@ MonoBehaviour:
   _dashCheckLeft: -3.06
   chaseMaxSpeed: 5
   chaseMinSpeed: 4
-  _chaseForce: 1
+  _chaseForce: 2
   chase: 0
   _jumpForce: 18
   normalAttackHitbox: {fileID: 8391644424258273309}
