@@ -4,15 +4,21 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelSelectScript : MonoBehaviour
+public class LevelSelectScript : MonoBehaviour, IFade
 {
+    [SerializeField] LevelLoader levelLoader;
     private string _sceneName;
+
     void Start(){
         _sceneName = gameObject.name;
     }
     
 
-    void LoadLevel() {
+    IEnumerator LoadLevel() {
+        // Fade In
+        //Events.instance.onLoadingLevel();
+        //DataPersistanceManager.Instance.SaveGame();
+        yield return new WaitForSeconds(1.3f);
         SceneManager.LoadScene(_sceneName);
     }
 
@@ -20,6 +26,12 @@ public class LevelSelectScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Player")) { 
             LoadLevel();    
         }
+    }
+
+
+    public void FadeOut()
+    {
+        levelLoader.LoadLevel();
     }
 
 }

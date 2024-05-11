@@ -106,7 +106,8 @@ public class SpikedSlime : EnemyParentScript
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.spikedSlime);
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.spikedSlime);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.spikedSlime);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))

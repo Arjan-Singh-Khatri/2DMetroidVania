@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
@@ -18,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 	#region COMPONENTS
     public Rigidbody2D RB { get; private set; }
     public SpriteRenderer spriteRenderer { get; private set; }
-	public GameObject playerAttackHitbox;
+	private bool _loadingBossLevel = false;
 
     #endregion
 
@@ -94,14 +95,17 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	private void Start(){
-		SetGravityScale(Data.gravityScale);
+
+        Events.instance.onLoadingLevel += LoadLevel;
+
+        SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
 		_trailRenderer.emitting = false;
-	}
+    }
   
     private void Update()
 	{
-		if (_playerDeath.health <= 0) return;
+		if ((_playerDeath.health <= 0) && _loadingBossLevel) return;
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
 		LastOnWallTime -= Time.deltaTime;
@@ -292,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
 	{
-        if (_playerDeath.health <= 0) return;
+        if ((_playerDeath.health <= 0) && _loadingBossLevel) return;
 
         //Handle Run
         if (!IsDashing && !_playerAttack.isHeavyAttacking)
@@ -671,6 +675,14 @@ public class PlayerMovement : MonoBehaviour
 		}
         #endregion
 
+    }
+
+	private void LoadLevel() {
+		_loadingBossLevel = true;
+	}
+
+    private void OnDisable(){
+		Events.instance.onLoadingLevel -= LoadLevel;
     }
 }
 

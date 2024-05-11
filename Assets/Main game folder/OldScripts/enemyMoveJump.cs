@@ -19,7 +19,7 @@ public class enemyMoveJump : EnemyParentScript
         startPoint = transform.position.x;
         endPonints[0] = new Vector3(startPoint- offset, transform.position.y);
         endPonints[1] = new Vector3(startPoint + offset, transform.position.y);
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         rig = GetComponent<Rigidbody2D>();
         health = 40f;
         wayPointIndex = Random.Range(0, 2);
@@ -72,7 +72,8 @@ public class enemyMoveJump : EnemyParentScript
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.slimeDamage);
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.slimeDamage);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.slimeDamage);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))

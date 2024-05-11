@@ -9,7 +9,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 {
     private Animator anim;
     private Rigidbody2D rig;
-    public float health = 100;
+    [SerializeField] public float health = 100;
 
     [SerializeField] Collider2D damageCollider;
     [SerializeField] SpriteRenderer _spriteRenderer;
@@ -18,6 +18,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     {
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
+        Events.instance.onPlayerTakeDamage += TakeDamage;
     }
 
     public void SaveData(ref GameData gameData)
@@ -100,5 +101,10 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         if (collision.gameObject.CompareTag("SpikedSlimeAttack"))
             TakeDamage(DamageHolder.instance.spikedSlimeAttack);
       
+    }
+
+    private void OnDisable()
+    {
+        Events.instance.onPlayerTakeDamage -= TakeDamage;
     }
 }

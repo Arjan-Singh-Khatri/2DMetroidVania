@@ -22,17 +22,20 @@ public class StromHead : EnemyParentScript
     private float damageTaken = 0 ;
     private float sleepTimer = 10f;
     private bool isAttacking = false;
-    private float _count =0;
     private bool _frenzy = false;
+    private bool isSleeping = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        health = 100;
+        health = 500;
         animator = GetComponent<Animator>();
-       
+        StromHeadEvents.instance.activateUI();
+        StromHeadEvents.instance.onStromHeadHealthChanged(health);
+        Invoke(nameof(Frenzy), 2.1f);
+        projectileAttackParticle.Play();
     }
     #region Save And Load
     public void SaveData(ref GameData gameData)
@@ -58,95 +61,74 @@ public class StromHead : EnemyParentScript
     // Update is called once per frame
     void Update(){
         if (_killed) return;
-        
-        if (_frenzy) StartFrenzy();
+        if(_frenzy) Frenzy();
 
-        if(damageTaken >20){
-            damageTaken = 0; 
-            StartFrenzy();
-        }
+
         SleepState();
     }
 
     private void SleepState()
     {
-        if (!isAttacking)
+        if (isSleeping)
         {
             sleepTimer -= Time.deltaTime;
             if(sleepTimer < 0) {
                 sleepTimer = 10f;
                 animator.SetBool("Sleep", false);
-                ChooseAttack(); 
+                Frenzy(); 
             }
         }
     }
-    private void ChooseAttack(){
+
+
+    private void Frenzy()
+    {
+        if (!projectileAttackParticle.isPlaying)
+            projectileAttackParticle.Play();
         isAttacking = true;
-        // Choose Either Frenzy Or Projectile Attack
-
-        int randomNumberForChoice = Random.Range(0,11);
-        if (randomNumberForChoice >= 4){
-            LightingStrikeAttack();
-        }
-        else{
-            StartFrenzy();
-        }
-
-    }
-
-    private void StartFrenzy()
-    {
         _frenzy = true;
-        telePortTimer-= Time.deltaTime;
-        if(telePortTimer < 0)
+        TeleportTimer();
+        StromAttackStart();
+    }
+
+    void StromAttackStart() {
+        if (telePortCount >= 5)
         {
-            telePortTimer = 3f;
-            telePortCount++;
-            Teleport();
-            if (telePortCount >= 5)
-            {
-                StartCoroutine(StromAttack());
-                _frenzy = false;
-                telePortTimer = 0f;
-            }
+            telePortCount = 0;
+            StartCoroutine(StromAttack());
+            _frenzy = false;
+            telePortTimer = 0f;
         }
     }
-    [ContextMenu("Lighting")]
-    private void LightingStrikeAttack()
-    {
-        // To Call InstantiateFunction which instantiate the projectiles i.e lighting
-        CallProjectileInstantiation();  
-    }
 
-    private void CallProjectileInstantiation(){
-        projectileAttackParticle.Play();
-        for(int i = 0; i < 3; i++)
-        {
-            _count++;
-            Invoke(nameof(ProjectileInstantiate), i * 3);
-        } 
-    }
 
-    private void ProjectileInstantiate()
-    {
+    private void ProjectileInstantiate(){
         // the actual instantiation
         for(int i =0; i < firingLocations.Length; i++)
         {
             GameObject instantiatedObject = Instantiate(projectilePrefab, firingLocations[i]);
         }
-        
-        // For how many rounds of lighting strikes to happen
-        if (_count == 3)
-        {
-            _count = 0;
-            isAttacking = false;
-            projectileAttackParticle.Stop();
+
+    }
+
+    private void TeleportTimer() {
+        telePortTimer -= Time.deltaTime;
+        if (telePortTimer < 0){
+            telePortTimer = 4.5f;
+            telePortCount++;
+            Teleport();
+            StromAttackStart();
         }
     }
 
     private void Teleport(){
         int randomIndex = Random.Range(0, teleportPoints.Length);
         transform.position = teleportPoints[randomIndex].position;
+        int randomNum = Random.Range(0, 101);
+        
+        if(randomNum <= 45)
+            ProjectileInstantiate();
+
     }
 
     private IEnumerator StromAttack(){
@@ -155,40 +137,46 @@ public class StromHead : EnemyParentScript
         projectileAttackParticle.Play();
         stromAttackCollider.enabled = true;
         animator.SetTrigger("Strom");
-        Events.instance.StromAttackStart();
+        StromHeadEvents.instance.StromAttackStart();
 
     } 
     private void StromAttackEnd() {
         projectileAttackParticle.Stop();
         stromAttackCollider.enabled = false;
-        Events.instance.StromAttackEnd();
+        StromHeadEvents.instance.StromAttackEnd();
         isAttacking = false;
+        isSleeping = true;
+        projectileAttackParticle.Stop();
         animator.SetBool("Sleep", true);
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision){
         
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !isSleeping)
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.stromHead);
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.stromHead);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.stromHead);
         }
 
-        if (collision.gameObject.CompareTag("PlayerAttackHitBox") || collision.gameObject.CompareTag("HeavyHitBox")){
-            if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
-            {
-                HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref this.health);
-                damageTaken += DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier;
-            }else if (collision.gameObject.CompareTag("HeavyHitBox"))
-            {
-                HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref this.health);
-                damageTaken += DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier;
-            }
+        if (collision.gameObject.CompareTag("PlayerAttackHitBox")){
+            HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref this.health);
+            StromHeadEvents.instance.onStromHeadHealthChanged(health);
+            damageTaken += DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier;
 
-            if(health <= 0) {
-                _killed = true;
-                animator.SetTrigger("death");
-            }
+        }
+
+        if (collision.gameObject.CompareTag("HeavyHitBox")){
+            HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref this.health);
+            StromHeadEvents.instance.onStromHeadHealthChanged(health);
+            damageTaken += DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier;
+        }
+
+        if(health <= 0) {
+            _killed = true;
+            animator.SetTrigger("death");
+            StromHeadEvents.instance.onStromHeadKilled();
+            StromHeadEvents.instance.onBossDead();
         }
             
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class itemsBehaviour : MonoBehaviour, IDataPersistance
 {
     [SerializeField]private string ID;
+    [SerializeField] ParticleSystem _collectedParticles;
     private bool collected;
 
     [ContextMenu("New GUID ID")]
@@ -29,13 +30,13 @@ public class itemsBehaviour : MonoBehaviour, IDataPersistance
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
-        if (collision.gameObject.CompareTag("Player"))
-        {
+        if (collision.gameObject.CompareTag("Player")){
+
+            Instantiate(_collectedParticles);
             collected = true;
             Events.instance.onItemCollectedPlayer();
-            //Particle Effects Maybe??
             gameObject.SetActive(false);
         }
     }
-    
+
 }

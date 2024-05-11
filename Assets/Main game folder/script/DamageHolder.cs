@@ -51,9 +51,12 @@ public class DamageHolder : MonoBehaviour , IDataPersistance
     }
     #endregion
 
-    private void Start()
+    private void Awake()
     {
-        instance = this;  
+        if (instance != null)
+            Destroy(this.gameObject);
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     

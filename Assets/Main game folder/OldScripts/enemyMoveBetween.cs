@@ -20,7 +20,7 @@ public class enemyMoveBetween : EnemyParentScript
         startPoint = transform.position.x;
         endPonints[0] = new Vector3(startPoint - 5, transform.position.y);
         endPonints[1] = new Vector3(startPoint + 5, transform.position.y);
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         health = 40f;
         wayPointIndex = Random.Range(0, 2);
     }
@@ -60,7 +60,8 @@ public class enemyMoveBetween : EnemyParentScript
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.slimeDamage);
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.slimeDamage);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.slimeDamage);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))

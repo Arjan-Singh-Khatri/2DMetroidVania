@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Buttons : MonoBehaviour
+public class Buttons : MonoBehaviour, IFade
 {
     [SerializeField] Button _quit;
     [SerializeField] Button _newGame;
     [SerializeField] Button _load;
+    [SerializeField] LevelLoader levelLoader;
     
 
     void Start(){
@@ -42,7 +43,8 @@ public class Buttons : MonoBehaviour
         DataPersistanceManager.Instance.NewGame();
 
         // Then the SceneUnloaded Saves the game data to the file
-        SceneManager.LoadScene("MainHub");
+        // -- FADE OUT
+        SceneManager.LoadScene(1);
         // Then the SceneLoaded just Loads the game data that was just saved (New game)
     }
 
@@ -52,7 +54,8 @@ public class Buttons : MonoBehaviour
 
     void LoadGame() {
         // The SceneLoaded just loads the game data last saved
-        SceneManager.LoadScene("MainHub");
+        // -- FADE OUT
+        SceneManager.LoadScene(1);
     }
 
     void DisableButtons() { 
@@ -61,4 +64,8 @@ public class Buttons : MonoBehaviour
         _load.interactable = false; 
     }
 
+
+    public void FadeOut(){
+        levelLoader.LoadLevel();
+    }
 }

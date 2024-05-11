@@ -119,6 +119,9 @@ public class Vagabond : EnemyParentScript{
         health = ORIGINAL_HEALTH;
         criticalHealth = ORIGINAL_HEALTH/5; // Twenty Percent Of the Original Health
 
+        VagabondEvents.instance.onBossAwake();
+        VagabondEvents.instance.onBossHealthChange(health);
+
     }
 
     void Update() {
@@ -578,12 +581,14 @@ public class Vagabond : EnemyParentScript{
         }
         if (_damageTaken >= ORIGINAL_HEALTH / 5)
             canStun = true;
+        VagabondEvents.instance.onBossHealthChange(health);
         if (health < 1)
             Die();
     }
 
     void Die(){
         _killed = true;
+        VagabondEvents.instance.onBossDead();
         animator.SetBool("Death",true);
         gameObject.GetComponent<Collider2D>().enabled = false;
         rigbody.bodyType = RigidbodyType2D.Static;

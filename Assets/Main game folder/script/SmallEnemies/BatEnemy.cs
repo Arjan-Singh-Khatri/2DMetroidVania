@@ -107,7 +107,8 @@ public class BatEnemy : EnemyParentScript
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.batDamage);
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.batDamage);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.batDamage);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))

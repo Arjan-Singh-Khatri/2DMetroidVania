@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
-public class ActivateStromHead : EnemyParentScript , IDataPersistance
+public class ActivateVagabond : EnemyParentScript, IDataPersistance
 {
-    [SerializeField] GameObject stromHead;
+    [SerializeField] GameObject vagaBond;
     bool _killed = false;
 
 
-    private void Start(){
-        StromHeadEvents.instance.onStromHeadKilled += TriggerKilled;
+    private void Start()
+    {
+        VagabondEvents.instance.onBossDead += TriggerKilled;
     }
 
     public void SaveData(ref GameData gameData)
@@ -31,21 +31,24 @@ public class ActivateStromHead : EnemyParentScript , IDataPersistance
         }
     }
 
-    void ActivateEnemy() { 
-        stromHead.SetActive(true);
+    void ActivateEnemy()
+    {
+        vagaBond.SetActive(true);
     }
 
-    void TriggerKilled() {
+    void TriggerKilled()
+    {
         _killed = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision){
-        if(collision.gameObject.CompareTag("Player"))
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
             ActivateEnemy();
     }
 
     private void OnDisable()
     {
-        StromHeadEvents.instance.onStromHeadKilled -= TriggerKilled;
+        VagabondEvents.instance.onBossDead -= TriggerKilled;
     }
 }

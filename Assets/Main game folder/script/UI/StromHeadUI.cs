@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StromHeadUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] private GameObject bossHealthUIPanel;
+    [SerializeField] private Slider _bossHealthSlider;
+    
+    private void Start(){
+        StromHeadEvents.instance.activateUI += ToggleUIOn;
+        StromHeadEvents.instance.onBossDead += ToggleUIOff;
+        StromHeadEvents.instance.onStromHeadHealthChanged += UpdateHealth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    void UpdateHealth(float health) { 
+        _bossHealthSlider.value = health;
+    }
+
+    void ToggleUIOn(){
+        bossHealthUIPanel.SetActive(true);
+    }
+
+    void ToggleUIOff() {
+        bossHealthUIPanel.SetActive(false);
+    }
+
+    private void OnDisable(){
+        StromHeadEvents.instance.activateUI -= ToggleUIOn;
+        StromHeadEvents.instance.onBossDead = ToggleUIOff;
+        StromHeadEvents.instance.onStromHeadHealthChanged -= UpdateHealth;
     }
 }

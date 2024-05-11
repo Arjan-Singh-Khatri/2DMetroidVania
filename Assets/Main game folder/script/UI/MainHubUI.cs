@@ -5,32 +5,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainHubUI : MonoBehaviour , IDataPersistance
+public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
 {
     [Header("GAME UI")]
     [SerializeField] private Button continueButton;
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private GameObject pauseMenuPanel;
+    [SerializeField] private LevelLoader levelLoader;
     private bool isPaused;
 
     [Header("Player UI")]
     [SerializeField] private Slider playerHealthSlider;
     [SerializeField] private TextMeshProUGUI soulCount;
-    [SerializeField] private GameObject soulParentGameobject;
     private int soulAmount = 0 ;
 
     void Start(){
-
-        // EVENTS
-        Events.instance.onItemCollectedPlayer += UpdateSoulCount;
-        Events.instance.onHealthChangePlayer += UpdateHealthSlider;
-
+        
         //UI 
+        
         UpdateHealthSlider(GameObject.FindGameObjectWithTag("Player").GetComponent<playerDeath>().health);
 
-        soulCount.text = $"{soulAmount}/10";
-
+            soulCount.text = $"{soulAmount}/10";
         continueButton.onClick.AddListener(() =>{
             DisableButtons();
             Continue();
@@ -45,6 +41,13 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
             DisableButtons();
             QuitGame();
         });
+
+
+        // EVENTS
+
+        Events.instance.onItemCollectedPlayer += UpdateSoulCount;
+        Events.instance.onHealthChangePlayer += UpdateHealthSlider;
+
 
     }
 
@@ -62,14 +65,18 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
     }
 
     void Continue() { 
+        EnableButtons();
         pauseMenuPanel.SetActive(false);
     }
 
     void MainMenu() {
-        SceneManager.LoadScene("MainMenu");
+        EnableButtons();
+        // Fade In 
+        SceneManager.LoadScene(0);
     }
 
-    void QuitGame() { 
+    void QuitGame() {
+        EnableButtons();
         Application.Quit();
     }
 
@@ -77,7 +84,6 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
         playerHealthSlider.value = health;
     }
 
-    // MILAUNA PARYO
     void UpdateSoulCount() {
         soulAmount++;
         soulCount.text = $"{soulAmount}/10";
@@ -101,6 +107,12 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
         mainMenuButton.interactable = false;
     }
 
+    void EnableButtons() {
+        quitButton.interactable = true;
+        continueButton.interactable = true;
+        mainMenuButton.interactable = true;
+    }
+
     private void OnDisable()
     {
         Events.instance.onItemCollectedPlayer -= UpdateSoulCount;
@@ -108,4 +120,7 @@ public class MainHubUI : MonoBehaviour , IDataPersistance
 
     }
 
+    public void FadeOut() {
+        levelLoader.LoadLevel();
+    }
 }

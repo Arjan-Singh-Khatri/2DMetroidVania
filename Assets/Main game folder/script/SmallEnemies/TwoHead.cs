@@ -157,7 +157,8 @@ public class TwoHead : EnemyParentScript
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.twoHeadDamage);
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.twoHeadDamage);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.twoHeadDamage);
         }
 
         if (collision.gameObject.CompareTag("PlayerAttackHitBox"))

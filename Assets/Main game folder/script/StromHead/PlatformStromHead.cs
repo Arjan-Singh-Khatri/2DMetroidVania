@@ -9,8 +9,8 @@ public class PlatformStromHead : MonoBehaviour
 
     private void Start()
     {
-        Events.instance.StromAttackStart += AttackStart;
-        Events.instance.StromAttackEnd += AttackEnd;
+        StromHeadEvents.instance.StromAttackStart += AttackStart;
+        StromHeadEvents.instance.StromAttackEnd += AttackEnd;
     }
 
     private void AttackStart()
@@ -27,7 +27,7 @@ public class PlatformStromHead : MonoBehaviour
 
     private void OnDestroy()
     {
-        Events.instance.StromAttackStart -= AttackEnd;
-        Events.instance.StromAttackEnd -= AttackEnd;
+        StromHeadEvents.instance.StromAttackStart -= AttackEnd;
+        StromHeadEvents.instance.StromAttackEnd -= AttackEnd;
     }
 }

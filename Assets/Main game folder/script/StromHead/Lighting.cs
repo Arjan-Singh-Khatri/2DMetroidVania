@@ -7,16 +7,15 @@ using UnityEngine.UIElements;
 public class Lighting : EnemyParentScript
 {
 
-    private float lifeSpanTimer = 4.5f;
-    private float _speed = 10f;
-    public bool followPlayer = false;
+    [SerializeField]private float lifeSpanTimer = 20f;
+    [SerializeField]private float _speed = 1f;
+    [SerializeField]private ParticleSystem particle; 
     // Start is called before the first frame update
     void Start()
     {
         transform.parent = null;
         player = GameObject.FindGameObjectWithTag("Player");
-
-        Events.instance.followPlayer += FollowPlayerTrigger;
+        particle.Play();
     }
 
     // Update is called once per frame
@@ -45,21 +44,15 @@ public class Lighting : EnemyParentScript
         FollowPlayer();
     }
 
-    public void FollowPlayerTrigger()
-    {
-        followPlayer = true;
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player")) {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.lightning);    
+            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.lightning);    
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.lightning);
             Destroy(gameObject);
         }
     }
 
-    private void OnDestroy()
-    {
-        Events.instance.followPlayer -= FollowPlayerTrigger;
-    }
+
 }

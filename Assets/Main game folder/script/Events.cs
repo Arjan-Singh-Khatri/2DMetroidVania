@@ -14,16 +14,12 @@ public class Events : MonoBehaviour
         if (instance != null)
             Destroy(this.gameObject);
         instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
-
-    // STROM HEAD
-    public Action StromAttackStart;
-    public Action StromAttackEnd;
-    public Action followPlayer;
-
 
     // PLAYER UI 
     public Action onItemCollectedPlayer;
     public Action<float> onHealthChangePlayer;
+    public Action onLoadingLevel;
+    public Action<float> onPlayerTakeDamage;
 }
