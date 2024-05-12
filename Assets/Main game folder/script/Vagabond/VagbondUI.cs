@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class VagbondUI : MonoBehaviour
 {
     [SerializeField] private GameObject bossHealthUIPanel;
     [SerializeField] private Slider _bossHealthSlider;
+    [SerializeField] private LevelLoader _levelLoader;
 
-    private void Start()
+    private void Awake()
     {
         VagabondEvents.instance.onBossAwake += ToggleUIOn;
-        VagabondEvents.instance.onBossAwake += ToggleUIOff;
+        VagabondEvents.instance.onBossDead += ToggleUIOff;
         VagabondEvents.instance.onBossHealthChange += UpdateHealth;
+        VagabondEvents.instance.onReturnToHub += BackToMainHub;
     }
 
 
@@ -23,6 +26,7 @@ public class VagbondUI : MonoBehaviour
 
     void ToggleUIOn()
     {
+        Debug.Log("UI PANEL ON");
         bossHealthUIPanel.SetActive(true);
     }
 
@@ -31,10 +35,22 @@ public class VagbondUI : MonoBehaviour
         bossHealthUIPanel.SetActive(false);
     }
 
+    void  BackToMainHub() {
+        DataPersistanceManager.Instance.SaveGame();
+        StartCoroutine(LoadMainHub());
+    }
+
+    IEnumerator LoadMainHub() {
+        yield return new WaitForSeconds(5f);
+        _levelLoader.LoadLevel();
+        yield return new WaitForSeconds(.8f);
+        SceneManager.LoadScene(1);
+    }
     private void OnDisable()
     {
         VagabondEvents.instance.onBossAwake -= ToggleUIOn;
-        VagabondEvents.instance.onBossAwake -= ToggleUIOff;
+        VagabondEvents.instance.onBossDead -= ToggleUIOff;
         VagabondEvents.instance.onBossHealthChange -= UpdateHealth;
+        VagabondEvents.instance.onReturnToHub -= BackToMainHub;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IDataPersistance
 {
     //Scriptable object which holds all the player's movement parameters. If you don't want to use it
     //just paste in all the parameters, though you will need to manuly change all references in this script
@@ -293,6 +293,17 @@ public class PlayerMovement : MonoBehaviour
 
         
     }
+    public void SaveData(ref GameData gameData)
+    {
+		if(SceneManager.GetActiveScene().buildIndex == 1)
+			gameData._position = this.transform.position;
+    }
+
+    public void LoadData(GameData gameData)
+    {
+		if(SceneManager.GetActiveScene().buildIndex == 1)
+			this.transform.position = gameData._position;
+    }
 
     private void FixedUpdate()
 	{
@@ -315,8 +326,11 @@ public class PlayerMovement : MonoBehaviour
 		
     }
 
+    #region Save
+
+    #endregion
     #region INPUT CALLBACKS
-	//Methods which whandle input detected in Update()
+    //Methods which whandle input detected in Update()
     public void OnJumpInput()
 	{
 		LastPressedJumpTime = Data.jumpInputBufferTime;

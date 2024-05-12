@@ -14,17 +14,17 @@ public class LevelSelectScript : MonoBehaviour, IFade
     }
     
 
-    IEnumerator LoadLevel() {
-        // Fade In
-        //Events.instance.onLoadingLevel();
+    IEnumerator LoadBossLevel() {
+        FadeOut();
+        Events.instance.onLoadingLevel();
         //DataPersistanceManager.Instance.SaveGame();
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(.8f);
         SceneManager.LoadScene(_sceneName);
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
         if (collision.gameObject.CompareTag("Player")) { 
-            LoadLevel();    
+            StartCoroutine(LoadBossLevel());    
         }
     }
 

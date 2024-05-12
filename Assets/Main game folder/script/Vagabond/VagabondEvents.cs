@@ -7,6 +7,12 @@ public class VagabondEvents : MonoBehaviour
 {
     public static VagabondEvents instance;
 
+
+    public Action<float> onBossHealthChange;
+    public Action onBossAwake;
+    public Action onBossDead;
+    public Action onReturnToHub;
+
     private void Awake()
     {
         if (instance != null) {
@@ -15,7 +21,4 @@ public class VagabondEvents : MonoBehaviour
         instance = this;
     }
 
-    public Action<float> onBossHealthChange;
-    public Action onBossAwake;
-    public Action onBossDead;
 }

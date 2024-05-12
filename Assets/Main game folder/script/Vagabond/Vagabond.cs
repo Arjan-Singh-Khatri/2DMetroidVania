@@ -36,6 +36,9 @@ public class Vagabond : EnemyParentScript{
     // FOR PROJECTILES
     protected float directionForProjectile;
 
+    // ENEMY DEACTIVATE
+    public bool isDeactivated = true;
+
     [Header("DASH")]
     [SerializeField] private float _dashSpeed = 5f;
     [SerializeField] private float _maxDashThreshold = 10f;
@@ -119,14 +122,11 @@ public class Vagabond : EnemyParentScript{
         health = ORIGINAL_HEALTH;
         criticalHealth = ORIGINAL_HEALTH/5; // Twenty Percent Of the Original Health
 
-        VagabondEvents.instance.onBossAwake();
-        VagabondEvents.instance.onBossHealthChange(health);
-
+        animator.SetBool("Stunned", true);
     }
 
     void Update() {
-
-        if (_killed)
+        if (_killed || isDeactivated)
             return;
 
         if(chase && (isAttacking || isHeavyAttacking)) { 
@@ -470,6 +470,7 @@ public class Vagabond : EnemyParentScript{
 
     #region Block , Dash and Stunned
 
+    [ContextMenu("Dash")]
     IEnumerator Dash(float direction){
         animator.SetBool("Dash", true);
         isDashing = true;
@@ -483,7 +484,7 @@ public class Vagabond : EnemyParentScript{
     }
 
     bool IsInDashBoundary(){
-        if ((transform.position.x < _dashCheckRight) && (transform.position.x > _dashCheckLeft))
+        if ((transform.position.x + 10 < _dashCheckRight) || (transform.position.x - 10 > _dashCheckLeft))
             return true;
         return false;
     }
@@ -588,8 +589,11 @@ public class Vagabond : EnemyParentScript{
 
     void Die(){
         _killed = true;
-        VagabondEvents.instance.onBossDead();
         animator.SetBool("Death",true);
+        //DataPersistanceManager.Instance.SaveGame();
+        VagabondEvents.instance.onBossDead();
+        VagabondEvents.instance.onReturnToHub();
+
         gameObject.GetComponent<Collider2D>().enabled = false;
         rigbody.bodyType = RigidbodyType2D.Static;
     }
@@ -632,6 +636,15 @@ public class Vagabond : EnemyParentScript{
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, circleCastRadius);
     }
+
+    public IEnumerator Activation() {
+        animator.SetBool("Stunned", false);
+        yield return new WaitForSeconds(.4f);
+        isDeactivated = false;
+        VagabondEvents.instance.onBossAwake();
+        VagabondEvents.instance.onBossHealthChange(health);
+    }
+
     #endregion
 
     #region Save And Load

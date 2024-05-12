@@ -161,23 +161,26 @@ public class StromHead : EnemyParentScript
 
         if (collision.gameObject.CompareTag("PlayerAttackHitBox")){
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref this.health);
-            StromHeadEvents.instance.onStromHeadHealthChanged(health);
             damageTaken += DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier;
 
         }
 
         if (collision.gameObject.CompareTag("HeavyHitBox")){
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref this.health);
-            StromHeadEvents.instance.onStromHeadHealthChanged(health);
             damageTaken += DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier;
         }
 
-        if(health <= 0) {
+        StromHeadEvents.instance.onStromHeadHealthChanged(health);
+
+        if (health <= 0) {
             _killed = true;
             animator.SetTrigger("death");
+
             StromHeadEvents.instance.onStromHeadKilled();
             StromHeadEvents.instance.onBossDead();
+            StromHeadEvents.instance.onReturnToHub();
         }
-            
+
     }
+
 }

@@ -8,13 +8,11 @@ public class ActivateVagabond : EnemyParentScript, IDataPersistance
     bool _killed = false;
 
 
-    private void Start()
-    {
+    private void Start(){
         VagabondEvents.instance.onBossDead += TriggerKilled;
     }
 
-    public void SaveData(ref GameData gameData)
-    {
+    public void SaveData(ref GameData gameData){
         if (gameData.bossesKilled.ContainsKey(this.enemyID))
         {
             gameData.bossesKilled.Remove(this.enemyID);
@@ -22,8 +20,7 @@ public class ActivateVagabond : EnemyParentScript, IDataPersistance
         gameData.bossesKilled.Add(this.enemyID, _killed);
     }
 
-    public void LoadData(GameData gameData)
-    {
+    public void LoadData(GameData gameData){
         gameData.bossesKilled.TryGetValue(this.enemyID, out _killed);
         if (_killed)
         {
@@ -31,24 +28,20 @@ public class ActivateVagabond : EnemyParentScript, IDataPersistance
         }
     }
 
-    void ActivateEnemy()
-    {
-        vagaBond.SetActive(true);
+    void ActivateEnemy(){
+        StartCoroutine(vagaBond.GetComponent<Vagabond>().Activation());
     }
 
-    void TriggerKilled()
-    {
+    void TriggerKilled(){
         _killed = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision){
         if (collision.gameObject.CompareTag("Player"))
             ActivateEnemy();
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable(){
         VagabondEvents.instance.onBossDead -= TriggerKilled;
     }
 }

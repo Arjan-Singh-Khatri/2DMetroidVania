@@ -27,23 +27,24 @@ public class Buttons : MonoBehaviour, IFade
         _newGame.onClick.AddListener(() =>
         {
             DisableButtons();
-            NewGame();
+            StartCoroutine(NewGame());
         });
 
         _load.onClick.AddListener(() =>
         {
             DisableButtons();
-            LoadGame();
+            StartCoroutine(LoadGame());
         });
     }
 
-    void NewGame() {
+    IEnumerator NewGame() {
 
         // SO MAKES A NEW GAME DATA 
         DataPersistanceManager.Instance.NewGame();
 
         // Then the SceneUnloaded Saves the game data to the file
-        // -- FADE OUT
+        FadeOut();
+        yield return new WaitForSeconds(.8f);
         SceneManager.LoadScene(1);
         // Then the SceneLoaded just Loads the game data that was just saved (New game)
     }
@@ -52,9 +53,10 @@ public class Buttons : MonoBehaviour, IFade
         Application.Quit();
     }
 
-    void LoadGame() {
+    IEnumerator LoadGame() {
         // The SceneLoaded just loads the game data last saved
-        // -- FADE OUT
+        FadeOut();
+        yield return new WaitForSeconds(.8f);
         SceneManager.LoadScene(1);
     }
 

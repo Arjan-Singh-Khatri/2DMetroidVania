@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public class PlayerAttack : MonoBehaviour, IDataPersistance
+public class PlayerAttack : MonoBehaviour
 {
     private Animator anim;
     public bool _attackPressedAgain = false;
@@ -36,19 +37,7 @@ public class PlayerAttack : MonoBehaviour, IDataPersistance
         AttackDownTime();
     }
 
-    #region Save System
-    public void LoadData(GameData gameData)
-    {
-        this.transform.position = gameData._position;
-    }
-
-    public void SaveData(ref GameData gameData)
-    {
-        gameData._position = this.transform.position;
-    }
-
-    #endregion
-
+ 
     #region Attack 
 
     private void AttackDownTime()

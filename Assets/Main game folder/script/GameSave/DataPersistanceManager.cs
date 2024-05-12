@@ -27,22 +27,16 @@ public class DataPersistanceManager : MonoBehaviour
         this.dataHandlerFile = new DataHandlerFile(Application.persistentDataPath, fileName);
     }
     private void OnEnable(){
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable(){
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         this.dataPersistanceObjects = GetAllDataPersistanceObjects();
         LoadGame();
-    }
-
-    public void OnSceneUnloaded(Scene scene){
-        SaveGame();
     }
 
     private List<IDataPersistance> GetAllDataPersistanceObjects()

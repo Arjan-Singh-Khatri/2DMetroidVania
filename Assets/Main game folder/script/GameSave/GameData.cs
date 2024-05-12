@@ -16,6 +16,7 @@ public class GameData
     // FOR ENEMIES AND ITEMS
     public SerializeDictionaryForJson<string, bool> itemCollected;
     public SerializeDictionaryForJson<string, bool> bossesKilled;
+    
 
     public GameData()
     {

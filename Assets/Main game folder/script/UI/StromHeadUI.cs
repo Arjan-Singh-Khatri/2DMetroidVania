@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StromHeadUI : MonoBehaviour
 {
     [SerializeField] private GameObject bossHealthUIPanel;
     [SerializeField] private Slider _bossHealthSlider;
+    [SerializeField] private LevelLoader _levelLoader;
     
     private void Start(){
         StromHeadEvents.instance.activateUI += ToggleUIOn;
         StromHeadEvents.instance.onBossDead += ToggleUIOff;
         StromHeadEvents.instance.onStromHeadHealthChanged += UpdateHealth;
+        StromHeadEvents.instance.onReturnToHub += BackToMainHub;
     }
 
 
@@ -27,9 +30,25 @@ public class StromHeadUI : MonoBehaviour
         bossHealthUIPanel.SetActive(false);
     }
 
+    void BackToMainHub()
+    {
+        DataPersistanceManager.Instance.SaveGame();
+        StartCoroutine(LoadMainHub());
+    }
+
+    IEnumerator LoadMainHub()
+    {
+        yield return new WaitForSeconds(5f);
+        _levelLoader.LoadLevel();
+        yield return new WaitForSeconds(.8f);
+        SceneManager.LoadScene(1);
+    }
+
+
     private void OnDisable(){
         StromHeadEvents.instance.activateUI -= ToggleUIOn;
         StromHeadEvents.instance.onBossDead = ToggleUIOff;
         StromHeadEvents.instance.onStromHeadHealthChanged -= UpdateHealth;
+        StromHeadEvents.instance.onReturnToHub -= BackToMainHub;
     }
 }

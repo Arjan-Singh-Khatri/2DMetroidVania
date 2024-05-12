@@ -34,7 +34,7 @@ public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
 
         mainMenuButton.onClick.AddListener(() =>{
             DisableButtons();
-            MainMenu();
+            StartCoroutine(MainMenu());
         });
 
         quitButton.onClick.AddListener(() =>{
@@ -69,9 +69,10 @@ public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
         pauseMenuPanel.SetActive(false);
     }
 
-    void MainMenu() {
+    IEnumerator MainMenu() {
         EnableButtons();
-        // Fade In 
+        FadeOut();
+        yield return new WaitForSeconds(.8f);
         SceneManager.LoadScene(0);
     }
 

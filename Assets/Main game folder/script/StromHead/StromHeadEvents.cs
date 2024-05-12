@@ -20,4 +20,6 @@ public class StromHeadEvents : MonoBehaviour
     public Action<float> onStromHeadHealthChanged;
     public Action activateUI;
     public Action onBossDead;
+    public Action onReturnToHub;
+
 }
