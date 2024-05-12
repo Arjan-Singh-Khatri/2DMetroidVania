@@ -1,24 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class SlimeUIDoTween : MonoBehaviour
 {
+    public float movementDistance = 20; 
+    public float movementSpeed = .2f; 
+
     private RectTransform rectTransform;
-    [SerializeField] Vector3 _endPoint;
-    [SerializeField] float _jumpPower;
-    [SerializeField] int _jumpNumber;
-    [SerializeField] float _jumpDuration;
+    private Vector3 startPosition;
 
-    private void Start(){
+    void Start()
+    {
+        // Get the RectTransform component of the UI image
         rectTransform = GetComponent<RectTransform>();
-        SlimeJumpBackAndForth();
-    }
-    // Update is called once per frame
-    void SlimeJumpBackAndForth(){
-        rectTransform.DOJumpAnchorPos(_endPoint, _jumpPower,
-            _jumpNumber, _jumpDuration).SetLoops(-1, LoopType.Yoyo);
 
+        // Store the initial position as the starting position
+        startPosition = rectTransform.anchoredPosition;
+    }
+
+    void Update()
+    {
+        // Calculate the next position using Mathf.Sin to create back-and-forth movement
+        float newX = startPosition.x + Mathf.Sin(Time.time * movementSpeed) * movementDistance;
+
+        // Update the anchored position of the RectTransform
+        rectTransform.anchoredPosition = new Vector2(newX, startPosition.y);
     }
 }
