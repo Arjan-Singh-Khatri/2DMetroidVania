@@ -6,13 +6,15 @@ using UnityEngine;
 public class PlayerProjectile : MonoBehaviour
 {
 
-    [SerializeField] private float _speed = 10f;
+    private float _speed = 15f;
     private const float LIFE_TIME = 2.5f;
     private float localLifeTime = 0.1f;
-    private Rigidbody2D rig;
-
+    private float direction;
+    private Vector3 directionVector;
     private void Start(){
-        rig = GetComponent<Rigidbody2D>();
+        direction = GameObject.FindGameObjectWithTag("Player").transform.localScale.x;
+        directionVector = new Vector3(direction, 0, 0);
+        transform.parent = null;
         transform.localScale = new Vector2(.1f, .8f);
     }
 
@@ -22,7 +24,7 @@ public class PlayerProjectile : MonoBehaviour
     }
 
     void MoveForward(){
-        transform.position += _speed * Time.deltaTime * Vector3.right ;
+        transform.position += _speed * Time.deltaTime * directionVector;
     }
 
     void ScaleOverLifeTime()

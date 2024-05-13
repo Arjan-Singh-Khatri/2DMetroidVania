@@ -16,7 +16,6 @@ public class StromHeadEvents : MonoBehaviour
 
     public Action StromAttackStart;
     public Action StromAttackEnd;
-    public Action onStromHeadKilled;
     public Action<float> onStromHeadHealthChanged;
     public Action activateUI;
     public Action onBossDead;

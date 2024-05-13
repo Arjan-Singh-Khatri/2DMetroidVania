@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 enum ProjectileType {
-    Normal,Heavy
+    Normal,Heavy, player
 }
 
 
 public class VagaBondProjectile : EnemyParentScript
 {
-    private float _speedNormal = 15f;
-    private float _speedHeavy = 12f;
+    private float _speedNormal = 22f;
+    private float _speedHeavy = 15;
     private const float LIFE_TIME = 2.9f;
     private float localLifeTime = 0.1f;
     private ProjectileType _currentType;
     private float _damage;
     private float directionForProjectile;
-
+    private Vector3 directionVector;
 
     void Start(){
         player = GameObject.FindGameObjectWithTag("Player");
@@ -24,7 +24,7 @@ public class VagaBondProjectile : EnemyParentScript
             _currentType = ProjectileType.Heavy;
             _damage = 20f;
         }
-        else { 
+        else{ 
             _currentType=ProjectileType.Normal;
             _damage = 25f;
         }
@@ -37,6 +37,8 @@ public class VagaBondProjectile : EnemyParentScript
         {
             directionForProjectile = 1;
         }
+
+        directionVector = new Vector3(directionForProjectile, 0f);
     }
 
     // Update is called once per frame
@@ -46,11 +48,11 @@ public class VagaBondProjectile : EnemyParentScript
     }
 
     void Movement() {
-        
+
         if (_currentType == ProjectileType.Normal)
-            transform.position += _speedNormal * Time.deltaTime * new Vector3(directionForProjectile,0f);
+            transform.position += _speedNormal * Time.deltaTime * directionVector;
         else
-            transform.position += _speedHeavy * Time.deltaTime * new Vector3(directionForProjectile, 0f);
+            transform.position += _speedHeavy * Time.deltaTime * directionVector;
     }
 
     void ScaleOverLifeTime()

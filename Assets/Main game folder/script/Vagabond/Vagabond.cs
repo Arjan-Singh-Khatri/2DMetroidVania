@@ -54,6 +54,7 @@ public class Vagabond : EnemyParentScript{
     [SerializeField] private float chaseMaxSpeed = 4f;
     [SerializeField] private float chaseMinSpeed = 2f;
     [SerializeField] private float _chaseForce = 10f;
+    [SerializeField]private float targetSpeed;
     private Vector2 chaseVector = new();
     public bool chase = false;
     private float distanceBetween;
@@ -225,12 +226,12 @@ public class Vagabond : EnemyParentScript{
     private void DetermineProbabilities() {
         if (IsAggresive()) {
             probForChoiceBlock = 15f;
+            probForNormal = 25f;
+            probForHeavy = 50f;
+        }else if (IsDefensive()) {
+            probForChoiceBlock = 30f;
             probForNormal = 30f;
             probForHeavy = 60f;
-        }else if (IsDefensive()) {
-            probForChoiceBlock = 40f;
-            probForNormal = 30f;
-            probForHeavy = 70f;
         }
     }
 
@@ -286,8 +287,14 @@ public class Vagabond : EnemyParentScript{
                 canDash = true;
             }
         }
-        rigbody.AddForce(chaseVector, ForceMode2D.Force);
-        
+
+        targetSpeed = Mathf.Lerp(rigbody.velocity.x, targetSpeed, 1);
+        float speedDif = targetSpeed - rigbody.velocity.x;
+
+        float movement = speedDif * _chaseForce;
+
+        rigbody.AddForce(movement * new Vector2(direction,0), ForceMode2D.Force);
+
     }
 
     void CalculateChaseVector() {
@@ -306,8 +313,8 @@ public class Vagabond : EnemyParentScript{
             toggleChase = true;
         }
         else
-            _jumpForceVector = new(0f, _jumpForce);
-        rigbody.AddForce(_jumpForceVector, ForceMode2D.Impulse);
+            _jumpForceVector = new(0f, _jumpForce );
+        rigbody.AddForce(_jumpForceVector, ForceMode2D.Force);
     }
 
     void AvoidProjectiles(){
@@ -470,7 +477,6 @@ public class Vagabond : EnemyParentScript{
 
     #region Block , Dash and Stunned
 
-    [ContextMenu("Dash")]
     IEnumerator Dash(float direction){
         animator.SetBool("Dash", true);
         isDashing = true;
@@ -590,7 +596,6 @@ public class Vagabond : EnemyParentScript{
     void Die(){
         _killed = true;
         animator.SetBool("Death",true);
-        //DataPersistanceManager.Instance.SaveGame();
         VagabondEvents.instance.onBossDead();
         VagabondEvents.instance.onReturnToHub();
 
@@ -598,27 +603,25 @@ public class Vagabond : EnemyParentScript{
         rigbody.bodyType = RigidbodyType2D.Static;
     }
 
-    void Destroy(){
-        Destroy(gameObject);    
-    }
+   
     #endregion
 
     #region OTHER STUFF
     void Math(){
-        directionForProjectile = direction;
         colliders = Physics2D.OverlapCircleAll(transform.position, circleCastRadius);
         distanceBetween = Mathf.Abs(player.transform.position.x - transform.position.x);
         playerHealthAfterHit = _playerDeathScript.health - _damageNormal;
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
-        
+
+        // IF BLOCKING IGNORE COLLISIONS 
+        if (isBlocking || isDeactivated) return;
+
+
         // PLAYER TAKES DAMAGE IF HIT BY A DASH
         if (isDashing && collision.gameObject.CompareTag("Player"))
             _playerDeathScript.TakeDamage(_damageNormal);
-
-        // IF BLOCKING IGNORE COLLISIONS 
-        if (isBlocking) return;
 
         // VAGABOND TAKING DAMAGE
         if (collision.gameObject.CompareTag("PlayerAttackHitBox"))

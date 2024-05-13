@@ -17,7 +17,6 @@ public class LevelSelectScript : MonoBehaviour, IFade
     IEnumerator LoadBossLevel() {
         FadeOut();
         Events.instance.onLoadingLevel();
-        //DataPersistanceManager.Instance.SaveGame();
         yield return new WaitForSeconds(.8f);
         SceneManager.LoadScene(_sceneName);
     }

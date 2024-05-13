@@ -6,11 +6,12 @@ using UnityEngine;
 public class ActivateStromHead : EnemyParentScript , IDataPersistance
 {
     [SerializeField] GameObject stromHead;
+    [SerializeField] GameObject wall;
     bool _killed = false;
 
 
     private void Start(){
-        StromHeadEvents.instance.onStromHeadKilled += TriggerKilled;
+        StromHeadEvents.instance.onBossDead += TriggerKilled;
     }
 
     public void SaveData(ref GameData gameData)
@@ -32,10 +33,12 @@ public class ActivateStromHead : EnemyParentScript , IDataPersistance
     }
 
     void ActivateEnemy() { 
+        //wall.SetActive(true);
         stromHead.SetActive(true);
     }
 
     void TriggerKilled() {
+        wall.SetActive(false);
         _killed = true;
     }
 
@@ -46,6 +49,6 @@ public class ActivateStromHead : EnemyParentScript , IDataPersistance
 
     private void OnDisable()
     {
-        StromHeadEvents.instance.onStromHeadKilled -= TriggerKilled;
+        StromHeadEvents.instance.onBossDead -= TriggerKilled;
     }
 }

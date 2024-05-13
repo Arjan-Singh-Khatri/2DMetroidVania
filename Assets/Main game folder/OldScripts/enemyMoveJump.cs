@@ -16,6 +16,7 @@ public class enemyMoveJump : EnemyParentScript
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         startPoint = transform.position.x;
         endPonints[0] = new Vector3(startPoint- offset, transform.position.y);
         endPonints[1] = new Vector3(startPoint + offset, transform.position.y);

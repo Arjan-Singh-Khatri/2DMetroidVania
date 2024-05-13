@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class VagbondUI : MonoBehaviour
 {
     [SerializeField] private GameObject bossHealthUIPanel;
+    [SerializeField] private GameObject returning;
     [SerializeField] private Slider _bossHealthSlider;
     [SerializeField] private LevelLoader _levelLoader;
 
@@ -41,10 +42,12 @@ public class VagbondUI : MonoBehaviour
     }
 
     IEnumerator LoadMainHub() {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
+        returning.SetActive(true);
+        yield return new WaitForSeconds(15f);
         _levelLoader.LoadLevel();
         yield return new WaitForSeconds(.8f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(1); // NOT THIS BUT END CREDITS
     }
     private void OnDisable()
     {

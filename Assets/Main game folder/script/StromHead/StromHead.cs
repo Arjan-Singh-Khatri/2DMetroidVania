@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class StromHead : EnemyParentScript
 {
@@ -11,7 +12,7 @@ public class StromHead : EnemyParentScript
     [SerializeField] private Transform[] teleportPoints;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform[] firingLocations;
-    [SerializeField] private ParticleSystem projectileAttackParticle;
+    [SerializeField] private ParticleSystem particleAttack;
 
     [Header("Variables")]
     private Animator animator;
@@ -35,7 +36,7 @@ public class StromHead : EnemyParentScript
         StromHeadEvents.instance.activateUI();
         StromHeadEvents.instance.onStromHeadHealthChanged(health);
         Invoke(nameof(Frenzy), 2.1f);
-        projectileAttackParticle.Play();
+        particleAttack.Play();
     }
     #region Save And Load
     public void SaveData(ref GameData gameData)
@@ -83,8 +84,8 @@ public class StromHead : EnemyParentScript
 
     private void Frenzy()
     {
-        if (!projectileAttackParticle.isPlaying)
-            projectileAttackParticle.Play();
+        if (!particleAttack.isPlaying)
+            particleAttack.Play();
         isAttacking = true;
         _frenzy = true;
         TeleportTimer();
@@ -134,19 +135,19 @@ public class StromHead : EnemyParentScript
     private IEnumerator StromAttack(){
 
         yield return new WaitForSeconds(.7f);
-        projectileAttackParticle.Play();
+        particleAttack.Play();
         stromAttackCollider.enabled = true;
         animator.SetTrigger("Strom");
         StromHeadEvents.instance.StromAttackStart();
 
     } 
     private void StromAttackEnd() {
-        projectileAttackParticle.Stop();
+        particleAttack.Stop();
         stromAttackCollider.enabled = false;
         StromHeadEvents.instance.StromAttackEnd();
         isAttacking = false;
         isSleeping = true;
-        projectileAttackParticle.Stop();
+        particleAttack.Stop();
         animator.SetBool("Sleep", true);
     }
 
@@ -172,15 +173,21 @@ public class StromHead : EnemyParentScript
 
         StromHeadEvents.instance.onStromHeadHealthChanged(health);
 
-        if (health <= 0) {
+        //StartDeath();
+
+    }
+    [ContextMenu("Death")]
+    void StartDeath() {
+        health = 0;
+        if (health <= 0)
+        {
+            particleAttack.Stop();
             _killed = true;
             animator.SetTrigger("death");
 
-            StromHeadEvents.instance.onStromHeadKilled();
             StromHeadEvents.instance.onBossDead();
             StromHeadEvents.instance.onReturnToHub();
         }
-
     }
 
 }

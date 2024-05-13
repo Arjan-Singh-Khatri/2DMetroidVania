@@ -9,7 +9,8 @@ public class StromHeadUI : MonoBehaviour
     [SerializeField] private GameObject bossHealthUIPanel;
     [SerializeField] private Slider _bossHealthSlider;
     [SerializeField] private LevelLoader _levelLoader;
-    
+    [SerializeField] private GameObject returning;
+
     private void Start(){
         StromHeadEvents.instance.activateUI += ToggleUIOn;
         StromHeadEvents.instance.onBossDead += ToggleUIOff;
@@ -38,10 +39,12 @@ public class StromHeadUI : MonoBehaviour
 
     IEnumerator LoadMainHub()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
+        returning.SetActive(true);
+        yield return new WaitForSeconds(15f);
         _levelLoader.LoadLevel();
         yield return new WaitForSeconds(.8f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(1); // LOAD VAGABOND?
     }
 
 
