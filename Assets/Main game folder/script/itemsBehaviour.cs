@@ -33,6 +33,7 @@ public class itemsBehaviour : MonoBehaviour, IDataPersistance
         if (collision.gameObject.CompareTag("Player")){
 
             Instantiate(_collectedParticles);
+            DamageHolder.instance.playerDamage += 10;
             collected = true;
             Events.instance.onItemCollectedPlayer();
             gameObject.SetActive(false);

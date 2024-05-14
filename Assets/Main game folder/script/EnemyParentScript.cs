@@ -61,7 +61,9 @@ public class EnemyParentScript : MonoBehaviour
     }
 
     protected void EnemyDeath(){
-       
+        Debug.Log($"Player Transform Position {player.transform.position}");
+        Debug.Log($"Transform Position {transform.position}");
+        player.GetComponent<playerDeath>().Heal();
         gameObject.SetActive(false);
     }
 

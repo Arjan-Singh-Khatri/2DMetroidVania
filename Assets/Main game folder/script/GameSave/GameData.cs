@@ -20,7 +20,7 @@ public class GameData
 
     public GameData()
     {
-        this._health = 100;
+        this._health = 40;
         this._position = new Vector3(9.77000046f, 15.96f, 0);
         this.playerCharge = 0;
         this.playerDamage = 15;

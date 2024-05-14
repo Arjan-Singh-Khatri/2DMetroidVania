@@ -9,7 +9,8 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 {
     private Animator anim;
     private Rigidbody2D rig;
-    [SerializeField] public float health = 100;
+    public float health = 40;
+    [SerializeField]private float maxHealth = 100;
 
     [SerializeField] Collider2D damageCollider;
     [SerializeField] SpriteRenderer _spriteRenderer;
@@ -31,6 +32,12 @@ public class playerDeath : MonoBehaviour, IDataPersistance
         this.health = gameData._health;
     }
 
+    public void Heal() {
+        this.health += 10;
+        if (health > maxHealth)
+            health = 100;
+        Events.instance.onHealthChangePlayer(health);
+    }
  
     private void Restartlevel()
     {

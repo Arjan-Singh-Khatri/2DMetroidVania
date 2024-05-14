@@ -13,7 +13,7 @@ public class DamageHolder : MonoBehaviour , IDataPersistance
     public int playerCharge = 0;
 
     public float damageMultiplier = 1 ; 
-    public float playerDamage = 15f;
+    public float playerDamage = 10f;
     public float playerHeavyDamage = 30f;
     #endregion
 
