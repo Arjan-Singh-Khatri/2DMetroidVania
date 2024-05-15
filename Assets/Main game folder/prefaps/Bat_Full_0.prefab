@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e66815ab5561244ae3d178640ac4d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 60
   direction: 0
   enemyID: 
   speed: 3

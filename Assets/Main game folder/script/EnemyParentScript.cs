@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemyParentScript : MonoBehaviour
 {
     protected GameObject player;
-    protected float health;
+    public float health;
     protected bool enemyDead;
     public float direction;
     [SerializeField] protected string enemyID;
@@ -61,8 +61,6 @@ public class EnemyParentScript : MonoBehaviour
     }
 
     protected void EnemyDeath(){
-        Debug.Log($"Player Transform Position {player.transform.position}");
-        Debug.Log($"Transform Position {transform.position}");
         player.GetComponent<playerDeath>().Heal();
         gameObject.SetActive(false);
     }

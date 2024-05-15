@@ -126,12 +126,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4747ca377fe68f448d86e240c959af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 200
+  direction: 0
   enemyID: 
-  _spriteRenderer: {fileID: 1916068150284098289}
   fireBall: {fileID: 8355728606705629881, guid: badc64412485e024fbf23657c70847aa, type: 3}
   fireBallFirePosition: {fileID: 8215192525845330903}
   moveSpeed: 5
   attackTwoHitBox: {fileID: 6986358203738072478}
+  wallFirst: {fileID: 0}
+  wallSecond: {fileID: 0}
 --- !u!212 &1916068150284098289
 SpriteRenderer:
   m_ObjectHideFlags: 0

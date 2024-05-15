@@ -34,7 +34,6 @@ public class TwoHead : EnemyParentScript
 
     private void Awake()
     {
-        health = 60;
     }
     // Start is called before the first frame update
     private void Start()

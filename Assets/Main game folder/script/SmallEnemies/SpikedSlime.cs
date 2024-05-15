@@ -18,7 +18,6 @@ public class SpikedSlime : EnemyParentScript
 
     void Start()
     {
-        health = 45f;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         startPoint = transform.position.x;

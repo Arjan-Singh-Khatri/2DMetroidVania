@@ -33,7 +33,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     }
 
     public void Heal() {
-        this.health += 10;
+        this.health += 25;
         if (health > maxHealth)
             health = 100;
         Events.instance.onHealthChangePlayer(health);

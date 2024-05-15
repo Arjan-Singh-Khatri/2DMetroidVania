@@ -25949,21 +25949,21 @@ MonoBehaviour:
   comboNumber: 0
   playerCharge: 0
   damageMultiplier: 1
-  playerDamage: 15
-  playerHeavyDamage: 30
-  fireBallDamage: 10
+  playerDamage: 10
+  playerHeavyDamage: 20
+  fireBallDamage: 20
   twoHeadDamage: 30
-  twoHeadAttackTwoDamage: 40
-  batDamage: 20
+  twoHeadAttackTwoDamage: 30
+  batDamage: 30
   slimeDamage: 10
-  crab: 20
-  crabAttack: 20
-  spikedSlime: 10
-  spikedSlimeAttack: 15
+  crab: 30
+  crabAttack: 25
+  spikedSlime: 30
+  spikedSlimeAttack: 25
   spikdSlimeSpikes: 20
-  stromHead: 0
-  strom: 0
-  lightning: 0
+  stromHead: 20
+  strom: 50
+  lightning: 30
 --- !u!4 &339892971
 Transform:
   m_ObjectHideFlags: 0
@@ -49837,6 +49837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf247c909435f5846859c245c445663a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: c4f0eaf4-c460-4e3d-843d-0710076c5354
 --- !u!1 &1355352717
@@ -52454,6 +52455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf247c909435f5846859c245c445663a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: c4f0eaf4-c460-4e3d-843d-0710076c5354
 --- !u!1 &1466756119
@@ -95635,6 +95637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf247c909435f5846859c245c445663a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: 8a27517c-27b0-4940-8ff6-5b6760245e86
 --- !u!1 &1819878011
@@ -96221,6 +96224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf247c909435f5846859c245c445663a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: c4f0eaf4-c460-4e3d-843d-0710076c5354
 --- !u!1 &1858096531
@@ -96490,6 +96494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf247c909435f5846859c245c445663a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: 8a27517c-27b0-4940-8ff6-5b6760245e86
 --- !u!60 &1871480367
@@ -104341,6 +104346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf247c909435f5846859c245c445663a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: c4f0eaf4-c460-4e3d-843d-0710076c5354
 --- !u!60 &2096422807

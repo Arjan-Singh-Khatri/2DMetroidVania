@@ -29,6 +29,7 @@ public class DamageHolder : MonoBehaviour , IDataPersistance
     public float spikedSlimeAttack = 15f;
     public float spikdSlimeSpikes = 20f;
 
+    // STROMHEAD
     public float stromHead = 0;
     public float strom = 0;
     public float lightning = 0;

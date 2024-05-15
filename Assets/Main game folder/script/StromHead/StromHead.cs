@@ -31,7 +31,7 @@ public class StromHead : EnemyParentScript
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        health = 500;
+        health = 100;
         animator = GetComponent<Animator>();
         StromHeadEvents.instance.activateUI();
         StromHeadEvents.instance.onStromHeadHealthChanged(health);

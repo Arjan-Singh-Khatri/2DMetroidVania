@@ -18,7 +18,6 @@ public class Crab : EnemyParentScript
 
     void Start()
     {
-        health = 25f;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         startPoint = transform.position.x;

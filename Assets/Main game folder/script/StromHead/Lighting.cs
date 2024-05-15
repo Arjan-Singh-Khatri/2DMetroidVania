@@ -35,8 +35,8 @@ public class Lighting : EnemyParentScript
     private void FollowPlayer()
     {
         int offset = Random.Range(1, 4) + Random.Range(0, 10) / 10;
-        transform.position = Vector3.MoveTowards(transform.position, 
-            player.transform.position,(_speed + offset) *  Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position + new Vector3(offset,offset,0), 
+            player.transform.position,(_speed) *  Time.deltaTime);
     }
 
     private void Move()

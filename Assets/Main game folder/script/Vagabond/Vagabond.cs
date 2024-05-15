@@ -94,7 +94,7 @@ public class Vagabond : EnemyParentScript{
     private float playerHealthAfterHit;
 
     [Header("AI")]
-    private const float ORIGINAL_HEALTH = 500; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
+    private const float ORIGINAL_HEALTH = 300; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
     private bool canChooseBehaviour = false;
     private float canChooseTimer = 2.5f;
     private bool canChooseTrigger = true;

@@ -21,7 +21,6 @@ public class BatEnemy : EnemyParentScript
 
     private void Awake()
     {
-        health = 35;
     }
     // Start is called before the first frame update
     void Start()

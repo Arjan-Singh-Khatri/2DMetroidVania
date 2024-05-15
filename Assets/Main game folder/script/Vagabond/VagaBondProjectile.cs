@@ -22,11 +22,11 @@ public class VagaBondProjectile : EnemyParentScript
         player = GameObject.FindGameObjectWithTag("Player");
         if (gameObject.name.CompareTo("VagaBondShockEffect(Clone)") == 0) { 
             _currentType = ProjectileType.Heavy;
-            _damage = 20f;
+            _damage = 35f;
         }
         else{ 
             _currentType=ProjectileType.Normal;
-            _damage = 25f;
+            _damage = 25;
         }
 
         if (player.transform.position.x < transform.position.x)

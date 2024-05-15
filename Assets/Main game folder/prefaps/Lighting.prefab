@@ -148,10 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee5588f13b509e4cbe372edcd215d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   direction: 0
   enemyID: 
   lifeSpanTimer: 4
-  _speed: 20
+  _speed: 16
   particle: {fileID: 5725138964480917502}
 --- !u!95 &8858743314784029172
 Animator:

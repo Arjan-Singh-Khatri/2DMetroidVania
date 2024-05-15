@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52af91f13cf80642a6cf81ea330f7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 50
   direction: 0
   enemyID: a1a5130d-9134-4dcf-8423-619d5c293c72
   spikes: {fileID: 8504852350299765516, guid: 19b84c22e44d2c84b9abb146e262c7e7, type: 3}
