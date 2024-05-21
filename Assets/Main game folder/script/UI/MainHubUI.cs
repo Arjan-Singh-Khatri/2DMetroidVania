@@ -13,6 +13,9 @@ public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
     [SerializeField] private Button quitButton;
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private LevelLoader levelLoader;
+    [SerializeField] private Button volume;
+    [SerializeField] private GameObject volumePanel;
+    private bool sliderPanelToggle = false;
     private bool isPaused;
 
     [Header("Player UI")]
@@ -20,10 +23,11 @@ public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
     [SerializeField] private TextMeshProUGUI soulCount;
     private int soulAmount = 0 ;
 
+
     void Start(){
-        
+
         //UI 
-        
+
         UpdateHealthSlider(GameObject.FindGameObjectWithTag("Player").GetComponent<playerDeath>().health);
 
             soulCount.text = $"{soulAmount}/10";
@@ -42,6 +46,10 @@ public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
             QuitGame();
         });
 
+        volume.onClick.AddListener(() =>
+        {
+            Volume();
+        });
 
         // EVENTS
 
@@ -100,6 +108,11 @@ public class MainHubUI : MonoBehaviour , IDataPersistance , IFade
                 soulAmount++;
             }
         }
+    }
+
+    void Volume(){
+        volumePanel.SetActive(!sliderPanelToggle);
+        sliderPanelToggle = !sliderPanelToggle;
     }
 
     void DisableButtons(){

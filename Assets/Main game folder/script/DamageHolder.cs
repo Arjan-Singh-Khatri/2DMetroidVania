@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DamageHolder : MonoBehaviour , IDataPersistance
 {
@@ -34,14 +35,19 @@ public class DamageHolder : MonoBehaviour , IDataPersistance
     public float strom = 0;
     public float lightning = 0;
 
+    //volume
+    public float musicVol = 0;
+    public float sfxVol = 0;
     #endregion
 
     #region Save And Load
-    public void SaveData(ref GameData gameData) { 
+    public void SaveData(ref GameData gameData) {
         gameData.playerDamage = this.playerDamage;
         gameData.playerHeavyDamage = this.playerHeavyDamage;
         gameData.playerCharge = this.playerCharge;   
         gameData.damageMultiplyer = this.damageMultiplier;
+        gameData.musicVol = this.musicVol;
+        gameData.sfxVol = this.sfxVol;
     }
 
     public void LoadData(GameData gameData) {
@@ -49,6 +55,8 @@ public class DamageHolder : MonoBehaviour , IDataPersistance
         this.playerCharge = gameData.playerCharge;
         this.playerDamage = gameData.playerDamage;
         this.playerHeavyDamage = gameData.playerHeavyDamage;
+        this.musicVol = gameData.musicVol;
+        this.sfxVol = gameData.sfxVol;
     }
     #endregion
 

@@ -12,6 +12,8 @@ public class GameData
     public float playerDamage;
     public int playerCharge;
     public float playerHeavyDamage;
+    public float musicVol;
+    public float sfxVol;
 
     // FOR ENEMIES AND ITEMS
     public SerializeDictionaryForJson<string, bool> itemCollected;
@@ -28,5 +30,6 @@ public class GameData
         this.playerHeavyDamage = 30; ;
         this.itemCollected = new SerializeDictionaryForJson<string, bool>();
         this.bossesKilled = new SerializeDictionaryForJson<string, bool>();
+        this.musicVol = 10;
     }
 }
