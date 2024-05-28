@@ -16,6 +16,15 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 	[SerializeField] playerDeath _playerDeath;	
 	[SerializeField] TrailRenderer _trailRenderer;
 
+	// Audio 
+	[SerializeField] AudioClip _run;
+	[SerializeField] AudioClip _jump;
+	[SerializeField] AudioClip _slide;
+	[SerializeField] AudioClip _dash;
+	[SerializeField] AudioClip _land;
+	private float _runTimer = 0f;
+	private AudioSource _audioSource;
+
 	#region COMPONENTS
     public Rigidbody2D RB { get; private set; }
     public SpriteRenderer spriteRenderer { get; private set; }
@@ -95,7 +104,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 	}
 
 	private void Start(){
-
+		_audioSource = GetComponent<AudioSource>();
+		
         Events.instance.onLoadingLevel += LoadLevel;
 
         SetGravityScale(Data.gravityScale);
@@ -114,6 +124,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
 		LastPressedJumpTime -= Time.deltaTime;
 		LastPressedDashTime -= Time.deltaTime;
+
+		_runTimer -= Time.deltaTime;
 		#endregion
 
 		#region INPUT HANDLER
@@ -240,10 +252,18 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 			IsSliding = true;
 		else
 			IsSliding = false;
-		#endregion
+        #endregion
 
-		#region GRAVITY
-		if (!_isDashAttacking)
+        #region Audio
+        if (_moveInput.x != 0 && LastOnGroundTime > 0 && _runTimer < 0) {
+			Debug.Log("Should be Playing");
+            _audioSource.PlayOneShot(_run);
+			_runTimer = .6f;
+        }
+        #endregion
+
+        #region GRAVITY
+        if (!_isDashAttacking)
 		{
 			//Higher gravity if we've released the jump input or are falling
 			if (IsSliding)
@@ -463,6 +483,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 		}
 
 		RB.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+		_audioSource.PlayOneShot(_jump);
 		#endregion
 	}
 

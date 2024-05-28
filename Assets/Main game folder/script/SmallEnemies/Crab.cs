@@ -114,7 +114,7 @@ public class Crab : EnemyParentScript
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)
             {
-                animator.SetTrigger("death");
+                animator.SetTrigger("Death");
             }
 
            
@@ -125,7 +125,7 @@ public class Crab : EnemyParentScript
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
             if (health <= 0)
             {
-                animator.SetTrigger("death");
+                animator.SetTrigger("Death");
             }
         }
     }

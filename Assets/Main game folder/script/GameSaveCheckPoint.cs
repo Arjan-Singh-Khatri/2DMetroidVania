@@ -16,7 +16,6 @@ public class GameSaveCheckPoint : MonoBehaviour
         {
             if (col.name.CompareTo("SavePoint") == 0)
             {
-                Debug.Log("IN RANGE");
                 playerInRange = true;
                 if (Input.GetKeyDown(KeyCode.E))
                     DataPersistanceManager.Instance.SaveGame();

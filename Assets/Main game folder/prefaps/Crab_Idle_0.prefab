@@ -171,8 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16488044217b35044995635573c35036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 50
+  direction: 0
   enemyID: 
-  _spriteRenderer: {fileID: 1398736386099982955}
   crabCollider: {fileID: 1398736385919714904}
   speed: 10
 --- !u!95 &1398736386099982954

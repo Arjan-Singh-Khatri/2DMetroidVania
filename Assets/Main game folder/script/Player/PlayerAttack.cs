@@ -22,8 +22,13 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] int baseChargeNumber = 3;
 
 
+    // Audio 
+    [SerializeField] AudioClip _attack;
+    private AudioSource _audioSource;
+
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         anim.SetBool("FollowUp", false);
         _canAttack = true;
