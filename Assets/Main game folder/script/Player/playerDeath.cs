@@ -14,11 +14,13 @@ public class playerDeath : MonoBehaviour, IDataPersistance
 
     [SerializeField] Collider2D damageCollider;
     [SerializeField] SpriteRenderer _spriteRenderer;
-
+    AudioSource _audioSource;
+    [SerializeField] AudioClip hit;
     private void Start()
     {
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
+        _audioSource = GetComponent<AudioSource>();
         Events.instance.onPlayerTakeDamage += TakeDamage;
     }
 
@@ -45,6 +47,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     }
 
     public void TakeDamage(float damage){
+        _audioSource.PlayOneShot(hit);
         damageCollider.enabled = false;
         DamageHolder.instance.damageMultiplier = 1;
         DamageHolder.instance.comboNumber = 0;

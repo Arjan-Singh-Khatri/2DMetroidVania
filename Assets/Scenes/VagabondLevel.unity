@@ -4727,83 +4727,6 @@ Transform:
   m_Father: {fileID: 1347312402}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &84811294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 84811297}
-  - component: {fileID: 84811296}
-  - component: {fileID: 84811295}
-  m_Layer: 0
-  m_Name: Temp
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &84811295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84811294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db113370d7619dd4281e2e004e9f378b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comboNumber: 0
-  playerCharge: 0
-  damageMultiplier: 1
-  playerDamage: 15
-  playerHeavyDamage: 30
-  fireBallDamage: 15
-  twoHeadDamage: 30
-  twoHeadAttackTwoDamage: 40
-  batDamage: 20
-  slimeDamage: 15
-  crab: 10
-  crabAttack: 20
-  spikedSlime: 10
-  spikedSlimeAttack: 15
-  spikdSlimeSpikes: 20
-  stromHead: 0
-  strom: 0
-  lightning: 0
-  musicVol: 0
-  sfxVol: 0
---- !u!114 &84811296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84811294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bac9c187ecbbe54a96e987c0820524d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &84811297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84811294}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30.395498, y: -79.96568, z: 10.95546}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &94740862
 GameObject:
   m_ObjectHideFlags: 0
@@ -7325,7 +7248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.2638817, y: 9.967072, z: -10}
+  m_LocalPosition: {x: -7.7497196, y: 9.967072, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9207,7 +9130,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &907376164
 MonoBehaviour:
@@ -10814,7 +10737,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274485895}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.199076, y: 16.450966, z: -10}
+  m_LocalPosition: {x: -10.237463, y: 16.450966, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

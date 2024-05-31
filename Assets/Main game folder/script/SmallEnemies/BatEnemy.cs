@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class BatEnemy : EnemyParentScript
@@ -19,12 +20,12 @@ public class BatEnemy : EnemyParentScript
     public bool return_tostart = false;
     public bool _killed = false;
 
-    private void Awake()
-    {
-    }
+    [SerializeField] private AudioClip _batAttack;
+
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
         start_postion = transform.position;
         rig = GetComponent<Rigidbody2D>();
@@ -73,6 +74,7 @@ public class BatEnemy : EnemyParentScript
         if (last_dash_time > 2f)
         {
             chase = false;
+            _audioSource.PlayOneShot(_batAttack);
             anim.SetTrigger("attack");
             last_dash_time = 0f;
         }

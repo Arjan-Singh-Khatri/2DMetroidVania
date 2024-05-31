@@ -11,13 +11,15 @@ public class EnemyParentScript : MonoBehaviour
     protected bool enemyDead;
     public float direction;
     [SerializeField] protected string enemyID;
-
+    protected AudioSource _audioSource;
+    [SerializeField] private AudioClip _hit;  
     [ContextMenu("GUID ID GENERATE")]
     private void GenerateGUID(){
         enemyID = System.Guid.NewGuid().ToString();
     }
  
     protected void HealthDepleteEnemy(float attackPower, ref float healthofEnemy){
+        _audioSource.PlayOneShot(_hit);
         DamageHolder.instance.comboNumber += 1;
         DamageHolder.instance.damageMultiplier += .25f * DamageHolder.instance.comboNumber;
         DamageHolder.instance.playerCharge += 1;

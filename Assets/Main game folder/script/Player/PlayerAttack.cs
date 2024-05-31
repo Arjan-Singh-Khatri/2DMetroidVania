@@ -20,10 +20,12 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] GameObject projectile;
     [SerializeField] Transform projectileTransform;
     [SerializeField] int baseChargeNumber = 3;
-
+    
 
     // Audio 
     [SerializeField] AudioClip _attack;
+    [SerializeField] AudioClip _followUp;
+    [SerializeField] AudioClip _attackHeavy;
     private AudioSource _audioSource;
 
     void Start()
@@ -163,6 +165,17 @@ public class PlayerAttack : MonoBehaviour
         DeactivateNormal();
     }
 
+    void AttackAudio() {
+        _audioSource.PlayOneShot(_attack);
+    }
+
+    void AttackFollowUpAudio() {
+        _audioSource.PlayOneShot(_followUp);
+    }
+
+    void AttackHeavyAudio() {
+        _audioSource.PlayOneShot(_attackHeavy);
+    }
     private void InstantiateProjectile(){
         GameObject instantiatedObejct = Instantiate(projectile, projectileTransform.position, transform.rotation);
     }

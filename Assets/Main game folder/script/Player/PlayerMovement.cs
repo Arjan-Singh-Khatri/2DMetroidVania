@@ -256,7 +256,6 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
         #region Audio
         if (_moveInput.x != 0 && LastOnGroundTime > 0 && _runTimer < 0) {
-			Debug.Log("Should be Playing");
             _audioSource.PlayOneShot(_run);
 			_runTimer = .6f;
         }
@@ -537,9 +536,10 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 		while (Time.time - startTime <= Data.dashAttackTime)
 		{
 			RB.velocity = dir.normalized * Data.dashSpeed;
-			//Pauses the loop until the next frame, creating something of a Update loop. 
-			//This is a cleaner implementation opposed to multiple timers and this coroutine approach is actually what is used in Celeste :D
-			yield return null;
+            _audioSource.PlayOneShot(_jump);
+            //Pauses the loop until the next frame, creating something of a Update loop. 
+            //This is a cleaner implementation opposed to multiple timers and this coroutine approach is actually what is used in Celeste :D
+            yield return null;
 		}
 
 		startTime = Time.time;
