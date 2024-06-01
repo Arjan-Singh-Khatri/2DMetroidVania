@@ -13,10 +13,11 @@ public class enemyMoveBetween : EnemyParentScript
     private int wayPointIndex = 0;
     private float startPoint;
     private Vector2[] endPonints = new Vector2[2];
-
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         startPoint = transform.position.x;
         endPonints[0] = new Vector3(startPoint - 5, transform.position.y);

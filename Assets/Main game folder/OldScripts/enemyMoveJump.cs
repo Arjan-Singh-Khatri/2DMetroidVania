@@ -16,6 +16,8 @@ public class enemyMoveJump : EnemyParentScript
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         startPoint = transform.position.x;
         endPonints[0] = new Vector3(startPoint- offset, transform.position.y);
