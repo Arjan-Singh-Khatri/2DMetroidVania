@@ -94,7 +94,7 @@ public class Vagabond : EnemyParentScript{
     private float playerHealthAfterHit;
 
     [Header("AI")]
-    private const float ORIGINAL_HEALTH = 300; // RANDOM VALUE RIGHT NOW WILL DECIDE LATER
+    private const float ORIGINAL_HEALTH = 600; 
     private bool canChooseBehaviour = false;
     private float canChooseTimer = 2.5f;
     private bool canChooseTrigger = true;
@@ -107,6 +107,11 @@ public class Vagabond : EnemyParentScript{
     private float probForChoiceBlock = 0f;
     #endregion
 
+
+    [Header("Audio")]
+    [SerializeField] AudioClip _normalAttack;
+    [SerializeField] AudioClip _heavyAttack;
+    
     void Start() {
        
         // References
@@ -123,6 +128,10 @@ public class Vagabond : EnemyParentScript{
         health = ORIGINAL_HEALTH;
         criticalHealth = ORIGINAL_HEALTH/5; // Twenty Percent Of the Original Health
 
+        // audio
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
+
         animator.SetBool("Stunned", true);
     }
 
@@ -130,10 +139,7 @@ public class Vagabond : EnemyParentScript{
         if (_killed || isDeactivated)
             return;
 
-        if(chase && (isAttacking || isHeavyAttacking)) { 
-            DeactivateHeavyAttackHitbox();
-            DeactivateNormalAttckHitbox();
-        }
+        SafetyChecks();
 
         // TRYING TO MAKE THINGS LOOK CLEAN
         Math();
@@ -189,7 +195,7 @@ public class Vagabond : EnemyParentScript{
         }
 
         // CHOOSING WHAT TO DO BY ENEMY LONG RANGE ATTACKS AND CHASE BEHAVIOURS
-        if (!canChooseBehaviour || isJumping) return;
+        if (!canChooseBehaviour || isJumping || chase) return;
         canChooseBehaviour = false;
 
         // Dash Away ???
@@ -204,7 +210,6 @@ public class Vagabond : EnemyParentScript{
         }
         else if (randomVar > probForHeavy)
             chase = true;
-
     }
 
     void CanChooseToggle() {
@@ -298,7 +303,7 @@ public class Vagabond : EnemyParentScript{
     }
 
     void CalculateChaseVector() {
-        lerpSpeed = distanceBetween / 35;
+        lerpSpeed = distanceBetween / 40;
         chaseSpeed = Mathf.Lerp(chaseMinSpeed, chaseMaxSpeed, lerpSpeed);
         chaseVector = new(chaseSpeed * direction * _chaseForce, 0f);
     }
@@ -478,6 +483,7 @@ public class Vagabond : EnemyParentScript{
     #region Block , Dash and Stunned
 
     IEnumerator Dash(float direction){
+        Debug.Log("Dash");
         animator.SetBool("Dash", true);
         isDashing = true;
         Vector2 dashVector = new(direction * _dashSpeed, 0);
@@ -647,7 +653,29 @@ public class Vagabond : EnemyParentScript{
         VagabondEvents.instance.onBossAwake();
         VagabondEvents.instance.onBossHealthChange(health);
     }
+    
+    private void PlayNormalAttackAudio() {
+        _audioSource.PlayOneShot(_normalAttack);
+    }
 
+    private void PlayHeavyAttackAudio() {
+        _audioSource.PlayOneShot(_heavyAttack);
+    }
+
+    private void SafetyChecks() {
+        if ( (isAttacking || isHeavyAttacking || isCharingAttack) && canChooseBehaviour)
+        {
+            DeactivateHeavyAttackHitbox();
+            DeactivateNormalAttckHitbox();
+            canChooseBehaviour = true;
+        }
+
+        if (chase && (isAttacking || isHeavyAttacking))
+        {
+            DeactivateHeavyAttackHitbox();
+            DeactivateNormalAttckHitbox();
+        }
+    }
     #endregion
 
     #region Save And Load

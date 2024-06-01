@@ -17,10 +17,9 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 	[SerializeField] TrailRenderer _trailRenderer;
 
 	// Audio 
-	[SerializeField] AudioClip _run;
+	bool land = false;
+    [SerializeField] AudioClip _run;
 	[SerializeField] AudioClip _jump;
-	[SerializeField] AudioClip _slide;
-	[SerializeField] AudioClip _dash;
 	[SerializeField] AudioClip _land;
 	private float _runTimer = 0f;
 	private AudioSource _audioSource;
@@ -115,7 +114,8 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
   
     private void Update()
 	{
-		if ((_playerDeath.health <= 0) && _loadingBossLevel) return;
+		if ((_playerDeath.health <= 0) || _loadingBossLevel) return;
+
         #region TIMERS
         LastOnGroundTime -= Time.deltaTime;
 		LastOnWallTime -= Time.deltaTime;
@@ -155,9 +155,14 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 		{
 			//Ground Check
 			if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer)) //checks if set box overlaps with ground
-			{
-				
-				LastOnGroundTime = Data.coyoteTime; //if so sets the lastGrounded to coyoteTime
+            {
+                LastOnGroundTime = Data.coyoteTime; //if so sets the lastGrounded to coyoteTime
+				if (land)
+                {
+					_audioSource.PlayOneShot(_run);
+					land = false;
+				}
+
             }		
 
 			//Right Wall Check
@@ -201,6 +206,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 			if (CanJump() && LastPressedJumpTime > 0)
 			{
 				IsJumping = true;
+				land = true;
 				IsWallJumping = false;
 				_isJumpCut = false;
 				_isJumpFalling = false;
@@ -255,9 +261,9 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
         #endregion
 
         #region Audio
-        if (_moveInput.x != 0 && LastOnGroundTime > 0 && _runTimer < 0) {
+        if (_moveInput.x != 0 && LastOnGroundTime > 0 && _runTimer < 0 && !IsDashing) {
             _audioSource.PlayOneShot(_run);
-			_runTimer = .6f;
+			_runTimer = .8f;
         }
         #endregion
 
@@ -532,11 +538,12 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
 		SetGravityScale(0);
 
-		//We keep the player's velocity at the dash speed during the "attack" phase (in celeste the first 0.15s)
-		while (Time.time - startTime <= Data.dashAttackTime)
+        //We keep the player's velocity at the dash speed during the "attack" phase (in celeste the first 0.15s)
+        _audioSource.PlayOneShot(_jump);
+        while (Time.time - startTime <= Data.dashAttackTime)
 		{
 			RB.velocity = dir.normalized * Data.dashSpeed;
-            _audioSource.PlayOneShot(_jump);
+            
             //Pauses the loop until the next frame, creating something of a Update loop. 
             //This is a cleaner implementation opposed to multiple timers and this coroutine approach is actually what is used in Celeste :D
             yield return null;
@@ -684,7 +691,12 @@ public class PlayerMovement : MonoBehaviour, IDataPersistance
 
 		if (IsSliding)
 		{
-			anim.SetBool("Slide", true);
+            if (_runTimer < 0)
+            {
+                _audioSource.PlayOneShot(_jump);
+                _runTimer = .4f;
+            }
+            anim.SetBool("Slide", true);
 		}else
 		{
 			anim.SetBool("Slide", false);

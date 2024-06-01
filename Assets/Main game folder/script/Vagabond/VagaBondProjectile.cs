@@ -18,16 +18,30 @@ public class VagaBondProjectile : EnemyParentScript
     private float directionForProjectile;
     private Vector3 directionVector;
 
+    [SerializeField] AudioClip _audioClipNormal;
+    [SerializeField] AudioClip _audioClipHeavy;
     void Start(){
+
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
+
         player = GameObject.FindGameObjectWithTag("Player");
+
+        transform.parent = null;
+
         if (gameObject.name.CompareTo("VagaBondShockEffect(Clone)") == 0) { 
             _currentType = ProjectileType.Heavy;
+            _audioSource.clip = _audioClipHeavy;
             _damage = 35f;
         }
         else{ 
             _currentType=ProjectileType.Normal;
+            _audioSource.clip = _audioClipNormal;
             _damage = 25;
         }
+
+        _audioSource.loop = true;
+        _audioSource.Play();
 
         if (player.transform.position.x < transform.position.x)
         {

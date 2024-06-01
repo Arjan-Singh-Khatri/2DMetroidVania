@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &455962838556429854
+--- !u!1 &475213972544514445
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,59 +8,59 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5801599866440971912}
+  - component: {fileID: 6819556588689651027}
   m_Layer: 7
-  m_Name: TransformNormal
+  m_Name: Heavy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5801599866440971912
+--- !u!4 &6819556588689651027
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455962838556429854}
+  m_GameObject: {fileID: 475213972544514445}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.59, y: -0.56, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8391644425374571639}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4169824094844683888
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2792001222932304568}
-  m_Layer: 7
-  m_Name: TransformHeavy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2792001222932304568
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4169824094844683888}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.29, y: -0.72, z: 0}
+  m_LocalPosition: {x: 1.52, y: -1.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8391644425374571639}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8057217033457903117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7472865248546750700}
+  m_Layer: 7
+  m_Name: Normal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7472865248546750700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8057217033457903117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.39, y: 0.24, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8391644425374571639}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8391644424258273309
 GameObject:
@@ -298,8 +298,8 @@ Transform:
   - {fileID: 8391644424405631861}
   - {fileID: 8391644425728178870}
   - {fileID: 8391644424527333068}
-  - {fileID: 5801599866440971912}
-  - {fileID: 2792001222932304568}
+  - {fileID: 7472865248546750700}
+  - {fileID: 6819556588689651027}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -428,6 +428,7 @@ MonoBehaviour:
   direction: 0
   enemyID: 49429800-7ba1-40cb-9901-1e1228085c36
   _hit: {fileID: 8300000, guid: d58bdc22b58ce9f40bf4dce3f07e0a29, type: 3}
+  mixerGroup: {fileID: 0}
   circleCastRadius: 3.75
   canStun: 0
   isDeactivated: 1
@@ -447,10 +448,12 @@ MonoBehaviour:
   normalAttackHitbox2: {fileID: 8391644425728178869}
   normalProjectile: {fileID: 8280688706506842819, guid: efa6f19d6e80e4d49b8a87f37b04b910, type: 3}
   heavyProjectile: {fileID: 8594223288013208434, guid: 74a6d20585325674dac373af2feeeb81, type: 3}
-  projectileTransform: {fileID: 5801599866440971912}
-  heavyProjectileTransform: {fileID: 2792001222932304568}
+  projectileTransform: {fileID: 7472865248546750700}
+  heavyProjectileTransform: {fileID: 6819556588689651027}
   _damageNormal: 0
   _damageHeavy: 0
+  _normalAttack: {fileID: 0}
+  _heavyAttack: {fileID: 0}
 --- !u!82 &4138533715081144226
 AudioSource:
   m_ObjectHideFlags: 0

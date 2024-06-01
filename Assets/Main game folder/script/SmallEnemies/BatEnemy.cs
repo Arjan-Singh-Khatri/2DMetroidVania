@@ -26,6 +26,7 @@ public class BatEnemy : EnemyParentScript
     void Start()
     {
         _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         start_postion = transform.position;
         rig = GetComponent<Rigidbody2D>();
@@ -57,9 +58,10 @@ public class BatEnemy : EnemyParentScript
 
     private void Move()
     {
-        flip();
+       
         if (chase)
-        {
+        { 
+            flip();
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
         }
         if (return_tostart)
@@ -74,12 +76,15 @@ public class BatEnemy : EnemyParentScript
         if (last_dash_time > 2f)
         {
             chase = false;
-            _audioSource.PlayOneShot(_batAttack);
             anim.SetTrigger("attack");
             last_dash_time = 0f;
         }
         
 
+    }
+
+    private void AttackAudio() {
+        _audioSource.PlayOneShot(_batAttack);
     }
     private void DashAttack()
     {
@@ -87,13 +92,12 @@ public class BatEnemy : EnemyParentScript
         // use rig.velocity = ____ and then rig.velocity = vector2.zero
         if (player.transform.position.x < transform.position.x)
         {
-            rig.velocity = Vector3.right * dash_force * -1;
+            rig.velocity = -1 * dash_force * Vector3.right;
         }
         else if (player.transform.position.x >  transform.position.x)
         {
             rig.velocity = Vector3.right * dash_force;
         }
-
     }
 
     private void StopAttack()

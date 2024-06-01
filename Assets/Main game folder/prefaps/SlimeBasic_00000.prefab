@@ -125,6 +125,7 @@ MonoBehaviour:
   direction: 0
   enemyID: 50c71d15-283e-4bb8-941a-3b76714d0ac2
   _hit: {fileID: 8300000, guid: d58bdc22b58ce9f40bf4dce3f07e0a29, type: 3}
+  mixerGroup: {fileID: 1662104532655595140, guid: 625b5904ce6290647ba40798e653b1fa, type: 2}
   speed: 3
   offset: 5
   jumpDistance: 5

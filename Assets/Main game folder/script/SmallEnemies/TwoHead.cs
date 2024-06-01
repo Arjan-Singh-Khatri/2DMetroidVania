@@ -32,12 +32,17 @@ public class TwoHead : EnemyParentScript
     private bool _killed;
     private bool playerInArea = false;
 
+    [SerializeField] AudioClip fireBallAudio;
+    [SerializeField] AudioClip runAudio;
+    [SerializeField] AudioClip attackAudio;
     private void Awake()
     {
     }
     // Start is called before the first frame update
     private void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
     }
@@ -69,6 +74,7 @@ public class TwoHead : EnemyParentScript
         if (health <= 0)
         {
             _killed = true;
+            DataPersistanceManager.Instance.SaveGame();
             animator.SetTrigger("Death");
             enemyDead = true;
             return;

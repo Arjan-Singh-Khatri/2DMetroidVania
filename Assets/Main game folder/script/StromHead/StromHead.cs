@@ -25,18 +25,28 @@ public class StromHead : EnemyParentScript
     private bool isAttacking = false;
     private bool _frenzy = false;
     private bool isSleeping = false;
-    
 
+    [SerializeField] AudioClip lightningStrike;
+    [SerializeField] AudioClip lightningStrom;
+    [SerializeField] AudioClip electricBuzz;
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player");
-        health = 100;
+        health = 500;
         animator = GetComponent<Animator>();
         StromHeadEvents.instance.activateUI();
         StromHeadEvents.instance.onStromHeadHealthChanged(health);
+        _audioSource.outputAudioMixerGroup = mixerGroup;
+        _audioSource.clip = electricBuzz;
+        _audioSource.loop = true;
+        _audioSource.Play();
+
         Invoke(nameof(Frenzy), 2.1f);
         particleAttack.Play();
+
+
     }
     #region Save And Load
     public void SaveData(ref GameData gameData)
@@ -89,7 +99,6 @@ public class StromHead : EnemyParentScript
         isAttacking = true;
         _frenzy = true;
         TeleportTimer();
-        StromAttackStart();
     }
 
     void StromAttackStart() {
@@ -127,8 +136,10 @@ public class StromHead : EnemyParentScript
         transform.position = teleportPoints[randomIndex].position;
         int randomNum = Random.Range(0, 101);
         
-        if(randomNum <= 45)
+        if(randomNum <= 45) {
+            _audioSource.PlayOneShot(lightningStrike);
             ProjectileInstantiate();
+        }
 
     }
 
@@ -137,6 +148,8 @@ public class StromHead : EnemyParentScript
         yield return new WaitForSeconds(.7f);
         particleAttack.Play();
         stromAttackCollider.enabled = true;
+        _audioSource.clip = lightningStrom;
+        _audioSource.Play();
         animator.SetTrigger("Strom");
         StromHeadEvents.instance.StromAttackStart();
 
@@ -149,8 +162,13 @@ public class StromHead : EnemyParentScript
         isSleeping = true;
         particleAttack.Stop();
         animator.SetBool("Sleep", true);
+        _audioSource.Stop();
     }
 
+    private void TurnElectricBuzzOn() {
+        _audioSource.clip = electricBuzz;
+        _audioSource.Play();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision){
         
@@ -176,7 +194,6 @@ public class StromHead : EnemyParentScript
         //StartDeath();
 
     }
-    [ContextMenu("Death")]
     void StartDeath() {
         health = 0;
         if (health <= 0)

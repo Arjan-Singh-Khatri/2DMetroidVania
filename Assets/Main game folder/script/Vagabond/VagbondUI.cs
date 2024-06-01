@@ -27,7 +27,6 @@ public class VagbondUI : MonoBehaviour
 
     void ToggleUIOn()
     {
-        Debug.Log("UI PANEL ON");
         bossHealthUIPanel.SetActive(true);
     }
 

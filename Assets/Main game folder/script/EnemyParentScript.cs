@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class EnemyParentScript : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class EnemyParentScript : MonoBehaviour
     public float direction;
     [SerializeField] protected string enemyID;
     protected AudioSource _audioSource;
-    [SerializeField] private AudioClip _hit;  
+    [SerializeField] private AudioClip _hit;
+    [SerializeField] protected AudioMixerGroup mixerGroup;
+
     [ContextMenu("GUID ID GENERATE")]
     private void GenerateGUID(){
         enemyID = System.Guid.NewGuid().ToString();

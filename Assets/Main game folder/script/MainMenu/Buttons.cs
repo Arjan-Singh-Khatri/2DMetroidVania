@@ -12,6 +12,9 @@ public class Buttons : MonoBehaviour, IFade
     [SerializeField] LevelLoader levelLoader;
     [SerializeField] Button _volume;
     [SerializeField] GameObject volumeSliderPanel;
+    [SerializeField] Button _controls;
+    [SerializeField] GameObject _controlsPanel;
+    private bool controlPanelToggle = false;
     private bool sliderPanelToggle = false;
 
     void Start(){
@@ -42,6 +45,11 @@ public class Buttons : MonoBehaviour, IFade
         {
             Volume();
         });
+
+        _controls.onClick.AddListener(() =>
+        {
+            Controls();
+        });
     }
 
     IEnumerator NewGame() {
@@ -63,6 +71,11 @@ public class Buttons : MonoBehaviour, IFade
     void Volume() { 
         volumeSliderPanel.SetActive(!sliderPanelToggle);
         sliderPanelToggle = !sliderPanelToggle;
+    }
+
+    void Controls() {
+        _controlsPanel.SetActive(!controlPanelToggle);
+        controlPanelToggle = !controlPanelToggle;
     }
 
     IEnumerator LoadGame() {

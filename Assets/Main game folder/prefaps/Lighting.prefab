@@ -151,9 +151,12 @@ MonoBehaviour:
   health: 0
   direction: 0
   enemyID: 
+  _hit: {fileID: 0}
+  mixerGroup: {fileID: 1662104532655595140, guid: 625b5904ce6290647ba40798e653b1fa, type: 2}
   lifeSpanTimer: 4
   _speed: 16
   particle: {fileID: 5725138964480917502}
+  electricBuzz: {fileID: 8300000, guid: 6c84d82312b5f7b45bf857858c8128bc, type: 3}
 --- !u!95 &8858743314784029172
 Animator:
   serializedVersion: 5

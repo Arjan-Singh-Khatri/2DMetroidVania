@@ -47,6 +47,7 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     }
 
     public void TakeDamage(float damage){
+        if (health <= 0) return;
         _audioSource.PlayOneShot(hit);
         damageCollider.enabled = false;
         DamageHolder.instance.damageMultiplier = 1;

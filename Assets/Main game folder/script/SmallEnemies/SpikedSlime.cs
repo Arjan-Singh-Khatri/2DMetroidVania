@@ -14,10 +14,14 @@ public class SpikedSlime : EnemyParentScript
     private bool isAttacking = false;
     private float startPoint;
 
-
+    [SerializeField] AudioClip attackAudio;
+    [SerializeField] AudioClip landingAudio;
+    [SerializeField] AudioClip jumpingAudio;
 
     void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         startPoint = transform.position.x;
@@ -99,6 +103,18 @@ public class SpikedSlime : EnemyParentScript
     {
         slimeCollider.SetActive(false);
         isAttacking = false;
+    }
+
+    private void AttackAudio() {
+        _audioSource.PlayOneShot(attackAudio);
+    }
+
+    private void LandingAudio(){
+        _audioSource.PlayOneShot(landingAudio);
+    }
+
+    private void JumpingAudio() {
+        _audioSource.PlayOneShot(jumpingAudio);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

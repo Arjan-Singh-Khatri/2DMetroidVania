@@ -15,9 +15,12 @@ public class Crab : EnemyParentScript
     private bool isAttacking = false;
     private float startPoint;
 
+    [SerializeField] AudioClip attackAudio;
 
     void Start()
     {
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
         startPoint = transform.position.x;
@@ -86,14 +89,13 @@ public class Crab : EnemyParentScript
             case 3:
                 animator.SetTrigger("Attack2");
                 break;
-            case 4:
-                animator.SetTrigger("Attack3");
-                break;
         }
         
     }
 
-
+    void AttackAudio() { 
+        _audioSource.PlayOneShot(attackAudio);
+    }
     private void AttackEnd()
     {
         crabCollider.SetActive(false);
