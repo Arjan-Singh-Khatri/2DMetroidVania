@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e525751dad214488936f3cdef24056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: caf9a686b4308894bb16ee83e5845374, type: 3}
   mixerGroup: {fileID: 1662104532655595140, guid: 625b5904ce6290647ba40798e653b1fa, type: 2}
 --- !u!61 &-6074313955414519208
 BoxCollider2D:

@@ -6,10 +6,15 @@ public class FireBall : MonoBehaviour
 {
     private float speed = 6f;
     private float lifeSpanTimer = 6f;
+    private AudioSource _audioSource;
+    [SerializeField] AudioClip _audioClip;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.loop = true;
+        _audioSource.clip = _audioClip;
+        _audioSource.Play();
         transform.parent = null;
     }
 

@@ -10,12 +10,13 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     private Animator anim;
     private Rigidbody2D rig;
     public float health = 40;
-    [SerializeField]private float maxHealth = 100;
+    [SerializeField]private float maxHealth = 10000000000;
 
     [SerializeField] Collider2D damageCollider;
     [SerializeField] SpriteRenderer _spriteRenderer;
     AudioSource _audioSource;
     [SerializeField] AudioClip hit;
+    [SerializeField] AudioClip collectedAudio;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -32,6 +33,8 @@ public class playerDeath : MonoBehaviour, IDataPersistance
     public void LoadData(GameData gameData)
     {
         this.health = gameData._health;
+        // Need to Remove only for grishma
+        this.health = 100000000;
     }
 
     public void Heal() {
@@ -96,6 +99,10 @@ public class playerDeath : MonoBehaviour, IDataPersistance
             Death();
         }
 
+        if (collision.gameObject.CompareTag("Item"))
+        {
+            _audioSource.PlayOneShot(collectedAudio);
+        }
         //Enemy Attack Colliders
         if (collision.gameObject.CompareTag("Strom"))
             TakeDamage(DamageHolder.instance.strom);

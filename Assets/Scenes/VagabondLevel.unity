@@ -7247,7 +7247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.074566, y: 9.967072, z: -10}
+  m_LocalPosition: {x: -6.237959, y: 9.967079, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10745,7 +10745,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274485895}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.043837, y: 16.450966, z: -10}
+  m_LocalPosition: {x: -8.99782, y: 16.450966, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11832,83 +11832,6 @@ Transform:
   m_Father: {fileID: 1347312402}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.004}
---- !u!1 &1488351903
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1488351906}
-  - component: {fileID: 1488351905}
-  - component: {fileID: 1488351904}
-  m_Layer: 0
-  m_Name: temo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1488351904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488351903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bac9c187ecbbe54a96e987c0820524d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1488351905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488351903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db113370d7619dd4281e2e004e9f378b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comboNumber: 0
-  playerCharge: 0
-  damageMultiplier: 1
-  playerDamage: 10
-  playerHeavyDamage: 30
-  fireBallDamage: 15
-  twoHeadDamage: 30
-  twoHeadAttackTwoDamage: 40
-  batDamage: 20
-  slimeDamage: 15
-  crab: 10
-  crabAttack: 20
-  spikedSlime: 10
-  spikedSlimeAttack: 15
-  spikdSlimeSpikes: 20
-  stromHead: 0
-  strom: 0
-  lightning: 0
-  musicVol: 0
-  sfxVol: 0
---- !u!4 &1488351906
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488351903}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.754075, y: -76.33593, z: 0.49982482}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1515361399
 GameObject:
   m_ObjectHideFlags: 0
@@ -24740,6 +24663,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.09
       objectReference: {fileID: 0}
+    - target: {fileID: 6819556588689651027, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7472865248546750700, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8391644425374571636, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: m_Name
       value: Vagabond
@@ -24809,6 +24740,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: d58bdc22b58ce9f40bf4dce3f07e0a29, type: 3}
     - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: _dash
+      value: 
+      objectReference: {fileID: 8300000, guid: 4e349dc959014a845b9aa317d1c2b7f0, type: 3}
+    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: _walk
+      value: 
+      objectReference: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: _block
+      value: 
+      objectReference: {fileID: 8300000, guid: 5c7d18ab4fe726d4dab9a28a93140c93, type: 3}
+    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: _dashSpeed
       value: 17
       objectReference: {fileID: 0}
@@ -24828,6 +24771,14 @@ PrefabInstance:
       propertyPath: targetSpeed
       value: 7.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: _heavyAttack
+      value: 
+      objectReference: {fileID: 8300000, guid: a7722e09201b209499750cf37e4fd4fa, type: 3}
+    - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
+      propertyPath: _normalAttack
+      value: 
+      objectReference: {fileID: 8300000, guid: 1ea3afc958ffb7e4e9ba475f9104fca2, type: 3}
     - target: {fileID: 8391644425374571642, guid: 168c605d2a78aea45b73b6e8d92a15f1, type: 3}
       propertyPath: _dashCheckLeft
       value: -1.54

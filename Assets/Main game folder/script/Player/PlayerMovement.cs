@@ -1,8 +1,6 @@
 using System.Collections;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour, IDataPersistance
 {

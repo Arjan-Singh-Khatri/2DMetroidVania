@@ -441,8 +441,8 @@ MonoBehaviour:
   enemyID: 
   _hit: {fileID: 0}
   mixerGroup: {fileID: 1662104532655595140, guid: 625b5904ce6290647ba40798e653b1fa, type: 2}
-  _audioClipNormal: {fileID: 0}
-  _audioClipHeavy: {fileID: 0}
+  _audioClipNormal: {fileID: 8300000, guid: 1ea3afc958ffb7e4e9ba475f9104fca2, type: 3}
+  _audioClipHeavy: {fileID: 8300000, guid: caf9a686b4308894bb16ee83e5845374, type: 3}
 --- !u!82 &-9221918305803169511
 AudioSource:
   m_ObjectHideFlags: 0

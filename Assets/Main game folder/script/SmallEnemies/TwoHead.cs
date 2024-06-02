@@ -1,13 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using UnityEditor.PackageManager.UI;
-using UnityEditor.Timeline;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 
 public class TwoHead : EnemyParentScript
@@ -35,6 +27,8 @@ public class TwoHead : EnemyParentScript
     [SerializeField] AudioClip fireBallAudio;
     [SerializeField] AudioClip runAudio;
     [SerializeField] AudioClip attackAudio;
+    private float runTimer = 0f;
+
     private void Awake()
     {
     }
@@ -90,22 +84,22 @@ public class TwoHead : EnemyParentScript
         }
     }
 
-   
-
     private void InstantiateFireBall()
     {
+        _audioSource.PlayOneShot(fireBallAudio);
         Instantiate(fireBall,fireBallFirePosition.position,transform.rotation);
     }
 
-    
     private void AttackTwo()
     {
         chase = false;
         animator.SetBool("attack1", false);
         attackTwoHitBox.SetActive(true);
+        _audioSource.PlayOneShot(attackAudio);
         animator.SetTrigger("attack2");
         isHurt = false;
     }
+
     public void AttackTwoEnd()
     {
         attackTwoHitBox.SetActive(false);    
@@ -113,6 +107,7 @@ public class TwoHead : EnemyParentScript
     
     private void FireBallAttack()
     {
+
         fireBallSpawnTimer -= Time.deltaTime;    
         if (fireBallSpawnTimer <= 0)
         {
@@ -126,6 +121,12 @@ public class TwoHead : EnemyParentScript
 
         if(transform.position.x >= endPointXOne+1 || transform.position.x <= endPointXTwo-1)
         {
+            runTimer -= Time.deltaTime;
+            if(runTimer <= 0)
+            {
+                _audioSource.PlayOneShot(runAudio);
+                runTimer = 0.8f;
+            }
             Vector2 targetPosition = new Vector2(player.transform.position.x, transform.position.y);
             Vector2 newPosition = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
             transform.position = newPosition;

@@ -1,10 +1,7 @@
-using Mono.Cecil;
+
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Xml.Serialization;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
@@ -57,6 +54,7 @@ public class Vagabond : EnemyParentScript{
     [SerializeField]private float targetSpeed;
     private Vector2 chaseVector = new();
     public bool chase = false;
+    private float walkTimer = 0f;
     private float distanceBetween;
     private float lerpSpeed = 0f;
     private float chaseSpeed = 0f;
@@ -111,6 +109,9 @@ public class Vagabond : EnemyParentScript{
     [Header("Audio")]
     [SerializeField] AudioClip _normalAttack;
     [SerializeField] AudioClip _heavyAttack;
+    [SerializeField] AudioClip _block;
+    [SerializeField] AudioClip _dash;
+    [SerializeField] AudioClip _walk;
     
     void Start() {
        
@@ -298,6 +299,11 @@ public class Vagabond : EnemyParentScript{
 
         float movement = speedDif * _chaseForce;
 
+        walkTimer -= Time.deltaTime;
+        if(walkTimer <= 0) {
+            _audioSource.PlayOneShot(_walk);
+            walkTimer = .8f;
+        }
         rigbody.AddForce(movement * new Vector2(direction,0), ForceMode2D.Force);
 
     }
@@ -483,7 +489,7 @@ public class Vagabond : EnemyParentScript{
     #region Block , Dash and Stunned
 
     IEnumerator Dash(float direction){
-        Debug.Log("Dash");
+        _audioSource.PlayOneShot(_dash);
         animator.SetBool("Dash", true);
         isDashing = true;
         Vector2 dashVector = new(direction * _dashSpeed, 0);
@@ -526,14 +532,18 @@ public class Vagabond : EnemyParentScript{
     }
 
     IEnumerator BlockAttack() {
+        _audioSource.clip = _block;
+        _audioSource.loop = true;
+        _audioSource.Play();
         chase = false;
         animator.SetBool("Run", false);
         isBlocking = true;
         if (animator.GetBool("Block") == false)
             animator.SetBool("Block", true);
 
-        yield return new WaitForSeconds(Random.Range(2, 3.5f));
+        yield return new WaitForSeconds(Random.Range(.5f, 1.3f));
 
+        _audioSource.Stop();
         animator.SetBool("Block", false);
         isBlocking = false;
 
@@ -664,6 +674,12 @@ public class Vagabond : EnemyParentScript{
 
     private void SafetyChecks() {
         if ( (isAttacking || isHeavyAttacking || isCharingAttack) && canChooseBehaviour)
+        {
+            DeactivateHeavyAttackHitbox();
+            DeactivateNormalAttckHitbox();
+        }
+
+        if(!isAttacking && !isHeavyAttacking && !isCharingAttack && !canChooseBehaviour)
         {
             DeactivateHeavyAttackHitbox();
             DeactivateNormalAttckHitbox();

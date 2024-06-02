@@ -35,6 +35,7 @@ public class VagaBondProjectile : EnemyParentScript
             _damage = 35f;
         }
         else{ 
+            transform.position = new Vector2(transform.position.x, transform.position.y - 2f);
             _currentType=ProjectileType.Normal;
             _audioSource.clip = _audioClipNormal;
             _damage = 25;

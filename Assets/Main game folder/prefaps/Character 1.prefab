@@ -631,8 +631,6 @@ MonoBehaviour:
   _trailRenderer: {fileID: 387180875}
   _run: {fileID: 8300000, guid: 41b00af47c19cb64c8e0586b37f37683, type: 3}
   _jump: {fileID: 8300000, guid: 4e349dc959014a845b9aa317d1c2b7f0, type: 3}
-  _slide: {fileID: 0}
-  _dash: {fileID: 0}
   _land: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
   _groundCheckPoint: {fileID: 6299837467809086161}
   _groundCheckSize: {x: 0.49, y: 0.4}
@@ -659,6 +657,7 @@ MonoBehaviour:
   damageCollider: {fileID: 1303023224}
   _spriteRenderer: {fileID: 6299837469599941280}
   hit: {fileID: 8300000, guid: 527e6751f0f03c1419ff5491b1f0a05a, type: 3}
+  collectedAudio: {fileID: 8300000, guid: 68474d3770f8509489d46ad9a3393f02, type: 3}
 --- !u!114 &6663873068737134140
 MonoBehaviour:
   m_ObjectHideFlags: 0

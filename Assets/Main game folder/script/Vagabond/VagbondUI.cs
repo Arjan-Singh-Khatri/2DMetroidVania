@@ -41,12 +41,10 @@ public class VagbondUI : MonoBehaviour
     }
 
     IEnumerator LoadMainHub() {
-        yield return new WaitForSeconds(2f);
-        returning.SetActive(true);
         yield return new WaitForSeconds(15f);
         _levelLoader.LoadLevel();
         yield return new WaitForSeconds(.8f);
-        SceneManager.LoadScene(1); // NOT THIS BUT END CREDITS
+        SceneManager.LoadScene("End"); // NOT THIS BUT END CREDITS
     }
     private void OnDisable()
     {
