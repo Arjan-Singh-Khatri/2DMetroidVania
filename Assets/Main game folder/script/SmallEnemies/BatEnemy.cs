@@ -37,7 +37,9 @@ public class BatEnemy : EnemyParentScript
     void Update()
     {
         #region Enemy Death
+
         if (enemyDead) return;
+
         if (health <= 0)
         {
             _killed = true;
@@ -48,6 +50,7 @@ public class BatEnemy : EnemyParentScript
         #endregion
 
         Move();
+
         last_dash_time += Time.deltaTime;
         if (distance <= dashtime)
         {
@@ -86,6 +89,7 @@ public class BatEnemy : EnemyParentScript
     private void AttackAudio() {
         _audioSource.PlayOneShot(_batAttack);
     }
+
     private void DashAttack()
     {
         //rig.AddForce(dash_force, ForceMode2D.Impulse);

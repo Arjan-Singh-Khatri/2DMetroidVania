@@ -32,10 +32,14 @@ public class Crab : EnemyParentScript
     void Update()
     {
         
-        if (health <= 0) return;
+        if (health <= 0 || !PlayerInsideRange()) return;
 
-        FollowPlayer();
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) <=2f && attackDownTime >= 1.4f )
+        flip();
+
+        if (!isAttacking)
+            FollowPlayer();
+
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) <=2f && attackDownTime >= 1.4f && !isAttacking)
         {
             AttackPlayer();
         }
@@ -45,8 +49,7 @@ public class Crab : EnemyParentScript
     }
 
     private void FollowPlayer()
-    {
-        flip();
+    {   
         if (PlayerInsideRange() && !isAttacking)
         {
             animator.SetBool("Run", true);
@@ -77,7 +80,6 @@ public class Crab : EnemyParentScript
 
     private void ChosseAttack()
     {
-        
         int random = Random.Range(1, 5);
         switch (random) {
             case 1:
@@ -96,6 +98,7 @@ public class Crab : EnemyParentScript
     void AttackAudio() { 
         _audioSource.PlayOneShot(attackAudio);
     }
+
     private void AttackEnd()
     {
         crabCollider.SetActive(false);

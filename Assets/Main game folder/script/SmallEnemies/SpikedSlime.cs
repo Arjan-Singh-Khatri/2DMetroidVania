@@ -36,6 +36,7 @@ public class SpikedSlime : EnemyParentScript
         if (health <= 0) return;
 
         FollowPlayer();
+
         if (Mathf.Abs(transform.position.x- player.transform.position.x) <= 3f 
             && (player.transform.position.y-transform.position.y) < 5 && (player.transform.position.y - transform.position.y >-1) 
             && attackDownTime >= 2f)
@@ -96,6 +97,7 @@ public class SpikedSlime : EnemyParentScript
 
     private void TriggerAbility()
     {
+
         Instantiate(spikes,spikesPosition.position,transform.rotation);
     }
 

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 
@@ -12,7 +13,8 @@ public class TwoHead : EnemyParentScript
     private Animator animator;
     [SerializeField] private GameObject wallFirst;
     [SerializeField] private GameObject wallSecond;
-
+    [SerializeField] private float maxBoarder;
+    [SerializeField] private float minBoarder;
 
     [Header("Variables")]
     private bool isHurt = false;
@@ -29,9 +31,6 @@ public class TwoHead : EnemyParentScript
     [SerializeField] AudioClip attackAudio;
     private float runTimer = 0f;
 
-    private void Awake()
-    {
-    }
     // Start is called before the first frame update
     private void Start()
     {
@@ -124,11 +123,18 @@ public class TwoHead : EnemyParentScript
             runTimer -= Time.deltaTime;
             if(runTimer <= 0)
             {
-                _audioSource.PlayOneShot(runAudio);
+                //_audioSource.PlayOneShot(runAudio);
                 runTimer = 0.8f;
             }
-            Vector2 targetPosition = new Vector2(player.transform.position.x, transform.position.y);
-            Vector2 newPosition = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+
+            Vector2 targetPosition = new Vector2(0,player.transform.position.y);
+            if (player.transform.position.x < 0)
+                targetPosition.x = player.transform.position.x - 3f;
+            else
+                targetPosition.x = player.transform.position.x + 3f;
+            targetPosition.x = Mathf.Clamp(targetPosition.x, maxBoarder, minBoarder);
+            Vector2 newPosition = Vector2.MoveTowards( transform.position, targetPosition, Time.deltaTime * moveSpeed);
+
             transform.position = newPosition;
         }
          
