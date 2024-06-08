@@ -22,7 +22,6 @@ public class StromHead : EnemyParentScript
     private float telePortCount = 0f;
     private float damageTaken = 0 ;
     private float sleepTimer = 10f;
-    private bool isAttacking = false;
     private bool _frenzy = false;
     private bool isSleeping = false;
 
@@ -96,7 +95,6 @@ public class StromHead : EnemyParentScript
     {
         if (!particleAttack.isPlaying)
             particleAttack.Play();
-        isAttacking = true;
         _frenzy = true;
         TeleportTimer();
     }
@@ -158,7 +156,6 @@ public class StromHead : EnemyParentScript
         particleAttack.Stop();
         stromAttackCollider.enabled = false;
         StromHeadEvents.instance.StromAttackEnd();
-        isAttacking = false;
         isSleeping = true;
         particleAttack.Stop();
         animator.SetBool("Sleep", true);

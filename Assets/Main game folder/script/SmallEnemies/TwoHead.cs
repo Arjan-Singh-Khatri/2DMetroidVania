@@ -1,43 +1,43 @@
 using DG.Tweening;
 using System;
+using TMPro;
 using UnityEngine;
 
 
 public class TwoHead : EnemyParentScript
 {
     [Header("Required Components")]
+    private Animator animator;
     [SerializeField] private GameObject fireBall;
     [SerializeField] private Transform fireBallFirePosition;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private GameObject attackTwoHitBox;
-    private Animator animator;
     [SerializeField] private GameObject wallFirst;
     [SerializeField] private GameObject wallSecond;
-    [SerializeField] private float maxBoarder;
-    [SerializeField] private float minBoarder;
+    [SerializeField] AudioClip fireBallAudio;
+    [SerializeField] AudioClip runAudio;
+    [SerializeField] AudioClip attackAudio;
 
     [Header("Variables")]
     private bool isHurt = false;
     private float fireBallSpawnTimer = 2f;
     private float fireAttackTimer = 10f;
     private bool chase = false;
-    private readonly float endPointXOne = 25.2f;
-    private readonly float endPointXTwo = 64.84f;
+    [SerializeField] private float endPointXOne = 25.2f;
+    [SerializeField] private float endPointXTwo = 64.84f;
     private bool _killed;
     private bool playerInArea = false;
+    private float runDelayTimer = 0f;
+    private Vector2 targetPosition;
 
-    [SerializeField] AudioClip fireBallAudio;
-    [SerializeField] AudioClip runAudio;
-    [SerializeField] AudioClip attackAudio;
-    private float runTimer = 0f;
 
-    // Start is called before the first frame update
     private void Start()
     {
         _audioSource = gameObject.AddComponent<AudioSource>();
         _audioSource.outputAudioMixerGroup = mixerGroup;
         player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
+        targetPosition = new Vector2(0, transform.position.y);
     }
 
     #region Save And Load
@@ -62,23 +62,20 @@ public class TwoHead : EnemyParentScript
 
     private void Update()
     {
-        if (enemyDead || !playerInArea) return;
+        if (_killed || !playerInArea) return;
 
-        if (health <= 0)
-        {
-            _killed = true;
-            DataPersistanceManager.Instance.SaveGame();
-            animator.SetTrigger("Death");
-            enemyDead = true;
-            return;
+        if (health <= 0){
+            EnemyDead();
         }
+
         flip();
-        if(isHurt)
-        {
-            AttackTwo();
+
+        if(isHurt){
+
+            SecondAttack();
             isHurt = false;
-        }else
-        {
+        }else{
+
             AttackPlayer();
         }
     }
@@ -89,24 +86,23 @@ public class TwoHead : EnemyParentScript
         Instantiate(fireBall,fireBallFirePosition.position,transform.rotation);
     }
 
-    private void AttackTwo()
-    {
+    private void SecondAttack(){ 
+        
         chase = false;
-        animator.SetBool("attack1", false);
+        animator.SetBool("attackOne", false);
         attackTwoHitBox.SetActive(true);
         _audioSource.PlayOneShot(attackAudio);
-        animator.SetTrigger("attack2");
+        animator.SetBool("attackTwo", true);
         isHurt = false;
     }
 
-    public void AttackTwoEnd()
-    {
+    private void SecondAttackEnd(){
+        animator.SetBool("attackTwo", false);
         attackTwoHitBox.SetActive(false);    
     }
     
     private void FireBallAttack()
     {
-
         fireBallSpawnTimer -= Time.deltaTime;    
         if (fireBallSpawnTimer <= 0)
         {
@@ -115,29 +111,31 @@ public class TwoHead : EnemyParentScript
         }  
     }
 
-    private void RunAttack()
-    {
+    private void RunAttack(){
 
-        if(transform.position.x >= endPointXOne+1 || transform.position.x <= endPointXTwo-1)
-        {
-            runTimer -= Time.deltaTime;
-            if(runTimer <= 0)
-            {
-                //_audioSource.PlayOneShot(runAudio);
-                runTimer = 0.8f;
+        if(transform.position.x >= endPointXOne+1 || transform.position.x <= endPointXTwo - 1) {
+
+            runDelayTimer -= Time.deltaTime;
+            // calculate the target vector with a delay so that its feel like the momentum is taking the enemy further
+            if (runDelayTimer <= 0f){
+                CalcualteTargetVector(); 
+                runDelayTimer = 1.7f;
             }
 
-            Vector2 targetPosition = new Vector2(0,player.transform.position.y);
-            if (player.transform.position.x < 0)
-                targetPosition.x = player.transform.position.x - 3f;
-            else
-                targetPosition.x = player.transform.position.x + 3f;
-            targetPosition.x = Mathf.Clamp(targetPosition.x, maxBoarder, minBoarder);
-            Vector2 newPosition = Vector2.MoveTowards( transform.position, targetPosition, Time.deltaTime * moveSpeed);
-
-            transform.position = newPosition;
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
         }
          
+    }
+
+    private void CalcualteTargetVector(){
+
+        if (player.transform.position.x < transform.position.x)
+            targetPosition.x = player.transform.position.x - 5f;
+        else
+            targetPosition.x = player.transform.position.x + 5f;
+
+        targetPosition.x = Mathf.Clamp(targetPosition.x, endPointXOne, endPointXTwo);
+
     }
 
     private void AttackPlayer()
@@ -149,7 +147,8 @@ public class TwoHead : EnemyParentScript
             if(fireAttackTimer <= 0)
             {
                 chase = true;
-                animator.SetBool("attack1", true);
+                animator.SetBool("attackOne", true);
+                fireAttackTimer = 7f;
             }    
         }else
         {
@@ -163,9 +162,16 @@ public class TwoHead : EnemyParentScript
         wallSecond.SetActive(true);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void EnemyDead() {
+        _killed = true;
+        DataPersistanceManager.Instance.SaveGame();
+        animator.SetTrigger("Death");
+        wallFirst.SetActive(false);
+        wallSecond.SetActive(false);
+        return;
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision){
 
         if (collision.gameObject.CompareTag("Player"))
         {
