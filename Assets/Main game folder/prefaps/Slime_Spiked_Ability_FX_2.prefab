@@ -137,4 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45b01e8035ebfe48a9e0f9cd9664624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  health: 0
+  direction: 0
+  enemyID: 
+  _hit: {fileID: 0}
+  mixerGroup: {fileID: 0}
+  _speed: 4.79

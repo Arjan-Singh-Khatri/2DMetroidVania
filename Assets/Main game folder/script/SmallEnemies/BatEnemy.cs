@@ -6,7 +6,7 @@ public class BatEnemy : EnemyParentScript
     // Serialize Fields
     [SerializeField]private float speed = 5f;
     [SerializeField] private float dash_force = 15;
-    [SerializeField] private float dashtime = 2f;
+    [SerializeField] private float dashMinDistance = 2f;
 
     // Private variables
     private Animator anim;
@@ -52,7 +52,8 @@ public class BatEnemy : EnemyParentScript
         Move();
 
         last_dash_time += Time.deltaTime;
-        if (distance <= dashtime)
+
+        if (distance <= dashMinDistance)
         {
             Attack();
             
@@ -76,10 +77,10 @@ public class BatEnemy : EnemyParentScript
 
     private void Attack()
     {
-        if (last_dash_time > 2f)
+        if (last_dash_time > 3f)
         {
             chase = false;
-            anim.SetTrigger("attack");
+            anim.SetBool("attack",true);
             last_dash_time = 0f;
         }
         
@@ -106,18 +107,19 @@ public class BatEnemy : EnemyParentScript
 
     private void StopAttack()
     {
+        anim.SetBool("attack", false);
         rig.velocity = Vector2.zero;
         chase = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-
         if (collision.gameObject.CompareTag("Player"))
         {
-            //player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.batDamage);
-            Events.instance.onPlayerTakeDamage(DamageHolder.instance.batDamage);
+            if (chase)
+                Events.instance.onPlayerTakeDamage(DamageHolder.instance.batDamage);
+            else
+                Events.instance.onPlayerTakeDamage(DamageHolder.instance.batDamage * 1.25f);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))

@@ -33,13 +33,14 @@ public class Crab : EnemyParentScript
     {
         
         if (health <= 0 || !PlayerInsideRange()) return;
+        
+        // safety
+        if (isAttacking && attackDownTime >= 1.4)
+            AttackEnd();
 
-        flip();
+        FollowPlayer();
 
-        if (!isAttacking)
-            FollowPlayer();
-
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) <=2f && attackDownTime >= 1.4f && !isAttacking)
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) <= 2f && attackDownTime >= 1.4f && !isAttacking)
         {
             AttackPlayer();
         }
@@ -52,6 +53,7 @@ public class Crab : EnemyParentScript
     {   
         if (PlayerInsideRange() && !isAttacking)
         {
+            flip();
             animator.SetBool("Run", true);
             followPosition.x = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime).x;
             followPosition.y = transform.position.y;
@@ -70,6 +72,8 @@ public class Crab : EnemyParentScript
 
     private void AttackPlayer()
     {
+
+
         animator.SetBool("Run", false);
         attackDownTime = 0f;
         isAttacking = true;
@@ -83,13 +87,13 @@ public class Crab : EnemyParentScript
         int random = Random.Range(1, 5);
         switch (random) {
             case 1:
-                animator.SetTrigger("Ability");
-                break;
-            case 2:
                 animator.SetTrigger("Attack");
                 break;
-            case 3:
+            case 2:
                 animator.SetTrigger("Attack2");
+                break;
+            case 3:
+                animator.SetTrigger("Attack3");
                 break;
         }
         
@@ -110,7 +114,7 @@ public class Crab : EnemyParentScript
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<playerDeath>().TakeDamage(DamageHolder.instance.crab);
+            Events.instance.onPlayerTakeDamage(DamageHolder.instance.crab);
         }
 
         if (collision.CompareTag("PlayerAttackHitBox"))

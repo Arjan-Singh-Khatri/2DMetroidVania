@@ -34,17 +34,22 @@ public class SpikedSlime : EnemyParentScript
     {
 
         if (health <= 0) return;
+        
+        // Safety 
+        if(isAttacking && attackDownTime >= 2.5f)
+            AttackEnd();    
+
 
         FollowPlayer();
 
         if (Mathf.Abs(transform.position.x- player.transform.position.x) <= 3f 
             && (player.transform.position.y-transform.position.y) < 5 && (player.transform.position.y - transform.position.y >-1) 
-            && attackDownTime >= 2f)
+            && attackDownTime >= 2.5f)
         {
             AttackPlayer();
         }
 
-        if (attackDownTime < 2f) { attackDownTime += Time.deltaTime; }
+        if (attackDownTime < 2.5f ) { attackDownTime += Time.deltaTime; }
 
     }
 
@@ -103,6 +108,7 @@ public class SpikedSlime : EnemyParentScript
 
     private void AttackEnd()
     {
+        
         slimeCollider.SetActive(false);
         isAttacking = false;
     }

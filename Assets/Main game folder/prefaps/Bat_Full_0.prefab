@@ -127,7 +127,7 @@ MonoBehaviour:
   mixerGroup: {fileID: 1662104532655595140, guid: 625b5904ce6290647ba40798e653b1fa, type: 2}
   speed: 3
   dash_force: 15
-  dashtime: 2
+  dashMinDistance: 4.3
   chase: 0
   return_tostart: 0
   _killed: 0
