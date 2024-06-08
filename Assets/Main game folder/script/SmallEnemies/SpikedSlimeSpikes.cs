@@ -7,20 +7,22 @@ public class SpikedSlimeSpikes : EnemyParentScript
 
     [SerializeField] private float _speed = 20f;
     private float _lifeTime = 2f;
-    private Vector3 directionV = new();
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+    private Vector3 directionV = Vector2.zero;
+
     void Start()
     {
-        
+        player = GameObject.FindGameObjectWithTag("Player");
         transform.parent = null;
         transform.rotation = new Quaternion(0, 0, -0.707926929f, 0.706285775f);
         directionV.x = (player.transform.position.x - transform.position.x);
-        directionV.y = 0;
-        
+        directionV = directionV.normalized;
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionV, Vector3.forward);
+        Quaternion additionalRotation = Quaternion.Euler(90, 0, 0);
+        Quaternion finalRotation = targetRotation * additionalRotation;
+
+        transform.rotation = finalRotation; 
+
     }
 
     // Update is called once per frame

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireBall : MonoBehaviour
 {
-    private float speed = 9f;
+    private float speed = 10f;
     private float lifeSpanTimer = 3f;
     private AudioSource _audioSource;
     [SerializeField] AudioClip _audioClip;
