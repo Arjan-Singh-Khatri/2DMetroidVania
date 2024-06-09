@@ -148,7 +148,7 @@ public class TwoHead : EnemyParentScript
             {
                 chase = true;
                 animator.SetBool("attackOne", true);
-                fireAttackTimer = 7f;
+                fireAttackTimer = UnityEngine.Random.Range(4f,8f);
             }    
         }else
         {
@@ -182,15 +182,19 @@ public class TwoHead : EnemyParentScript
         if (collision.gameObject.CompareTag("PlayerAttackHitBox"))
         {
             isHurt = true;
-            PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerDamage * DamageHolder.instance.damageMultiplier, ref health);
 
-        }else if(collision.gameObject.CompareTag("PlayerAttackHitBox"))
+        }else if(collision.gameObject.CompareTag("PlayerProjectile"))
         {
             isHurt = true;
             PushBack();
             HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
 
+        }else if (collision.gameObject.CompareTag("HeavyHitBox"))
+        {
+            isHurt = true;
+            PushBack();
+            HealthDepleteEnemy(DamageHolder.instance.playerHeavyDamage * DamageHolder.instance.damageMultiplier, ref health);
         }
     }
 }

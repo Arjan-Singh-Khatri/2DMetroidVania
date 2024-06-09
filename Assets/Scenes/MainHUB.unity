@@ -30152,7 +30152,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: 0.011885169, z: -0, w: 0.9999294}
-  m_LocalPosition: {x: -115.77825, y: 105.854996, z: -2.7055397}
+  m_LocalPosition: {x: -117.12242, y: 105.854996, z: -2.6735811}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44724,7 +44724,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1122590697}
   - component: {fileID: 1122590699}
-  - component: {fileID: 1122590698}
   m_Layer: 0
   m_Name: Layer 9 (13)
   m_TagString: trap
@@ -44747,32 +44746,6 @@ Transform:
   m_Father: {fileID: 288072793}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: -0.969, y: -197.312, z: 392.255}
---- !u!61 &1122590698
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122590696}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.6427784, y: -0.1888668}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 7.41, y: 3.16}
-    newSize: {x: 7.41, y: 3.16}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 6.124443, y: 2.7822661}
-  m_EdgeRadius: 0
 --- !u!212 &1122590699
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -47319,7 +47292,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274485895}
   m_LocalRotation: {x: -0, y: 0.011885169, z: -0, w: 0.9999294}
-  m_LocalPosition: {x: -7.7982483, y: 4.909999, z: -16.371983}
+  m_LocalPosition: {x: -9.142418, y: 4.909999, z: -16.340025}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -106322,7 +106295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6759160299439549498, guid: 0d40c022d8222314e9efcc3614be00a5, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6986358203182476401, guid: 0d40c022d8222314e9efcc3614be00a5, type: 3}
       propertyPath: m_RootOrder

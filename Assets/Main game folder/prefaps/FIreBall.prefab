@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8355728606705629880}
   - component: {fileID: 8355728606705629884}
   - component: {fileID: 5245539321812748632}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FIreBall
   m_TagString: FireBall
   m_Icon: {fileID: 0}
@@ -49,9 +49,9 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.22836247, y: -0.049190912}
-  m_Size: {x: 1.2588733, y: 0.6159386}
-  m_Direction: 1
+  m_Offset: {x: 0.20698547, y: -0.32602364}
+  m_Size: {x: 1.3100739, y: 1.3100739}
+  m_Direction: 0
 --- !u!95 &8355728606705629887
 Animator:
   serializedVersion: 5

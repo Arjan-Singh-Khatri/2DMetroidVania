@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6965709996485106590}
   - component: {fileID: 2123346302340800594}
   - component: {fileID: 9305810970440482}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ProjectileNormalVagabond
   m_TagString: Untagged
   m_Icon: {fileID: 0}

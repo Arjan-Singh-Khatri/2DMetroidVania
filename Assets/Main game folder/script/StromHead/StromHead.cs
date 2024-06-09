@@ -90,7 +90,6 @@ public class StromHead : EnemyParentScript
         }
     }
 
-
     private void Frenzy()
     {
         if (!particleAttack.isPlaying)
@@ -108,7 +107,6 @@ public class StromHead : EnemyParentScript
             telePortTimer = 0f;
         }
     }
-
 
     private void ProjectileInstantiate(){
         // the actual instantiation
@@ -152,6 +150,7 @@ public class StromHead : EnemyParentScript
         StromHeadEvents.instance.StromAttackStart();
 
     } 
+
     private void StromAttackEnd() {
         particleAttack.Stop();
         stromAttackCollider.enabled = false;
@@ -191,17 +190,16 @@ public class StromHead : EnemyParentScript
         //StartDeath();
 
     }
+    
     void StartDeath() {
         health = 0;
         if (health <= 0)
         {
+            StromHeadEvents.instance.onBossDead();
+            StromHeadEvents.instance.onReturnToHub();
             particleAttack.Stop();
             _killed = true;
             animator.SetTrigger("death");
-
-            StromHeadEvents.instance.onBossDead();
-            StromHeadEvents.instance.onReturnToHub();
         }
     }
-
 }

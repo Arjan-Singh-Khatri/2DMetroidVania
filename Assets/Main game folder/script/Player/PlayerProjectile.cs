@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -57,6 +58,19 @@ public class PlayerProjectile : MonoBehaviour
             transform.localScale = new Vector2(offset, randomScale);
         }
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == 9)
+        {
+            Destroy(gameObject);
+        }
+
+        if(collision.gameObject.layer == 7)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

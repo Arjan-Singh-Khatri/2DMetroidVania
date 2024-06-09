@@ -94,6 +94,10 @@ public class VagaBondProjectile : EnemyParentScript
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
+
+        if(collision.gameObject.layer == 9)
+            Destroy(gameObject);
+
         if(collision.gameObject.CompareTag("Player"))
             player.GetComponent<playerDeath>().TakeDamage(_damage);
             
