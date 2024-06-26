@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: ba7a240799ec4ad4d8c278ab7d708a76
+  - enabled: 1
+    path: Assets/Scenes/MainHUB.unity
+    guid: 0b333dc2cb2f1184cb0efa3ae3210c6d
+  - enabled: 1
+    path: Assets/Scenes/StromHeadLevel.unity
+    guid: bdc31b6ff0f1a614999e0c316fe46444
+  - enabled: 1
+    path: Assets/Scenes/VagabondLevel.unity
+    guid: 9c0cc6cc1b71a41458201b074efb29ca
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 76f76f1de7cdf5c44b179d9cf66915e8
+  m_configObjects: {}
